@@ -17,7 +17,7 @@ import NewsLetter from "@/components/marketing/NewsLetter";
 // import Container from "../global/container";
 const HomePage = () => {
     return (
-        <Wrapper >
+        <Wrapper className="px-0 md:px-4" >
             <Hero />
             <AboutSection />
             <FeaturedIn />
