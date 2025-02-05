@@ -145,7 +145,7 @@ img {
 }
 .heroBg {
   position: relative;
-  background: url("/images/home/banner.svg");
+  background: url("/images/home/bnrbg.png");
   background-position: left top;
   background-size: cover;
   background-repeat: no-repeat;
