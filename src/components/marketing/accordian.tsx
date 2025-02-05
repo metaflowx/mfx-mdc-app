@@ -15,7 +15,7 @@ const FAQContactSection = () => {
     <div className=" text-white py-16 ">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <h1 className="text-4xl font-bold text-left sm:text-center mb-12">Aizu Coin FAQs</h1>
+        <h1 className="text-[60px]  font-[700] text-left sm:text-center mb-12">FAQs</h1>
 
         {/* FAQ Section */}
         <Accordion
@@ -32,7 +32,7 @@ const FAQContactSection = () => {
               style={{
                 background:
                   openItem === `item-${index}`
-                    ? "linear-gradient(90deg, rgba(45, 103, 254, 0) 0%, rgba(45, 103, 254, 0.5) 50%, rgba(45, 103, 254, 0) 100%)"
+                    ? "linear-gradient(90deg, rgba(3, 79, 137, 0) 0%, rgba(26, 179, 229, 0.8) 50%, rgba(3, 79, 137, 0) 100%)"
                     : "transparent",
               }}
             >
@@ -51,11 +51,11 @@ const FAQContactSection = () => {
 };
 
 const faqData = [
-  { question: "What is AizuCoin?", answer: "AizuCoin is a decentralized cryptocurrency designed for secure, fast, and efficient transactions. It supports blockchain-based applications like DeFi, NFTs, and smart contracts, providing real-world utility." },
-  { question: "How can I buy AizuCoin?", answer: "AizuCoin is a decentralized cryptocurrency designed for secure, fast, and efficient transactions. It supports blockchain-based applications like DeFi, NFTs, and smart contracts, providing real-world utility." },
-  { question: "Where can I store AizuCoin?", answer: "Tokens are allocated to ecosystem development, staking rewards, marketing, and the team." },
-  { question: "What is the use case of AizuCoin?", answer: "AizuCoin is a decentralized cryptocurrency designed for secure, fast, and efficient transactions. It supports blockchain-based applications like DeFi, NFTs, and smart contracts, providing real-world utility." },
-  { question: "Is AizuCoin a good investment?", answer: "Yes, there is a burn mechanism to ensure scarcity over time." },
+  { question: "What is MDC Coin?", answer: "MDC Coin is the native cryptocurrency of the MDC OTT platform, designed to facilitate transactions, rewards, governance, and staking within the ecosystem." },
+  { question: "How can I buy MDC?", answer: "MDC Coin is the native cryptocurrency of the MDC OTT platform, designed to facilitate transactions, rewards, governance, and staking within the ecosystem." },
+  { question: "Where can I store MDC?", answer: "Tokens are allocated to ecosystem development, staking rewards, marketing, and the team." },
+  { question: "What is the use case of MDC?", answer: "MDC Coin is the native cryptocurrency of the MDC OTT platform, designed to facilitate transactions, rewards, governance, and staking within the ecosystem." },
+  { question: "Is MDC a good investment?", answer: "Yes, there is a burn mechanism to ensure scarcity over time." },
   
 ];
 

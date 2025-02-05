@@ -23,39 +23,31 @@ const data = {
 
 const TokenomicsPage = () => {
   return (
-    <div className="container mx-auto ">
+  <div 
+  style={{
+    background:"url(/images/tokenomics/tokenomicabg.png)",backgroundRepeat:"no-repeat",
+    backgroundPosition:"top",
+    backgroundSize:"cover"
+  }}
+  >
+      <div className="container mx-auto mt-[50px]">
       <div className="text-white  flex flex-col items-center justify-center space-y-6">
         <div className="text-left sm:text-center">
-          <h2 className="text-white text-[40px] md:text-[64px] font-bold">Tokenomics</h2>
-          <h3 className="text-[#2865FF] text-[30px] md:text-[40px] font-bold">
-            Supply: {data.supply}
+          <h2 className="text-white text-[40px] md:text-[60px] font-bold">Tokenomics</h2>
+          <h3 className="text-white text-[30px] md:text-[40px] font-[700]">
+           Total Supply
+          </h3>
+          <h3 className="text-white text-[30px] md:text-[50px] font-[400]">
+            {data.supply}
           </h3>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 place-items-center">
-          {data.prices.map((item, index) => (
-            <div
-              key={index}
-              style={{
-                background:
-                  "linear-gradient(90deg, rgba(40, 101, 255, 0) 0%, rgba(221, 66, 66, 0.7) 50%, rgba(40, 101, 255, 0) 100%)",
-                border: "1px solid",
-                borderImageSource:
-                  "linear-gradient(90deg, rgba(40, 101, 255, 0) 0%, #2865FF 50%, rgba(40, 101, 255, 0) 100%)",
-              }}
-              className="w-[305px] h-[65px] flex items-center justify-center text-white text-lg font-semibold"
-            >
-              <p>
-                {item.label}: {item.value}
-              </p>
-            </div>
-          ))}
+        <div className="flex  items-center overflow-hidden">
+          <img src="/images/tokenomics/chartimg.png"  />
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 mt-20">
-        <div className="flex  items-center overflow-hidden">
-          <img src="/images/tokenomics/chart.png" className="rotate-image" />
-        </div>
+        
         <div >
           {data?.chartData.map((item)=>{
             return(
@@ -81,6 +73,7 @@ const TokenomicsPage = () => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

@@ -30,7 +30,7 @@ const HowToBuySection: React.FC = () => {
       <div>
         <h2 className="text-left md:text-center text-[40px] md:text-[60px] font-[700] mb-5">How to buy Token?</h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-10 p-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-1 gap-10 p-4">
         {steps.map((item, index) => {
           return (
             <>
