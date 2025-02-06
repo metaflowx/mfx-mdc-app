@@ -4,11 +4,11 @@ import { generateMetadata } from "@/utils";
 import { base, heading } from "@/constants";
 import { Toaster } from "@/components/ui/sonner";
 import { subheading } from "@/constants/fonts";
-import { Prompt } from 'next/font/google';
+import {Inter } from 'next/font/google';
 import 'animate.css';
 
 // Importing Prompt font
-const prompt = Prompt({
+const prompt = Inter({
     subsets: ['latin'], // Optional
     weight: '400',      // Optional
 });
