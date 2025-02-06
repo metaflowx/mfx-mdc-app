@@ -132,16 +132,16 @@ const RoadmapSection = () => {
                 style={{
                   // border: "1px solid",
                   background:
-                    "linear-gradient(231.41deg, #1AB3E5 -9.31%, rgba(3, 79, 137, 0) 42.05%, #1AB3E5 93.42%)",
+                    "linear-gradient(231.41deg, #1AB3E5, rgba(3, 79, 137, 0) , #1AB3E5 )",
                 }}
-                className="min-h-[301px] mt-[74px] p-[1px] rounded-[30px] w-[340px] overflow-hidden"
+                className="min-h-[301px] mt-[74px] p-[1px] rounded-[30px]  overflow-hidden"
               >
                 <div
                   style={{
                     // border: "1px solid #2D67FE",
                     background: "#101012",
                   }}
-                  className="w-[340px] p-4 rounded-lg shadow-lg  min-h-[301px]"
+                  className=" p-4  shadow-lg rounded-[30px]  min-h-[301px]"
                 >
                   <div className=" h-[40px] rounded-[6px] text-center flex justify-start items-center pt-10">
                     <img src="/images/roadmap/circle.png" />

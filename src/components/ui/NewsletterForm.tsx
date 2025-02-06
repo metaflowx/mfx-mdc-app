@@ -25,14 +25,14 @@ export default function NewsletterForm() {
           style={{ background: " #000000" }}
           className="relative flex items-center rounded-[30px] max-w-[643px] mx-auto "
         >
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter a valid email address"
-            className="w-full px-6  bg-transparent rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+         <input
+  type="email"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  placeholder="Enter a valid email address"
+  className="w-full px-6 outline-none bg-transparent rounded-lg text-white placeholder-gray-400"
+  required
+/>
           <button
             style={{
               background:
