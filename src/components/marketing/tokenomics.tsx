@@ -136,16 +136,17 @@ const TokenomicsPage = () => {
         <div
           style={{
             background:
-              "linear-gradient(180deg, #1AB3E5 0%, rgba(26, 179, 229, 0) 100%)",
+              "linear-gradient(1deg, #1AB3E5 0%, rgba(26, 179, 229, 0) 100%)",
+              padding:"1px"
           }}
-          className="rounded-[20px]"
+          className="rounded-[20px] mt-20 "
         >
           <div
             style={{
               background:
-                "linear-gradient(4.02deg, rgba(0, 0, 0, 0) -0.22%, rgba(0, 0, 0, 0.9) 96.72%)",
+                "linear-gradient(180deg, rgba(0, 0, 0, 0.2) 1%, rgba(0, 0, 0, 1) 96.72%)",
             }}
-            className="relative grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-4 mt-20 rounded-[20px]"
+            className="relative grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-4 rounded-[20px] p-6"
           >
             {data?.chartData.map((item) => {
               return (
