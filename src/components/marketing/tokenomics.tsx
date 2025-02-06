@@ -133,46 +133,41 @@ const TokenomicsPage = () => {
             <img src="/images/tokenomics/chartimg.png" />
           </div>
         </div>
-        <div style={{background:"linear-gradient(180deg, #1AB3E5 0%, rgba(26, 179, 229, 0) 100%)"}} className="rounded-[20px]">
-
         <div
-         style={{
-         
-          background:
-            "linear-gradient(4.02deg, rgba(0, 0, 0, 0) -0.22%, rgba(0, 0, 0, 0.9) 96.72%)",
-        }}
-          className="relative grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-4 mt-20 rounded-[20px]"
+          style={{
+            background:
+              "linear-gradient(180deg, #1AB3E5 0%, rgba(26, 179, 229, 0) 100%)",
+          }}
+          className="rounded-[20px]"
         >
-        
-
-
-         
-          {data?.chartData.map((item) => {
-            return (
-              <div className="rounded-[12px]  py-1 px-5 mt-[10px]">
-                <div className="flex items-center">
-                  <div
-                    style={{
-                      background: item.bg,
-
-                     
-                     
-                    }}
-                    className=" h-[36px] w-[36px] rounded-full"
-                  ></div>
-                  <p className={`${item?.color} text-[24px] font-[500]`}>
-                  <p className="text-[24px] font-[400] text-white pl-2">{item.name}</p>
-                  </p>
+          <div
+            style={{
+              background:
+                "linear-gradient(4.02deg, rgba(0, 0, 0, 0) -0.22%, rgba(0, 0, 0, 0.9) 96.72%)",
+            }}
+            className="relative grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-4 mt-20 rounded-[20px]"
+          >
+            {data?.chartData.map((item) => {
+              return (
+                <div className="rounded-[12px]  py-1 px-5 mt-[10px]">
+                  <div className="flex items-center">
+                    <div
+                      style={{
+                        background: item.bg,
+                      }}
+                      className=" h-[36px] w-[36px] rounded-full"
+                    ></div>
+                    <p className={`${item?.color} text-[24px] font-[500]`}>
+                      <p className="text-[24px] font-[400] text-white pl-2">
+                        {item.name}
+                      </p>
+                    </p>
+                  </div>
                 </div>
-               
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-
-
-        </div>
-        
       </div>
     </div>
   );
