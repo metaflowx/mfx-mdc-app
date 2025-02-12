@@ -26,33 +26,31 @@ export default function Hero() {
           <div className="w-auto bg-[#0D0D0D] p-10  rounded-[20px]">
             {/* Countdown Timer */}
             <div className="  grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 w-full">
-              {[
-                { value: "60", label: "DAYS" },
-                { value: "45", label: "HOUR" },
-                { value: "24", label: "MINUTES" },
-                { value: "59", label: "SECOND" },
-              ].map((time) => (
-                <div
-                  style={{
-                    background:
-                      " linear-gradient(270deg, rgba(166, 166, 166, 0.7) 0%, rgba(166, 166, 166, 0) 50%, rgba(166, 166, 166, 0.7) 100%)",
-                    padding: "1px",
-                  }}
-                  className="rounded-[8px]"
-                >
-                  <div
-                    key={time.label}
-                    className="bg-[#1A1A1A] px-6 py-3 rounded-[8px] text-center min-w-[100px]"
-                  >
-                    <h2 className="text-[30px] md:text-[60px] font-[700] text-white leading-normal">
-                      {time.value}
-                    </h2>
-                    <div className="text-[16px] font-[400] text-white">
-                      {time.label}
-                    </div>
-                  </div>
-                </div>
-              ))}
+            {[
+  { value: "60", label: "DAYS" },
+  { value: "45", label: "HOUR" },
+  { value: "24", label: "MINUTES" },
+  { value: "59", label: "SECOND" },
+].map((time) => (
+  <div
+    key={time.label} // Moved the key here
+    style={{
+      background:
+        "linear-gradient(270deg, rgba(166, 166, 166, 0.7) 0%, rgba(166, 166, 166, 0) 50%, rgba(166, 166, 166, 0.7) 100%)",
+      padding: "1px",
+    }}
+    className="rounded-[8px]"
+  >
+    <div className="bg-[#1A1A1A] px-6 py-3 rounded-[8px] text-center min-w-[100px]">
+      <h2 className="text-[30px] md:text-[60px] font-[700] text-white leading-normal">
+        {time.value}
+      </h2>
+      <div className="text-[16px] font-[400] text-white">
+        {time.label}
+      </div>
+    </div>
+  </div>
+))}
             </div>
 
             <div className="text-center text-white text-[30px] font-[700] py-4">

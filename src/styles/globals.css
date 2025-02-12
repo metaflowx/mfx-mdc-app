@@ -108,6 +108,13 @@ img {
   transition: color 0.3s ease-in-out;
 }
 
+.dsboard{
+  background-image: url(../../public/images/dashboard/Dashboard.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}
+
 .link::after {
   content: "";
   position: absolute;
