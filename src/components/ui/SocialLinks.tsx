@@ -25,6 +25,20 @@ const socialLinks = [
     hoverColor: "hover:text-[#0A66C2]",
   },
   {
+    name: "LinkedIn",
+    icon: "/images/footer/facebook.svg",
+    href: "#",
+    bgColor: "bg-[#1A1D28]",
+    hoverColor: "hover:text-[#0A66C2]",
+  },
+  {
+    name: "LinkedIn",
+    icon: "/images/footer/telegram.svg",
+    href: "#",
+    bgColor: "bg-[#1A1D28]",
+    hoverColor: "hover:text-[#0A66C2]",
+  },
+  {
     name: "Discord",
     icon: "/images/footer/discord.svg",
     href: "#",
@@ -41,12 +55,12 @@ export default function SocialLinks() {
           key={social.name}
           href={social.href}
           style={{border: "1.5px solid #FFFFFF1A"}}
-          className={`p-4 rounded-[34px]  transition-all hover:scale-105 ${social.hoverColor} flex items-center`}
+          className={`p-2 rounded-[34px]  transition-all hover:scale-105 h-[50px] w-[50px] ${social.hoverColor} flex items-center`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={social.icon} />
-          <span className="text-white text-[17px] font-[400] pl-3">{social.name}</span>
+          <img src={social.icon} className="h-[30px] w-[30px]" />
+         
         </a>
       ))}
     </div>

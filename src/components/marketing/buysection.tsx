@@ -2,113 +2,79 @@ import CommonButton from "../ui/CommonButton";
 
 const HowToBuySection: React.FC = () => {
   const steps = [
-    // {
-    //   title: "How to Buy ",
-    //   title1:"AizuCoin",
-    //   icon: "/images/buy/aizucoin.png",
-    // },
     {
-      title: `Choose a Crypto `,
+      title: `Connect Your Wallet`,
       title1: "Exchange",
       description:
-        "Find a reliable cryptocurrency exchange that lists AizuCoin. Popular platforms may include centralized exchanges (CEX) or decentralized exchanges (DEX). Create an account and complete the necessary verification if required.",
+        "Download and set up a compatible wallet like MetaMask or Trust Wallet. These wallets ensure secure storage of your MDC Coins and allow seamless access to the blockchain network. Once installed, configure your wallet to connect to the appropriate blockchain supporting MDC Coin.",
       icon: "/images/buy/1.png",
     },
     {
-      title: "Deposit Funds ",
+      title: "Exchange for Token",
       title1: "& Swap",
       description:
-        "Deposit funds into your exchange wallet using fiat currency (USD, EUR) or another cryptocurrency (like USDT, ETH, or BNB). Once funded, search for AizuCoin and place an order to buy it.",
+        "To buy MDC Coin, you’ll need cryptocurrency like USDT, ETH, or BNB in your wallet. Purchase these from trusted exchanges such as Binance or Coinbase, then transfer them to your crypto wallet. Ensure you have a small amount of native blockchain tokens (e.g., ETH for Ethereum) to cover transaction fees.",
       icon: "/images/buy/2.png",
     },
     {
-      title: "Secure Your ",
+      title: "Start Buying and Selling",
       title1: "AizuCoin",
       description:
-        "After purchasing, store your AizuCoin securely in a personal crypto wallet, such as a hardware wallet or a secure software wallet. Avoid keeping large amounts on exchanges to reduce security risks.",
+        "Visit the MDC Coin official platform or a supported Decentralized Exchange (DEX). Connect your wallet securely, search for MDC Coin, and swap your existing cryptocurrency for MDC Coin. Confirm the transaction, and your MDC Coins will appear in your wallet shortly.",
       icon: "/images/buy/3.png",
     },
   ];
 
   return (
-    <section className="py-1 sm:py-16 max-w-7xl mx-auto mt-[0px] sm:mt-[50px]">
-      <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-10 p-4">
-        <div
-          style={{
-            background: "url(/images/buy/token.png)",
-            backgroundPosition: "center",
-           
-          }}
-          className="hidden sm:flex items-center justify-center  bg-transparent p-8 text-center text-black rounded-[40px] relative mt-[0] sm:mt-[-160px]"
-        >
-          <div className="mt-[20px] md:mt-[238px] flex justify-center items-center">
-            <div className="w-full flex flex-col justify-center items-center">
-              <p className="text-[40px] md:text-[64px] font-[700] text-[#fff] leading-snug">
-                How to Buy
-              </p>
-              <p className="text-[40px] md:text-[64px] font-[700] text-[#fff] leading-snug">
-                AizuCoin
-              </p>
-              <CommonButton title="Buy" width="165px" />
-            </div>
-           
-          </div>
-        </div>
-        <div
-          
-          className="block sm:hidden items-center justify-center  bg-transparent  text-center text-black rounded-[40px] relative "
-        >
-          <img src="/images/buy/token.png"  />
-          <div className="flex justify-center items-center">
-            <div className="w-full flex flex-col justify-center items-center">
-              <p className="text-[40px] md:text-[64px] font-[700] text-[#fff] leading-snug">
-                How to Buy
-              </p>
-              <p className="text-[40px] md:text-[64px] font-[700] text-[#fff] leading-snug">
-                AizuCoin
-              </p>
-              <CommonButton title="Buy" width="165px" />
-            </div>
-           
-          </div>
-        </div>
+    <section className="py-1  container mx-auto mt-[0px] ">
+      <div>
+        <h2 className="text-left md:text-center text-[40px] md:text-[60px] font-[700] mb-5">How to buy Token?</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-1 gap-10 p-4">
         {steps.map((item, index) => {
           return (
             <>
               <div
+                style={{
+                  boxShadow: "0px 4px 4px 0px #00000040",
+                  border: " 1px solid",
+                  borderImageSource:
+                    "linear-gradient(180deg, #1AB3E5 0%, rgba(3, 79, 137, 0) 50%, #1AB3E5 100%)",
+                }}
                 key={index}
-                className="flex items-center justify-center border border-[#2865FF] bg-transparent p-8 text-center text-black rounded-[40px]"
               >
-                <div>
+                <div
+                  style={{
+                    background:
+                      "linear-gradient(161.33deg, #1AB3E5 -8.77%, #034F89 75.94%)",
+                  }}
+                  className="flex flex-col  bg-transparent py-8 text-center text-black rounded-[16px]"
+                >
                   <div className="flex items-center space-x-3">
-                    <img src={item.icon} alt="Step Icon" className="sm:w-auto sm:h-auto w-[40px] h-[40px] object-contain" />
+                    <img
+                      src={item.icon}
+                      alt="Step Icon"
+                      className="sm:w-auto sm:h-auto w-[40px] h-[40px] object-contain ml-10"
+                    />
 
-                    <div className="text-left pl-3">
-                      <p
-                        style={{
-                          background:
-                            "linear-gradient(90deg, #2865FF 0%, #DD4242 100%)",
-                          backgroundClip: "text",
-                        }}
-                        className="text-[20px] sm:text-[35px] font-[700] text-[#2865FF] leading-snug bg-clip-text text-transparent"
-                      >
+                    <div
+                      style={{
+                        background:
+                          "linear-gradient(90deg, rgba(3, 79, 137, 0) 0%, #034F89 100%)",
+                        height: "50px",
+                      }}
+                      className="text-left pl-3 flex items-center justify-center w-full"
+                    >
+                      <p className="text-[19px]  font-[700] text-white leading-snug">
                         {item.title}
-                      </p>
-                      <p
-                        style={{
-                          background:
-                            "linear-gradient(90deg, #2865FF 0%, #DD4242 100%)",
-                          backgroundClip: "text",
-                        }}
-                        className="text-[20px] sm:text-[35px] font-[700] text-[#2865FF] leading-snug bg-clip-text text-transparent"
-                      >
-                        {item.title1}
                       </p>
                     </div>
                   </div>
-                  <p className="text-[16px] sm:text-[20px] font-[500] text-white text-left leading-[31px]">
-                    {item.description}
-                  </p>
+                  <div className="p-8">
+                    <p className="text-[1px] sm:text-[18px] font-[400] text-white text-left leading-[31px]">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
               </div>
             </>

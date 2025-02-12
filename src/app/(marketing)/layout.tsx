@@ -8,7 +8,7 @@ interface Props {
 
 const MarketingLayout = ({ children }: Props) => {
     return (
-        <div className="heroBg">
+        <div className="w-full">
             <Navbar />
             <main className="mx-auto w-full z-40 relative">
                 {children}
