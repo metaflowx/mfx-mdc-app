@@ -70,31 +70,26 @@ const settings = {
   dots: false,
   infinite: true,
   speed: 500,
-  slidesToShow: 4,
+  slidesToShow: 3,
   slidesToScroll: 1,
   autoplay: true,
-  autoplaySpeed: 2000,
+  autoplaySpeed: 3000,
   centerMode: true,
-  centerPadding: "50px",
+  centerPadding: "30px",
   arrows: false,
   responsive: [
-    {
-      breakpoint: 1224,
-      settings: {
-        slidesToShow: 2,
-      },
-    },
     {
       breakpoint: 1024,
       settings: {
         slidesToShow: 2,
+        centerPadding: "20px",
       },
     },
     {
       breakpoint: 768,
       settings: {
         slidesToShow: 1,
-        centerPadding: "20px",
+        centerPadding: "10px",
       },
     },
   ],
@@ -112,8 +107,8 @@ const RoadmapSection = () => {
       <div className="w-full px-4">
         <Slider {...settings}>
           {roadmapData.map((item, index) => (
-            <div key={index} className="flex justify-center px-2 relative">
-              <div className="absolute top-[0px] left-[10px] ">
+            <div key={index} className="flex justify-center px-2 relative h-[100%]">
+              <div className="absolute top-[0px] left-[10px] h-[100%]">
                 <p className="text-[#999999] text-[20px] font-[400] ">
                   {item.yaer}
                 </p>

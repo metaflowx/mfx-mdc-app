@@ -42,6 +42,7 @@ const HowToBuySection: React.FC = () => {
                   border: " 1px solid",
                   borderImageSource:
                     "linear-gradient(180deg, #1AB3E5 0%, rgba(3, 79, 137, 0) 50%, #1AB3E5 100%)",
+                    height:"100%"
                 }}
                 key={index}
               >
@@ -49,7 +50,9 @@ const HowToBuySection: React.FC = () => {
                   style={{
                     background:
                       "linear-gradient(161.33deg, #1AB3E5 -8.77%, #034F89 75.94%)",
+                      height:"100%"
                   }}
+                  
                   className="flex flex-col  bg-transparent py-8 text-center text-black rounded-[16px]"
                 >
                   <Box className="flex items-center space-x-3">
