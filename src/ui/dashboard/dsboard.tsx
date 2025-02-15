@@ -53,8 +53,8 @@ const BoxList = [
 
 const Dsboard = () => {
   return (
-    <Box sx={{ paddingTop: "7rem" }}>
-      <Container>
+    <Box >
+     
         <StepTwo>
           <Grid container spacing={2}>
             {BoxList.map((item, index) => (
@@ -92,8 +92,7 @@ const Dsboard = () => {
         </Box>
 
         <RefBottom />
-        <Dsfooter />
-      </Container>
+      
     </Box>
   );
 };

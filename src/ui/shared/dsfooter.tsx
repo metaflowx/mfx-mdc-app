@@ -1,3 +1,4 @@
+"use client"
 import { Box, Typography } from "@mui/material"
 import { makeStyles } from "@mui/styles";
 import Image from "next/image"

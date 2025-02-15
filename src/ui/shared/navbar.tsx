@@ -38,7 +38,7 @@ const NavbarList = [
     {
         id: 2,
         Name: "Earning",
-        Url: "/earning",
+        Url: "/dashboard/earning",
         Gradient: "linear-gradient(90deg, #1ab3e5 0%, #034f89 50%, #1ab3e5 100%)",
         Border: "1px solid #1ab3e5",
         Redius: "30px"
@@ -46,7 +46,7 @@ const NavbarList = [
     {
         id: 3,
         Name: "Staking",
-        Url: "/staking",
+        Url: "/dashboard/staking",
         Gradient: "linear-gradient(90deg, #1ab3e5 0%, #034f89 50%, #1ab3e5 100%)",
         Border: "1px solid #1ab3e5",
         Redius: "30px"
@@ -54,7 +54,7 @@ const NavbarList = [
     {
         id: 4,
         Name: "Referral",
-        Url: "/referral",
+        Url: "/dashboard/referral",
         Gradient: "linear-gradient(90deg, #1ab3e5 0%, #034f89 50%, #1ab3e5 100%)",
         Border: "1px solid #1ab3e5",
         Redius: "30px"
@@ -62,7 +62,7 @@ const NavbarList = [
     {
         id: 5,
         Name: "Profile",
-        Url: "/profile",
+        Url: "/dashboard/profile",
         Gradient: "linear-gradient(90deg, #1ab3e5 0%, #034f89 50%, #1ab3e5 100%)",
         Border: "1px solid #1ab3e5",
         Redius: "30px"
