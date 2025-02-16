@@ -226,6 +226,16 @@ img {
   border-radius: 30px;
   height: 50px;
 }
+.displayCenter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.displaySpacebetween{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 /* @keyframes flip {
   0% {
     transform: rotateX(0deg);
