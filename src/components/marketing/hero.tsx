@@ -3,13 +3,64 @@
 import { useEffect, useState } from "react";
 import CommonButton from "../ui/CommonButton";
 import ButtonGradient from "../ui/ButtonGradient";
+import Counter from "./counter/Counter";
+import { iocConfig, tokenConfig } from "@/constants/contract";
+import { useAccount, useReadContracts } from "wagmi";
+import { useAppKitNetwork } from "@reown/appkit/react";
+import {
+  Address,
+  erc20Abi,
+  formatEther,
+  formatUnits,
+  parseUnits,
+  zeroAddress,
+} from "viem";
+
 
 export default function Hero() {
+  const { address } = useAccount();
+  const { chainId } = useAppKitNetwork();
   const [amount, setAmount] = useState<string>("");
   const [selectedToken, setSelectedToken] = useState("tether");
   const [progress, setProgress] = useState(30);
   const max = 100;
   const progressWidth = (progress / max) * 100;
+
+
+  const result = useReadContracts({
+    contracts: [
+      {
+        ...iocConfig,
+        functionName: "getSaleTokenPrice",
+        args: [0],
+        chainId: Number(chainId) ?? 97,
+      },
+
+      {
+        ...iocConfig,
+        functionName: "saleType2IcoDetail",
+        args: [0],
+        chainId: Number(chainId) ?? 97,
+      },
+      {
+        ...tokenConfig,
+        functionName: "totalSupply",
+        chainId: Number(chainId) ?? 97,
+      },
+      {
+        ...iocConfig,
+        functionName: "user2SaleType2Contributor",
+        args: [address as Address, 0],
+        chainId: Number(chainId) ?? 97,
+      },
+      {
+        ...iocConfig,
+        functionName: "saleType2IcoDetail",
+        args: [0],
+        chainId: Number(chainId),
+      },
+    ],
+  });
 
   return (
     <main className="min-h-screen  flex items-center justify-center sm:mt-0 mt-10 heroBg">
@@ -25,33 +76,18 @@ export default function Hero() {
         >
           <div className="w-auto bg-[#0D0D0D] p-10  rounded-[20px]">
             {/* Countdown Timer */}
-            <div className="  grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 w-full">
-            {[
-  { value: "60", label: "DAYS" },
-  { value: "45", label: "HOUR" },
-  { value: "24", label: "MINUTES" },
-  { value: "59", label: "SECOND" },
-].map((time) => (
-  <div
-    key={time.label} // Moved the key here
-    style={{
-      background:
-        "linear-gradient(270deg, rgba(166, 166, 166, 0.7) 0%, rgba(166, 166, 166, 0) 50%, rgba(166, 166, 166, 0.7) 100%)",
-      padding: "1px",
-    }}
-    className="rounded-[8px]"
-  >
-    <div className="bg-[#1A1A1A] px-6 py-3 rounded-[8px] text-center min-w-[100px]">
-      <h2 className="text-[30px] md:text-[60px] font-[700] text-white leading-normal">
-        {time.value}
-      </h2>
-      <div className="text-[16px] font-[400] text-white">
-        {time.label}
-      </div>
-    </div>
-  </div>
-))}
-            </div>
+            <Counter 
+            
+            label="Sale Starts In"
+            targetTime={
+              result &&
+              result.data &&
+              result.data &&
+              result.data[1]?.result &&
+              result.data[1]?.result &&
+              result.data[1]?.result?.startAt
+            }
+            />
 
             <div className="text-center text-white text-[30px] font-[700] py-4">
               <h2>$65,156,332</h2>
