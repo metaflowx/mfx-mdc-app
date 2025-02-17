@@ -16,7 +16,8 @@ const Topheader = () => {
             borderBottom:'1px solid #1AB3E5',
             padding:'0.8rem 1.5rem',
             position:'fixed',
-            width:'100%'
+            width:'100%',
+            zIndex:"1111"
            }}>
 
            <Box>

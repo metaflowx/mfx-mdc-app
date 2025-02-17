@@ -9,26 +9,40 @@ import {
   Button,
   InputBase,
   styled,
+  Grid2,
 } from "@mui/material";
 import Image from "next/image";
 
-
 const tokens = [
-  { label: "USDT",  },
-  { label: "USDC",  },
-  { label: "BNB", },
-  { label: "ETH", },
+  {
+    label: "Package A",
+    title: "0.33% Daily",
+    des: "Withdraw period 1 months",
+    des1: "Total Return 200%",
+  },
+  {
+    label: "Package B",
+    title: "0.33% Daily",
+    des: "Withdraw period 1 months",
+    des1: "Total Return 200%",
+  },
+  {
+    label: "Package C",
+    title: "0.33% Daily",
+    des: "Withdraw period 1 months",
+    des1: "Total Return 200%",
+  },
 ];
 
 interface TabPanelProps {
   children?: React.ReactNode;
-  index: number;
-  value: number;
+  index?: number;
+  value?: number;
 }
 
 const CustomTabPanel = ({ children, value, index }: TabPanelProps) => {
   return (
-    <Box role="tabpanel" hidden={value !== index} sx={{ color: "#fff", mt: 2 }}>
+    <Box role="tabpanel" hidden={value !== index} sx={{ color: "#fff" }}>
       {value === index && <Box>{children}</Box>}
     </Box>
   );
@@ -79,68 +93,103 @@ const StakingTabCard = () => {
   const [value, setValue] = useState(0);
   const [buyInput, setBuyInput] = useState("");
 
+  const TabPanel = ({
+    children,
+    value,
+    index,
+  }: {
+    children: any;
+    value: any;
+    index: any;
+  }) => {
+    return (
+      <Box
+        role="tabpanel"
+        // hidden={value !== index}
+        id={`tabpanel-${index}`}
+        aria-labelledby={`tab-${index}`}
+        sx={{ px: 2, color: "#fff",pb:2, borderRadius: "8px", mt: 2 }}
+      >
+        <Box>{children}</Box>
+      </Box>
+    );
+  };
+
   return (
     <StyledBox>
       <InnerBox>
-        <Typography variant="h4" fontWeight={700} textAlign="center" mt={2}>
-          Buy MDC Coins
+        <Typography
+          variant="h4"
+          fontWeight={700}
+          textAlign="center"
+          mt={2}
+          style={{ color: "#fff" }}
+        >
+          Stake MDC Coins
         </Typography>
 
         {/* Tab Panels */}
-        {tokens.map((token, index) => (
-          <CustomTabPanel key={index} value={value} index={index}>
-            <Box display="flex" justifyContent="center" gap="1rem" mt={2}>
-              <Typography>{token.label} Price: $0.0600</Typography>
-              <Typography>MDC Coin Price: $0.0170</Typography>
-            </Box>
-          </CustomTabPanel>
-        ))}
+
+        <CustomTabPanel>
+          <Box display="flex" justifyContent="center">
+            <Typography
+              sx={{ fontSize: "24px", fontWeight: 400, color: "#fff" }}
+            >
+              {" "}
+              MDC Coin Price $0.0170
+            </Typography>
+          </Box>
+        </CustomTabPanel>
 
         {/* Tabs */}
-        <Tabs
-          value={value}
-          onChange={(_, newValue) => setValue(newValue)}
-          variant="fullWidth"
-          sx={{
-            mt: 3,
-            "& .MuiTabs-flexContainer": { gap: "1rem" },
-            "& .MuiButtonBase-root.MuiTab-root": {
-              minHeight: "40px",
-              padding: "8px 16px",
-            },
-            "& .MuiTabs-indicator": { display: "none" },
-          }}
-        >
-          {tokens.map((token, index) => (
-            <Tab
-              key={index}
-            
-              label={token.label}
-              {...a11yProps(index)}
-              sx={{
-                textTransform: "capitalize",
-                color: value === index ? "#fff !important" : "#fff",
-                background: value === index
-                  ? "linear-gradient(90deg, #1AB3E5,rgba(26, 178, 229, 0), #1AB3E5)"
-                  : "#101012",
-                borderRadius: "12px",
-                padding: "8px 16px",
-                minWidth: "100px",
-                border: value === index ? "1px solid #1AB3E5" : "1px solid #1D1D20",
-                fontWeight: 600,
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                transition: "all 0.3s ease",
-                "&:hover": {
-                  background: value === index
-                    ? "linear-gradient(90deg, #1AB3E5,rgba(26, 178, 229, 0), #1AB3E5)"
-                    : "#19191C",
-                },
-              }}
-            />
-          ))}
-        </Tabs>
+        <Box sx={{ width: "100%" }} mt={3}>
+          <Grid2 container spacing={2}>
+            {tokens.map((token, index) => (
+              <Grid2
+                onClick={() => setValue(index)}
+                size={{ xs: 4 }}
+                sx={{
+                  border:
+                    value === index ? "1px solid #1AB3E5" : "1px solid #1D1D20",
+                  background: "#101012",
+                  borderRadius: "8px",
+                  textAlign: "center",
+                  cursor:"pointer",
+                  "&:hover": {
+                    background: value === index ? "#101012" : "#19191C",
+                  },
+                }}
+              >
+                <TabPanel key={index} value={value} index={index}>
+                  <Box
+                    sx={{
+                      background: "#000000",
+                      borderRadius: "6px",
+                      height: "40px",
+                    }}
+                    className="displayCenter"
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ color: "#1AB3E5", fontWeight: 700,fontSize:"17px" }}
+                    >
+                      {token.label}
+                    </Typography>
+                  </Box>
+
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#fff", fontWeight: 700,fontSize:"16px" ,pt:2}}
+                  >
+                    {token.title}
+                  </Typography>
+                  <Typography   sx={{ color: "#fff", fontWeight: 400,fontSize:"16px"}} variant="body1">{token.des}</Typography>
+                  <Typography sx={{ color: "#fff", fontWeight: 400,fontSize:"16px"}} variant="body1">{token.des1}</Typography>
+                </TabPanel>
+              </Grid2>
+            ))}
+          </Grid2>
+        </Box>
 
         {/* Buy Input */}
         <CustomTabPanel value={value} index={value}>
@@ -156,27 +205,34 @@ const StakingTabCard = () => {
                 color: "#fff",
                 padding: "0.3rem 0.5rem",
                 "& input[type=number]": { "-moz-appearance": "textfield" },
-                "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button": {
-                  "-webkit-appearance": "none",
-                  margin: 0,
-                },
+                "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
+                  {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
               }}
             />
-            <GradientButton onClick={() => setBuyInput("0")}>Max</GradientButton>
+            <GradientButton onClick={() => setBuyInput("0")}>
+              Max
+            </GradientButton>
           </MaxButtonWrap>
 
           {/* Cost & Receive Details */}
           <Box display="flex" justifyContent="center" gap="1.5rem" mt={3}>
             <Box display="flex" alignItems="center" gap="10px">
-             
               <Typography>
-                COST: <Typography component="span" fontWeight={700}>$0.0600</Typography>
+                COST:{" "}
+                <Typography component="span" fontWeight={700}>
+                  $0.0600
+                </Typography>
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" gap="10px">
-           
               <Typography>
-                Receive: <Typography component="span" fontWeight={700}>$0.0000</Typography>
+                Receive:{" "}
+                <Typography component="span" fontWeight={700}>
+                  $0.0000
+                </Typography>
               </Typography>
             </Box>
           </Box>

@@ -1,18 +1,17 @@
 
 import '../../styles/globals.css';
 import type { Metadata } from 'next';
-import { Prompt } from 'next/font/google';
+import {Inter } from 'next/font/google';
 import { headers } from 'next/headers';
 import Topheader from '@/ui/shared/topheader';
 import ContextProvider from '../context';
 import Dsfooter from '@/ui/shared/dsfooter';
 import { Container } from '@mui/material';
 
-const prompt = Prompt({
+const prompt = Inter({
   subsets: ['latin'], // Optional
   weight: '400',      // Optional
 });
-
 export const metadata: Metadata = {
   title: 'MDC Dashboard',
   description: 'MDC ICO Dashboard',
