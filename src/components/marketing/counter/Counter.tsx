@@ -35,12 +35,13 @@ export default function Counter({
 
   return (
     <div>
+      <p className="text-center text-white pb-3 font-[700] text-[16px] ">{label}</p>
       <div className="  grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 w-full">
         {[
-          { value: "60", label: "DAYS" },
-          { value: "45", label: "HOUR" },
-          { value: "24", label: "MINUTES" },
-          { value: "59", label: "SECOND" },
+          { value: timeLeft.days ||0, label: "DAYS" },
+          { value: timeLeft.minutes ||0, label: "HOUR" },
+          { value: timeLeft.minutes ||0, label: "MINUTES" },
+          { value: timeLeft.seconds ||0, label: "SECOND" },
         ].map((time) => (
           <div
             key={time.label} // Moved the key here

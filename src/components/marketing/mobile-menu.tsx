@@ -10,8 +10,8 @@ import CommonButton from "../ui/CommonButton";
 const MobileMenu = () => {
     return (
         <Sheet>
-            <SheetTrigger asChild className="lg:hidden">
-                <Button variant="ghost" size="icon" className="lg:hidden">
+            <SheetTrigger asChild className="xl:hidden">
+                <Button variant="ghost" size="icon" className="xl:hidden">
                     <Menu className="h-6 w-6" />
                 </Button>
             </SheetTrigger>

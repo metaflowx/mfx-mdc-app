@@ -25,14 +25,14 @@ const socialLinks = [
     hoverColor: "hover:text-[#0A66C2]",
   },
   {
-    name: "LinkedIn",
+    name: "Facebook",
     icon: "/images/footer/facebook.svg",
     href: "#",
     bgColor: "bg-[#1A1D28]",
     hoverColor: "hover:text-[#0A66C2]",
   },
   {
-    name: "LinkedIn",
+    name: "Telegram",
     icon: "/images/footer/telegram.svg",
     href: "#",
     bgColor: "bg-[#1A1D28]",

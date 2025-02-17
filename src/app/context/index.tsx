@@ -27,8 +27,8 @@ const metadata = {
 const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [bsc, bscTestnet],
-  defaultNetwork: bsc,
+  networks: [bscTestnet],
+  defaultNetwork: bscTestnet,
   metadata: metadata,
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration

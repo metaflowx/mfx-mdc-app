@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CommonButton from "../ui/CommonButton";
 import ButtonGradient from "../ui/ButtonGradient";
 import Counter from "./counter/Counter";
@@ -12,20 +12,23 @@ import {
   erc20Abi,
   formatEther,
   formatUnits,
+  parseEther,
   parseUnits,
   zeroAddress,
 } from "viem";
-
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+   const router = useRouter();
   const { address } = useAccount();
   const { chainId } = useAppKitNetwork();
   const [amount, setAmount] = useState<string>("");
-  const [selectedToken, setSelectedToken] = useState("tether");
-  const [progress, setProgress] = useState(30);
-  const max = 100;
-  const progressWidth = (progress / max) * 100;
+  const [coinType, setCoinType] = useState({
+    tokenname: "BNB",
+    address: zeroAddress,
+  });
 
+  // const progressWidth = (progress / max) * 100;
 
   const result = useReadContracts({
     contracts: [
@@ -62,8 +65,86 @@ export default function Hero() {
     ],
   });
 
+  const tokenAddress =
+    coinType.tokenname === "BNB" ? zeroAddress : coinType.address;
+
+  const calculationresult = useReadContracts({
+    contracts: [
+      {
+        ...iocConfig,
+        functionName: "calculateUSDAmount",
+        args: [tokenAddress as Address, parseEther(amount)],
+        chainId: Number(chainId),
+      },
+    ],
+  });
+
+  const calciulatedToken = useMemo(() => {
+    if ((result && result?.data) || amount || calculationresult) {
+      const tokenPrice = result?.data && result?.data[0]?.result;
+      const dividedVa = calculationresult?.data
+        ? (Number(
+            formatEther(BigInt(calculationresult?.data[0]?.result ?? 0))
+          ) > 0
+            ? Number(
+                formatEther(BigInt(calculationresult?.data[0]?.result ?? 0))
+              )
+            : Number(amount)) / Number(formatEther(BigInt(tokenPrice ?? 0)))
+        : 0;
+      const purchaseToken =
+        result &&
+        result?.data &&
+        result?.data[3]?.result &&
+        formatEther(BigInt(result?.data[3]?.result?.volume));
+      const tokeninUSD =
+        result && result?.data
+          ? Number(formatEther(BigInt(result?.data[0]?.result ?? 0)))
+          : 0;
+      const totalTokenSupply =
+        result &&
+        result?.data &&
+        result?.data[4]?.result &&
+        formatEther(BigInt(result?.data[4]?.result?.saleTokenAmount));
+      const totalTokenQty =
+        result &&
+        result?.data &&
+        result?.data[4]?.result &&
+        formatEther(BigInt(result?.data[4]?.result?.saleQuantity));
+
+
+      const totalTokenSale =
+        result &&
+        result?.data &&
+        result?.data[4]?.result &&
+        formatEther(BigInt(result?.data[4]?.result?.saleTokenAmount));
+
+      const purchaseTokenUSD = Number(purchaseToken) * Number(tokeninUSD);
+      const totalTokenSupplyUSD = Number(totalTokenSupply) * Number(tokeninUSD);
+
+      const totalSoldToken = Number(totalTokenSale) - Number(totalTokenQty);
+      const totalSaleTokenUSD = Number(totalSoldToken) * Number(tokeninUSD);
+
+      return {
+        getToken: dividedVa?.toFixed(2),
+        purchaseTokenUSD: purchaseTokenUSD.toFixed(2),
+        totalTokenSupplyUSD: totalTokenSupplyUSD,
+        totalSale: totalSaleTokenUSD.toFixed(2),
+        purchaseToken: Number(purchaseToken).toFixed(2),
+      };
+    }
+  }, [result, amount, calculationresult]);
+
+  const progressWidth =
+  (Number(calciulatedToken?.totalSale) /
+    Number(calciulatedToken?.totalTokenSupplyUSD)) *
+  100;
+
+  console.log(">>>>>>>>>>result", result?.data?.[1]);
+  
+
+
   return (
-    <main className="min-h-screen  flex items-center justify-center sm:mt-0 mt-10 heroBg">
+    <main className="min-h-screen  flex items-center justify-center sm:mt-10 mt-10 heroBg">
       <div className="contentbg"></div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-8">
         <div
@@ -76,35 +157,51 @@ export default function Hero() {
         >
           <div className="w-auto bg-[#0D0D0D] p-10  rounded-[20px]">
             {/* Countdown Timer */}
-            <Counter 
-            
-            label="Sale Starts In"
-            targetTime={
-              result &&
-              result.data &&
-              result.data &&
-              result.data[1]?.result &&
-              result.data[1]?.result &&
-              result.data[1]?.result?.startAt
-            }
-            />
+
+            {Math.floor(Date.now() / 1000) <=
+            Number(result?.data?.[1]?.result?.startAt) ? (
+              <Counter
+                label="Sale Starts In"
+                targetTime={
+                  result &&
+                  result.data &&
+                  result.data &&
+                  result.data[1]?.result &&
+                  result.data[1]?.result &&
+                  result.data[1]?.result?.startAt
+                }
+              />
+            ) : (
+              <Counter
+                label="Sale Ends In"
+                targetTime={
+                  result &&
+                  result.data &&
+                  result.data &&
+                  result.data[1]?.result &&
+                  result.data[1]?.result &&
+                  result.data[1]?.result?.endAt
+                }
+              />
+            )}
 
             <div className="text-center text-white text-[30px] font-[700] py-4">
-              <h2>$65,156,332</h2>
+              <h2>  ${Number(calciulatedToken?.totalSale) || 0} / ${" "}
+              {calciulatedToken?.totalTokenSupplyUSD || 0}</h2>
               <h2>Contribution Receive</h2>
             </div>
 
             <div
               style={{
                 background:
-                  "linear-gradient(90deg, #1AB3E5 0%, rgba(26, 179, 229, 0) 100%)",
+                  "#000",
                 border: "1px solid #1AB3E5",
               }}
               className="w-auto h-[20px] rounded-full mb-6"
             >
               <div
                 style={{
-                  width: `${progressWidth}%`, // Dynamically set width
+                  width: `${progressWidth || 0}%`, // Dynamically set width
                   background:
                     "linear-gradient(90deg, #1AB3E5 0%, rgba(26, 179, 229, 0) 100%)",
                   border: "1px solid #1AB3E5",
@@ -137,7 +234,21 @@ export default function Hero() {
 
             {/* Connect Wallet Button */}
 
-            <CommonButton title="Connect Wallet" width="100%" />
+            {address ? (
+                        <CommonButton
+                          onClick={() => router.push("/dashboard")}
+                          title="Dashboard"
+                          width="100%"
+                        />
+                      ) : (
+                        <CommonButton
+                          onClick={async () => open()}
+                          title="Connect Wallet"
+                         width="100%"
+                        />
+                      )}
+
+           
           </div>
         </div>
 
