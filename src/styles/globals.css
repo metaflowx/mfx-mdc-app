@@ -108,6 +108,13 @@ img {
   transition: color 0.3s ease-in-out;
 }
 
+.dsboard{
+  background-image: url(../../public/images/dashboard/Dashboard.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}
+
 .link::after {
   content: "";
   position: absolute;
@@ -218,6 +225,16 @@ img {
   box-shadow: 0px 4px 4px 0px #00000040;
   border-radius: 30px;
   height: 50px;
+}
+.displayCenter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.displaySpacebetween{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 /* @keyframes flip {
   0% {

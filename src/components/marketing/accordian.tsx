@@ -32,6 +32,7 @@ const FAQContactSection = () => {
         >
           {faqData.map((item, index) => (
             <div
+            key={index}
               style={{
                 background:
                 openItem? " linear-gradient(90deg, rgba(3, 79, 137, 0) 0%, rgba(26, 179, 229, 0.8) 50%, rgba(3, 79, 137, 0) 100%)": "linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.3) 100%)",

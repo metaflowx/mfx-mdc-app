@@ -1,4 +1,6 @@
+import { Box, Typography } from "@mui/material";
 import CommonButton from "../ui/CommonButton";
+import Image from "next/image";
 
 const HowToBuySection: React.FC = () => {
   const steps = [
@@ -26,38 +28,42 @@ const HowToBuySection: React.FC = () => {
   ];
 
   return (
-    <section className="py-1  container mx-auto mt-[0px] ">
-      <div>
-        <h2 className="text-left md:text-center text-[40px] md:text-[60px] font-[700] mb-5">How to buy Token?</h2>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-1 gap-10 p-4">
+    <Box component={'section'} className="py-1  container mx-auto mt-[0px] ">
+      <Box>
+        <Typography variant="h2" className="text-left md:text-center text-[40px] md:text-[60px] font-[700] mb-5">How to buy Token?</Typography>
+      </Box>
+      <Box  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-1 gap-10 p-4">
         {steps.map((item, index) => {
           return (
             <>
-              <div
+              <Box
                 style={{
                   boxShadow: "0px 4px 4px 0px #00000040",
                   border: " 1px solid",
                   borderImageSource:
                     "linear-gradient(180deg, #1AB3E5 0%, rgba(3, 79, 137, 0) 50%, #1AB3E5 100%)",
+                    height:"100%"
                 }}
                 key={index}
               >
-                <div
+                <Box
                   style={{
                     background:
                       "linear-gradient(161.33deg, #1AB3E5 -8.77%, #034F89 75.94%)",
+                      height:"100%"
                   }}
+                  
                   className="flex flex-col  bg-transparent py-8 text-center text-black rounded-[16px]"
                 >
-                  <div className="flex items-center space-x-3">
-                    <img
+                  <Box className="flex items-center space-x-3">
+                    <Image
                       src={item.icon}
                       alt="Step Icon"
                       className="sm:w-auto sm:h-auto w-[40px] h-[40px] object-contain ml-10"
+                      width={40} height={40}
                     />
 
-                    <div
+                    <Box
                       style={{
                         background:
                           "linear-gradient(90deg, rgba(3, 79, 137, 0) 0%, #034F89 100%)",
@@ -65,23 +71,23 @@ const HowToBuySection: React.FC = () => {
                       }}
                       className="text-left pl-3 flex items-center justify-center w-full"
                     >
-                      <p className="text-[19px]  font-[700] text-white leading-snug">
+                      <Typography className="text-[19px]  font-[700] text-white leading-snug">
                         {item.title}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="p-8">
-                    <p className="text-[1px] sm:text-[18px] font-[400] text-white text-left leading-[31px]">
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box className="p-8">
+                    <Typography className="text-[1px] sm:text-[18px] font-[400] text-white text-left leading-[31px]">
                       {item.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
             </>
           );
         })}
-      </div>
-    </section>
+      </Box>
+    </Box>
   );
 };
 
