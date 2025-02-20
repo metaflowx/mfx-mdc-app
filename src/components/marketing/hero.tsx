@@ -17,7 +17,7 @@ import {
   zeroAddress,
 } from "viem";
 import { useRouter } from "next/navigation";
-
+import "aos/dist/aos.css";
 export default function Hero() {
    const router = useRouter();
   const { address } = useAccount();
@@ -139,14 +139,14 @@ export default function Hero() {
     Number(calciulatedToken?.totalTokenSupplyUSD)) *
   100;
 
-  console.log(">>>>>>>>>>result", result?.data?.[1]);
+ 
   
 
 
   return (
     <main className="min-h-screen  flex items-center justify-center sm:mt-10 mt-10 heroBg">
       <div className="contentbg"></div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 sm:px-8">
         <div
           style={{
             background:
@@ -185,8 +185,8 @@ export default function Hero() {
               />
             )}
 
-            <div className="text-center text-white text-[30px] font-[700] py-4">
-              <h2>  ${Number(calciulatedToken?.totalSale) || 0} / ${" "}
+            <div data-aos="fade-right" className="text-center text-white text-[20px] sm:text-[30px] font-[700] py-4">
+              <h2 >  ${Number(calciulatedToken?.totalSale) || 0} / ${" "}
               {calciulatedToken?.totalTokenSupplyUSD || 0}</h2>
               <h2>Contribution Receive</h2>
             </div>
@@ -224,10 +224,10 @@ export default function Hero() {
               <img src="/images/home/line.svg" />
             </div>
             <div className="block sm:flex items-center justify-between mt-4 mb-8 text-[18px] font-[400]">
-              <div className="flex items-center gap-2">
+              <div data-aos="fade-right" className="flex items-center gap-2">
                 <span className="text-white">USDT Raised</span>
               </div>
-              <div className="text-white sm:mt-0 mt-[15px] text-[18px] font-[700]">
+              <div data-aos="fade-right" className="text-white sm:mt-0 mt-[15px] text-[18px] font-[700]">
                 <span className="text-white"> 0$/0$ = MDC</span>
               </div>
             </div>
@@ -252,24 +252,24 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center text-left ">
-          <h1 className="w-full text-[40px] md:text-[60px] font-[700] uppercase">
+        <div className="flex flex-col text-white justify-center items-center text-left ">
+          <h1 data-aos="fade-right" className="w-full  text-[30px] md:text-[60px] font-[700] uppercase">
             Join MDC Coin
           </h1>
-          <h2 className="w-full text-[16px] md:text-[20px] font-[400] uppercase">
+          <h2 data-aos="fade-right" className="w-full text-[16px] md:text-[20px] font-[400] uppercase">
             Be a Part of the Decentralized Revolution
           </h2>
-          <h3 className="w-full text-[14px] md:text-[17px] font-[400] py-5">
+          <h3 data-aos="fade-right" className="w-full text-[14px] md:text-[17px] font-[400] py-5">
             Step into the future of innovation and empowerment with MDC Coin.
             Embrace the power of decentralization and redefine how you engage
             with digital ecosystems. With MDC Coin, you’re not just a
             user—you’re a key contributor to a secure, transparent, and
             reward-driven Web3 economy.
           </h3>
-          <h2 className="w-full text-[14px] md:text-[17px] font-[400]">
+          <h2 data-aos="fade-right" className="w-full text-[14px] md:text-[17px] font-[400]">
             Join us today and lead the way in shaping the decentralized future.
           </h2>
-          <div className="flex justify-start w-full mt-10">
+          <div data-aos="fade-right" className="flex justify-start w-full mt-10">
             <ButtonGradient btnName="Buy Token" width="w-[195px]" />
             &nbsp;
             <ButtonGradient btnName="Read Whitepaper" width="w-[195px]" />

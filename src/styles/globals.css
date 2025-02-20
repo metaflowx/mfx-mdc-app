@@ -76,14 +76,20 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+}
 body{
- 
-  background-position: top;
-  background-size: cover;
+  transition: all 0.5s ease-in-out;
+  scroll-behavior: smooth;
   background-color: #000;
  
  
 }
+
 
 ::-webkit-scrollbar {
   width: 4px;
@@ -236,6 +242,10 @@ img {
   justify-content: space-between;
   align-items: center;
 }
+.roadmapBg{
+  background: linear-gradient(231.41deg, #1AB3E5, rgba(3, 79, 137, 0) , #1AB3E5 );
+}
+
 /* @keyframes flip {
   0% {
     transform: rotateX(0deg);

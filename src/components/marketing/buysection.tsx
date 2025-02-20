@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import CommonButton from "../ui/CommonButton";
 import Image from "next/image";
 
-const HowToBuySection: React.FC = () => {
+const HowToBuySection = ({id}:{id:string}) => {
   const steps = [
     {
       title: `Connect Your Wallet`,
@@ -28,15 +28,16 @@ const HowToBuySection: React.FC = () => {
   ];
 
   return (
-    <Box component={'section'} className="py-1  container mx-auto mt-[0px] ">
+    <Box id={id} component={'section'} className="py-1  container mx-auto mt-[0px] px-4 ">
       <Box>
-        <Typography variant="h2" className="text-left md:text-center text-[40px] md:text-[60px] font-[700] mb-5">How to buy Token?</Typography>
+        <Typography data-aos="fade-up" variant="h2" className="text-left md:text-center text-[30px] md:text-[60px] font-[700] mb-5">How to buy Token?</Typography>
       </Box>
-      <Box  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-1 gap-10 p-4">
+      <div   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-10 ">
         {steps.map((item, index) => {
           return (
             <>
-              <Box
+              <div
+               key={`card${index+1}`}
                 style={{
                   boxShadow: "0px 4px 4px 0px #00000040",
                   border: " 1px solid",
@@ -44,7 +45,8 @@ const HowToBuySection: React.FC = () => {
                     "linear-gradient(180deg, #1AB3E5 0%, rgba(3, 79, 137, 0) 50%, #1AB3E5 100%)",
                     height:"100%"
                 }}
-                key={index}
+                className="transition-all duration-300 ease-in-out hover:scale-105"
+              
               >
                 <Box
                   style={{
@@ -64,6 +66,7 @@ const HowToBuySection: React.FC = () => {
                     />
 
                     <Box
+                    data-aos="fade-down"
                       style={{
                         background:
                           "linear-gradient(90deg, rgba(3, 79, 137, 0) 0%, #034F89 100%)",
@@ -77,16 +80,16 @@ const HowToBuySection: React.FC = () => {
                     </Box>
                   </Box>
                   <Box className="p-8">
-                    <Typography className="text-[1px] sm:text-[18px] font-[400] text-white text-left leading-[31px]">
+                    <Typography data-aos="fade-right" className="text-[15px] sm:text-[18px] font-[400] text-white text-left leading-[31px]">
                       {item.description}
                     </Typography>
                   </Box>
                 </Box>
-              </Box>
+              </div>
             </>
           );
         })}
-      </Box>
+      </div>
     </Box>
   );
 };

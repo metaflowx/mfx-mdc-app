@@ -95,11 +95,11 @@ const settings = {
   ],
 };
 
-const RoadmapSection = () => {
+const RoadmapSection = ({id}:{id:string}) => {
   return (
-    <div className="bg-transparent  text-white flex flex-col items-start container mx-auto py-[50px] ">
-      <h2 className="text-[40px] sm:text-[64px] font-[700] mb-4">Roadmap</h2>
-      <p className="text-left max-w-5xl mb-12 text-white text-[18px] sm:text-[24px] font-[500]">
+    <div id={id} className="bg-transparent  text-white flex flex-col items-start container mx-auto py-0 md:py-[50px] ">
+      <h2 data-aos="fade-right" className="text-[30px] sm:text-[64px] font-[700] mb-4">Roadmap</h2>
+      <p data-aos="fade-right" className="text-left max-w-5xl mb-12 text-white text-[18px] sm:text-[24px] font-[500]">
         MDC Coin aims to revolutionize the crypto space with innovation,
         scalability, real-world utility, and a community-driven ecosystem.
       </p>
@@ -124,19 +124,12 @@ const RoadmapSection = () => {
               </div>
 
               <div
-                style={{
-                  // border: "1px solid",
-                  background:
-                    "linear-gradient(231.41deg, #1AB3E5, rgba(3, 79, 137, 0) , #1AB3E5 )",
-                }}
-                className="min-h-[301px] mt-[74px] p-[1px] rounded-[30px]  overflow-hidden"
+               
+                className="roadmapBg min-h-[301px] mt-[74px] p-[1px] rounded-[30px]  overflow-hidden  transition-all duration-300 ease-in-out hover:scale-95 "
               >
                 <div
-                  style={{
-                    // border: "1px solid #2D67FE",
-                    background: "#101012",
-                  }}
-                  className=" p-4  shadow-lg rounded-[30px]  min-h-[301px]"
+                 
+                  className="bg-[#101012] p-4 hover:bg-[#1A1A1A]  shadow-lg rounded-[30px]  min-h-[301px]"
                 >
                   <div className=" h-[40px] rounded-[6px] text-center flex justify-start items-center pt-10">
                     <img src="/images/roadmap/circle.png" />
@@ -144,10 +137,10 @@ const RoadmapSection = () => {
                       {item.quarter}
                     </h3>
                   </div>
-                  <p className="text-[24px] font-[400] text-white pt-10">
+                  <p data-aos="fade-right" className="text-[18px] md:text-[24px] font-[400] text-white pt-10">
                     {item.milestone}
                   </p>
-                  <p className="text-[18px] font-[400] text-[#999999] ">
+                  <p data-aos="fade-left" className="text-[15px] md:text-[18px] font-[400] text-[#999999] ">
                     {item.description}
                   </p>
                 </div>

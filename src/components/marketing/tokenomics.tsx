@@ -105,9 +105,10 @@ const data = {
   ],
 };
 
-const TokenomicsPage = () => {
+const TokenomicsPage = ({id}:{id:string}) => {
   return (
     <div
+    id={id}
       style={{
         background: "url(/images/tokenomics/tokenomicabg.png)",
         backgroundRepeat: "no-repeat",
@@ -118,19 +119,19 @@ const TokenomicsPage = () => {
       <div className="container mx-auto mt-[50px] pb-[50px] ">
         <div className="text-white  flex flex-col items-center justify-center space-y-6">
           <div className="text-left sm:text-center">
-            <h2 className="text-white text-[40px] md:text-[60px] font-bold">
+            <h2 data-aos="fade-right" className="text-white text-[40px] md:text-[60px] font-bold">
               Tokenomics
             </h2>
-            <h3 className="text-white text-[30px] md:text-[40px] font-[700]">
+            <h3 data-aos="fade-left" className="text-white text-[30px] md:text-[40px] font-[700]">
               Total Supply
             </h3>
-            <h3 className="text-white text-[30px] md:text-[50px] font-[400]">
+            <h3 data-aos="fade-right" className="text-white text-[30px] md:text-[50px] font-[400]">
               {data.supply}
             </h3>
           </div>
 
-          <div className="flex  items-center overflow-hidden">
-            <img src="/images/tokenomics/chartimg.png" />
+          <div data-aos="fade-up" className="flex   items-center overflow-hidden">
+            <img src="/images/tokenomics/chartimg.png" className="transition-all duration-300 ease-in-out hover:scale-105" />
           </div>
         </div>
         <div
@@ -148,10 +149,10 @@ const TokenomicsPage = () => {
             }}
             className="relative grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-4 rounded-[20px] p-6"
           >
-            {data?.chartData.map((item) => {
+            {data?.chartData.map((item,index) => {
               return (
-                <div className="rounded-[12px]  py-1 px-5 mt-[10px]">
-                  <div className="flex items-center">
+                <div key={`card${index+1}`} className="rounded-[12px]  py-1 px-5 mt-[10px] transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer ">
+                  <div data-aos="fade-down" className="flex items-center">
                     <div
                       style={{
                         background: item.bg,
@@ -159,7 +160,7 @@ const TokenomicsPage = () => {
                       className=" h-[36px] w-[36px] rounded-full"
                     ></div>
                     <p className={`${item?.color} text-[24px] font-[500]`}>
-                      <p className="text-[24px] font-[400] text-white pl-2">
+                      <p className="text-[18px] md:text-[24px] font-[400] text-white pl-2">
                         {item.name}
                       </p>
                     </p>

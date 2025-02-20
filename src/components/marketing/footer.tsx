@@ -27,12 +27,12 @@ import SocialLinks from '../ui/SocialLinks';
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-8  sm:px-6 md:px-12  pt-[90px] pb-8 px-6 lg:px-8">
+    <footer className="bg-black text-white py-8 px-0 sm:px-6 md:px-12  pt-[90px] pb-8  lg:px-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-8">
         {/* Logo and Description */}
         <div className="mb-6 md:mb-0 w-full flex flex-col items-start">
-          <img src="/images/home/logo.png" />
-          <p className="text-[20px] font-[400] mt-2 max-w-md">
+          <img data-aos="fade-up" src="/images/home/logo.png" />
+          <p data-aos="fade-right" className="text-[16px] md:text-[20px] font-[400] mt-2 max-w-md">
             MDC Coin combines the power of blockchain with the entertainment industry, revolutionizing digital content and community-driven innovation.
           </p>
         </div>
@@ -62,18 +62,13 @@ const Footer = () => {
           <h3 className=" text-[24px] font-[600]">Socials Media</h3>
           <div className="mt-5 flex space-x-4">
           <SocialLinks />
-            {/* <Link href="#" className="text-gray-400 hover:text-white"><FaXTwitter size={20} /></Link>
-            <Link href="#" className="text-gray-400 hover:text-white"><FaInstagram size={20} /></Link>
-            <Link href="#" className="text-gray-400 hover:text-white"><FaLinkedin size={20} /></Link>
-            <Link href="#" className="text-gray-400 hover:text-white"><FaFacebook size={20} /></Link>
-            <Link href="#" className="text-gray-400 hover:text-white"><FaTelegram size={20} /></Link>
-            <Link href="#" className="text-gray-400 hover:text-white"><FaDiscord size={20} /></Link> */}
+          
           </div>
         </div>
       </div>
       <footer className="flex items-center text-gray-400 text-sm border-t border-gray-800 pt-8 w-full mt-5">
-           <p className="text-white text-[17px] font-[400] text-left sm:text-center w-full">Copyright © 2025 mdccoin.com. All rights reserved.</p>
-           {/* <BackToTopButton /> */}
+           <p data-aos="fade-right" className="text-white text-[14px] sm:text-[17px] font-[400] text-left sm:text-center w-full pl-2">Copyright © 2025 mdccoin.com. All rights reserved.</p>
+          
          </footer>
     </footer>
   );

@@ -33,7 +33,7 @@ const Navbar = () => {
                 <li
                   style={{ fontFamily: "Prompt" }}
                   key={index}
-                  className="text-[14px] xl:text-[16px] object-contain  -1 link"
+                  className="text-[14px] text-white xl:text-[16px] object-contain  -1 link"
                 >
                   <Link href={link.href}>{link.name}</Link>
                 </li>

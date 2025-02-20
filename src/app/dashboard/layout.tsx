@@ -7,7 +7,7 @@ import Topheader from '@/ui/shared/topheader';
 import ContextProvider from '../context';
 import Dsfooter from '@/ui/shared/dsfooter';
 import { Container } from '@mui/material';
-
+import "aos/dist/aos.css";
 const prompt = Inter({
   subsets: ['latin'], // Optional
   weight: '400',      // Optional
