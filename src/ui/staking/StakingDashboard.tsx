@@ -29,7 +29,7 @@ export default function StakingDashboard() {
 
 <Grid2 container spacing={2}>
             {BoxList.map((item, index) => (
-              <Grid2 key={index} size={{ xs: 12, md: 4, lg: 4 }}>
+              <Grid2  data-aos="fade-up" key={index} size={{ xs: 12, md: 4, lg: 4 }}>
 
                 <CommonCard item={item} />
                

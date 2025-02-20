@@ -59,7 +59,7 @@ const Dsboard = () => {
           <Grid container spacing={2}>
             {BoxList.map((item, index) => (
               <Grid key={index} size={{ xs: 12, md: 4, lg: 4 }}>
-                <ListBox>
+                <ListBox data-aos="fade-down">
                   <Box
                     sx={{
                       backgroundColor: "#034F89",
@@ -82,10 +82,10 @@ const Dsboard = () => {
 
         <Box sx={{ marginTop: "1rem" }}>
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12, md: 8 }}>
+            <Grid data-aos="fade-left" size={{ xs: 12, md: 8 }}>
               <BuyTab />
             </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid data-aos="fade-right" size={{ xs: 12, md: 4 }}>
               <Referral />
             </Grid>
           </Grid>
