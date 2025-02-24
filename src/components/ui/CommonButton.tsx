@@ -12,7 +12,7 @@ export default function CommonButton({title,width, onClick}:{title:string,width?
     background: "linear-gradient(90deg, #1AB3E5 0%, #034F89 50%, #1AB3E5 100%)",
     border: "1px solid #1AB3E5"
     ,width:width ? width :"100%"
-   }} className='rounded-[40px] h-[50px] text-center text-[20px] flex justify-center items-center' >
+   }} className='rounded-[40px] hover:bg-[#1AB3E5] transition-all duration-300 ease-in-out hover:scale-105 h-[50px] text-center text-[20px] flex justify-center items-center' >
     <p >
     {title}
     </p>

@@ -6,6 +6,7 @@ import Modal from "./modal";
 const RefBottom = () => {
   return (
     <Box
+    data-aos="fade-down"
       sx={{
         background:
           "linear-gradient(90deg, rgba(10, 77, 102, 0), #0A4E66, rgba(10, 77, 102, 0))",

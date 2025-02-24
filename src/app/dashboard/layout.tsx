@@ -1,4 +1,5 @@
 
+
 import '../../styles/globals.css';
 import type { Metadata } from 'next';
 import {Inter } from 'next/font/google';
@@ -7,6 +8,7 @@ import Topheader from '@/ui/shared/topheader';
 import ContextProvider from '../context';
 import Dsfooter from '@/ui/shared/dsfooter';
 import { Container } from '@mui/material';
+import "aos/dist/aos.css";
 
 const prompt = Inter({
   subsets: ['latin'], // Optional
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({children,}: { children: React.ReactNode}) {
- 
+
      const headersObj =  await headers();
         const cookies = headersObj.get('cookie')
   return (

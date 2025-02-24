@@ -10,10 +10,10 @@ export default function StakingCard() {
     <div>
        <Box sx={{ marginTop: "1rem" }}>
           <Grid2 container spacing={2}>
-            <Grid2 size={{ xs: 12, md: 8 }}>
+            <Grid2 data-aos="fade-right" size={{ xs: 12, md: 8 }}>
               <StakingTabCard />
             </Grid2>
-            <Grid2 size={{ xs: 12, md: 4 }}>
+            <Grid2 data-aos="fade-left" size={{ xs: 12, md: 4 }}>
               <Referral />
             </Grid2>
           </Grid2>

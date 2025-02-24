@@ -34,7 +34,7 @@ export default function EarningDashboard() {
 
 <Grid2 container spacing={2}>
             {BoxList.map((item, index) => (
-              <Grid2 key={index} size={{ xs: 12, md: 4, lg: 3 }}>
+              <Grid2  data-aos="fade-up" key={index} size={{ xs: 12, md: 4, lg: 3 }}>
 
                 <CommonCard item={item} />
                

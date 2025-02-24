@@ -2,11 +2,9 @@
 import React, { useState } from 'react';
 import NewsletterForm from '../ui/NewsletterForm';
 
-interface NewsletterProps {
-  // Optional props for customization
-}
 
-const NewsLetter: React.FC<NewsletterProps> = () => {
+
+const NewsLetter = ({id}:{id:string}) => {
   const [email, setEmail] = useState('');
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -23,8 +21,8 @@ const NewsLetter: React.FC<NewsletterProps> = () => {
   };
 
   return (
-    <section className="text-left sm:text-center  mt-10">
-    <h1 className="text-[40px] md:text-[60px] font-[700] mb-4 leading-tight">
+    <section id={id} className="text-left sm:text-center  mt-10">
+    <h1 className="text-[30px] md:text-[60px] font-[700] mb-4 leading-tight">
       Subscribe to our Newsletter
     </h1>
     <p className="text-[18px] md:text-[20px] font-[400] text-white  mx-auto mb-8">

@@ -115,7 +115,7 @@ value:"direct"
             </TableHead>
             <TableBody>
               {mockData.map((row, index) => (
-                <TableRow key={index}>
+                <TableRow   data-aos="fade-up" key={index}>
                   <TableCell>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       {row.from}

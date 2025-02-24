@@ -2,11 +2,11 @@ export const NAV_LINKS = [
    
     {
         name: "About",
-        href: "#"
+        href: "/#about"
     },
     {
         name: "HOWTOBUY",
-        href: "#"
+        href: "/#buy"
     },
     {
         name: "FEATURES",
@@ -14,15 +14,15 @@ export const NAV_LINKS = [
     },
     {
         name: "TOKENOMICS",
-        href: "#"
+        href: "/#tokenomics"
     },
     {
         name: "ROADMAP",
-        href: "#"
+        href: "/#roadmap"
     },
     {
         name: "FAQS",
-        href: "#"
+        href: "/#faq"
     },
     {
         name: "GIVEWAY",

@@ -6,10 +6,10 @@ import r1 from "../../../public/images/dashboard/r1.svg";
 const ReferralList = [
   { id: 1, Name: "Your Referrals", Data: "0.00", Img: r1 },
   { id: 2, Name: "Your referral Earnings", Data: "0.00", Img: r1 },
-  { id: 3, Name: "Your left side earnings", Data: "0.00", Img: r1 },
-  { id: 4, Name: "Your right side earnings", Data: "0.00", Img: r1 },
-  { id: 5, Name: "Your self earning", Data: "0.00", Img: r1 },
-  { id: 6, Name: "Your eligible rewards", Data: "0.00", Img: r1 },
+  // { id: 3, Name: "Your left side earnings", Data: "0.00", Img: r1 },
+  // { id: 4, Name: "Your right side earnings", Data: "0.00", Img: r1 },
+  // { id: 5, Name: "Your self earning", Data: "0.00", Img: r1 },
+  // { id: 6, Name: "Your eligible rewards", Data: "0.00", Img: r1 },
 ];
 
 const ReferralContainer = styled(Box)({

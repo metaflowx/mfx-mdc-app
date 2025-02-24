@@ -51,7 +51,7 @@ export default function ReferralDashbaord() {
       <Grid2 container spacing={2}>
         {dataList.map((data, index) => {
           return (
-            <Grid2 key={index} size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
+            <Grid2   data-aos="fade-up" key={index} size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
               <Card>
                 {data.nestedData.map((item) => {
                   return (

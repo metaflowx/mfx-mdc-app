@@ -52,7 +52,7 @@ export default function Counter({
             }}
             className="rounded-[8px]"
           >
-            <div className="bg-[#1A1A1A] px-6 py-3 rounded-[8px] text-center min-w-[100px]">
+            <div data-aos="fade-up" className="bg-[#1A1A1A] hover:bg-[#101012] px-6 py-3 rounded-[8px] text-center min-w-[100px]">
               <h2 className="text-[30px] md:text-[60px] font-[700] text-white leading-normal">
                 {time.value}
               </h2>

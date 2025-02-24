@@ -59,7 +59,7 @@ export default function SocialLinks() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={social.icon} className="h-[30px] w-[30px]" />
+          <img data-aos="fade-right" src={social.icon} className="h-[30px] w-[30px]" />
          
         </a>
       ))}

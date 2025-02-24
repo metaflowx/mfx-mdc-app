@@ -1,10 +1,15 @@
+"use client"
 import { Card } from '@/components/ui/card'
 import TeamRewardTable from '@/components/ui/CommonTable'
 import EarningDashboard from '@/ui/earning/EarningDashboard'
 import { Box } from '@mui/material'
-import React from 'react'
+import Aos from 'aos'
+import React, { useEffect } from 'react'
 
 export default function page() {
+    useEffect(() => {
+           Aos.init({ duration: 1000, once: true });
+         }, []);
   return (
     <div>
 

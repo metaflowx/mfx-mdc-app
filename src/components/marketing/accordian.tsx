@@ -7,7 +7,7 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 
-const FAQContactSection = () => {
+const FAQContactSection = ({id}:{id:string}) => {
   // State to keep track of the open accordion item
   const [openItem, setOpenItem] = useState(null);
 
@@ -16,10 +16,10 @@ const FAQContactSection = () => {
   };
 
   return (
-    <div className=" text-white py-16 ">
+    <div id={id} className=" text-white py-0 md:py-16 ">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <h1 className="text-[60px]  font-[700] text-left sm:text-center mb-12">
+        <h1 className="text-[30px] md:text-[60px]  font-[700] text-left sm:text-center mb-12">
           FAQs
         </h1>
 
