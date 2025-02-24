@@ -13,36 +13,18 @@ export default function ReferralDashbaord() {
           value: "0.00",
           logo: "/referral/2.png",
         },
-        {
-          title: "YOUR REFERRAL EARNINGS",
-          value: "0.00",
-          logo: "/referral/2.png",
-        },
-        {
-          title: "YOUR left side EARNINGS",
-          value: "0.00",
-          logo: "/referral/2.png",
-        },
+        
       ],
     },
     {
       title: "Two",
       nestedData: [
         {
-          title: "YOUR right side earnings",
+          title: "YOUR REFERRAL EARNINGS",
           value: "0.00",
-          logo: "/referral/1.png",
+          logo: "/referral/2.png",
         },
-        {
-          title: "YOUR self EARNINGS",
-          value: "0.00",
-          logo: "/referral/3.png",
-        },
-        {
-          title: "YOUR eligible rewards",
-          value: "0.00",
-          logo: "/referral/4.png",
-        },
+        
       ],
     },
   ];
