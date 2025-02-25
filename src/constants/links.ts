@@ -26,7 +26,7 @@ export const NAV_LINKS = [
     },
     {
         name: "GIVEWAY",
-        href: "#"
+         href: "/giveway"
     },
 ];
 export const NAV_LINKS1 = [
@@ -40,7 +40,7 @@ export const NAV_LINKS1 = [
     },
     {
         name: "GIVEWAY",
-        href: "#"
+        href: "/giveway"
     },
    
 ];
