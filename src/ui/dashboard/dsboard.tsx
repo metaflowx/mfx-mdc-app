@@ -6,6 +6,7 @@ import Referral from "./referral";
 import BuyTab from "./buyTab";
 import RefBottom from "../shared/refBottom";
 import Dsfooter from "../shared/dsfooter";
+import PurchaseHistory from "./PurchaseHistory";
 
 const MainDiv = styled(Box)(({ theme }) => ({
   margin: "3rem 30px 20px 30px",
@@ -80,7 +81,7 @@ const Dsboard = () => {
           </Grid>
         </StepTwo>
 
-        <Box sx={{ marginTop: "1rem" }}>
+        <Box sx={{ marginTop: "1rem",marginBottom:"20px" }}>
           <Grid container spacing={2}>
             <Grid data-aos="fade-left" size={{ xs: 12, md: 8 }}>
               <BuyTab />
@@ -90,6 +91,8 @@ const Dsboard = () => {
             </Grid>
           </Grid>
         </Box>
+
+        <PurchaseHistory />
 
         <RefBottom />
       

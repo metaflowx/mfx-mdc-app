@@ -122,6 +122,8 @@ const ReferralTab = () => {
               label={token.label}
               {...a11yProps(index)}
               sx={{
+                display:"flex",
+                flexDirection:"row",
                 textTransform: "capitalize",
                 color: value === index ? "#fff !important" : "#fff",
                 background: value === index
@@ -132,7 +134,7 @@ const ReferralTab = () => {
                 minWidth: "100px",
                 border: value === index ? "1px solid #1AB3E5" : "1px solid #1D1D20",
                 fontWeight: 600,
-                display: "flex",
+              
                 alignItems: "center",
                 gap: "8px",
                 transition: "all 0.3s ease",
@@ -153,7 +155,7 @@ const ReferralTab = () => {
               value={buyInput}
               onChange={(e) => setBuyInput(e.target.value)}
               fullWidth
-              placeholder="Enter Amount in RAMA"
+              placeholder="Enter Amount in MDC"
               type="number"
               sx={{
                 flex: 1,

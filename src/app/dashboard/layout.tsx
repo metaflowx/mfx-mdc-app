@@ -16,7 +16,7 @@ const prompt = Inter({
 });
 export const metadata: Metadata = {
   title: 'MDC Dashboard',
-  description: 'MDC ICO Dashboard',
+ 
 };
 
 export default async function RootLayout({children,}: { children: React.ReactNode}) {
