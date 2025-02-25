@@ -155,7 +155,7 @@ const ReferralTab = () => {
               value={buyInput}
               onChange={(e) => setBuyInput(e.target.value)}
               fullWidth
-              placeholder="Enter Amount in RAMA"
+              placeholder="Enter Amount in MDC"
               type="number"
               sx={{
                 flex: 1,
