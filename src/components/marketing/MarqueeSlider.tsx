@@ -61,16 +61,16 @@ const MarqueeSlider = () => {
     
     className="block sm:hidden relative w-full overflow-hidden  py-4 mt-[50px] md:mt-[10px]">
       <motion.div
-      style={{
-        background:"url(/images/slider/slider.svg)",
-        backgroundSize: "cover",
-      backgroundRepeat:"no-repeat",
-      backgroundPosition: "center",
-      transform:"translateX(0%)"
-      // padding: "130px 0px"
+      // style={{
+      //   background:"url(/images/slider/slider.svg)",
+      //   backgroundSize: "cover",
+      // backgroundRepeat:"no-repeat",
+      // backgroundPosition: "center",
+      // transform:"translateX(0%)"
+    
   
   
-      }}
+      // }}
         className="flex"
         animate={{ x: ["100%", "-100%"] }}
         transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
