@@ -30,7 +30,7 @@ const HowToBuySection = ({id}:{id:string}) => {
   return (
     <Box id={id} component={'section'} className="py-1  container mx-auto mt-[0px] px-4 ">
       <Box>
-        <Typography data-aos="fade-up" variant="h2" className="text-left md:text-center text-[30px] md:text-[60px] font-[700] mb-5">How to buy Token?</Typography>
+        <Typography data-aos="fade-up" variant="h2" className="text-left md:text-center text-[20px] sm:text-[60px] font-[700] mb-5">How to buy Token?</Typography>
       </Box>
       <div   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-10 ">
         {steps.map((item, index) => {
