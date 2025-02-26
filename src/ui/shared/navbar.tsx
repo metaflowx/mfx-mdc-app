@@ -4,29 +4,7 @@ import Link from 'next/link'
 import { Box, styled } from '@mui/material'
 import { usePathname } from 'next/navigation';
 
-const ListBox = styled('ul')(({ theme }) => ({
-    padding: 0,
-    listStyle: 'none',
-    display: 'flex',
-    gap: '1rem',
-    '@media(max-width : 900px)': {
-        overflowX: 'scroll',
-        width: '100%'
-    }
-}));
-
-const ListItem = styled('li')(({ theme }) => ({
-    'a': {
-        padding: '12px 16px',
-        display: 'inline-block',
-        color: theme.palette.primary.contrastText,
-        textDecoration: 'none',
-        borderRadius: '6px',
-        width: 'max-content'
-    }
-}));
-
-const NavbarList = [
+export const NavbarList = [
     {
         id: 1,
         Name: "Dashboard",
@@ -68,6 +46,30 @@ const NavbarList = [
         Redius: "30px"
     }
 ];
+
+const ListBox = styled('ul')(({ theme }) => ({
+    padding: 0,
+    listStyle: 'none',
+    display: 'flex',
+    gap: '1rem',
+    '@media(max-width : 900px)': {
+        overflowX: 'scroll',
+        width: '100%'
+    }
+}));
+
+const ListItem = styled('li')(({ theme }) => ({
+    'a': {
+        padding: '12px 16px',
+        display: 'inline-block',
+        color: theme.palette.primary.contrastText,
+        textDecoration: 'none',
+        borderRadius: '6px',
+        width: 'max-content'
+    }
+}));
+
+
 
 const Navbar = () => {
     const pathname = usePathname();

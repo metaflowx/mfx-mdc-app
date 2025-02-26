@@ -15,7 +15,7 @@ const Navbar = () => {
   const { open, close } = useAppKit();
   const { address, isConnected } = useAppKitAccount();
   return (
-    <header className="sticky top-0 w-full  bg-transparent backdrop-blur-[10px] z-50">
+    <header className="sticky top-3 sm:top-0 w-full  bg-transparent backdrop-blur-[10px] z-50">
       <Wrapper className="h-full">
         <div className="flex items-center justify-between h-full">
           <div className="flex items-center sm:mt-1 mt-0">
@@ -52,7 +52,7 @@ const Navbar = () => {
             <CommonButton
               onClick={async () => open()}
               title="Connect Wallet"
-              width="214px"
+              width="214px "
             />
           )}
 

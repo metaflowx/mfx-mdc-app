@@ -5,9 +5,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { NAV_LINKS } from "@/constants";
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import CommonButton from "../ui/CommonButton";
+
 
 const MobileMenu = () => {
+     
     return (
         <Sheet>
             <SheetTrigger asChild className="xl:hidden">
@@ -29,11 +30,7 @@ const MobileMenu = () => {
                             {link.name}
                         </Link>
                     ))}
-                    <div className="pt-4 mt-4 border-t border-border">
-                        <Link href="#" >
-                           <CommonButton title="Connect Wallet" width="214px"  />
-                        </Link>
-                    </div>
+                   
                 </nav>
             </SheetContent>
         </Sheet>

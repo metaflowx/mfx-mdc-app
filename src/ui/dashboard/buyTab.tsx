@@ -9,6 +9,7 @@ import {
   Button,
   InputBase,
   styled,
+  Grid2,
 } from "@mui/material";
 import Image from "next/image";
 import usdt from "../../../public/images/dashboard/usdt.svg";
@@ -22,6 +23,27 @@ const tokens = [
   { label: "USDC", icon: usdc },
   { label: "BNB", icon: bnb },
   { label: "ETH", icon: eth },
+];
+
+const tokensList = [
+  {
+    label: "Package A",
+    title: "10% APR",
+    des: "Withdraw period monthly",
+    des1: "12 Months Lockup",
+  },
+  {
+    label: "Package B",
+    title: "18% APR",
+    des: "Withdraw period monthly",
+    des1: "18 Months Lockup",
+  },
+  {
+    label: "Package C",
+    title: "24% APR",
+    des: "Withdraw period monthly",
+    des1: "24 Months Lockup",
+  },
 ];
 
 interface TabPanelProps {
@@ -81,7 +103,32 @@ const GradientButton = styled(Button)({
 
 const ReferralTab = () => {
   const [value, setValue] = useState(0);
+  const [value1, setValue1] = useState(0);
+
+  
   const [buyInput, setBuyInput] = useState("");
+
+    const TabPanel = ({
+      children,
+      value,
+      index,
+    }: {
+      children: any;
+      value: any;
+      index: any;
+    }) => {
+      return (
+        <Box
+          role="tabpanel"
+          // hidden={value !== index}
+          id={`tabpanel-${index}`}
+          aria-labelledby={`tab-${index}`}
+          sx={{ px: 2, color: "#fff",pb:2, borderRadius: "8px", mt: 2 }}
+        >
+          <Box>{children}</Box>
+        </Box>
+      );
+    };
 
   return (
     <StyledBox>
@@ -147,6 +194,55 @@ const ReferralTab = () => {
             />
           ))}
         </Tabs>
+
+        <Box sx={{ width: "100%" }} mt={3}>
+          <Grid2 container spacing={2}>
+            {tokensList.map((token, index) => (
+              <Grid2
+                onClick={() => setValue1(index)}
+                size={{ xs: 12,sm:4 }}
+                sx={{
+                  border:
+                    value1 === index ? "1px solid #1AB3E5" : "1px solid #1D1D20",
+                  background: "#101012",
+                  borderRadius: "8px",
+                  textAlign: "center",
+                  cursor:"pointer",
+                  "&:hover": {
+                    background: value === index ? "#101012" : "#19191C",
+                  },
+                }}
+              >
+                <TabPanel key={index} value={value} index={index}>
+                  <Box
+                    sx={{
+                      background: "#000000",
+                      borderRadius: "6px",
+                      height: "40px",
+                    }}
+                    className="displayCenter"
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ color: "#1AB3E5", fontWeight: 700,fontSize:"17px" }}
+                    >
+                      {token.label}
+                    </Typography>
+                  </Box>
+
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#fff", fontWeight: 700,fontSize:"16px" ,pt:2}}
+                  >
+                    {token.title}
+                  </Typography>
+                  <Typography   sx={{ color: "#fff", fontWeight: 400,fontSize:"16px"}} variant="body1">{token.des}</Typography>
+                  <Typography sx={{ color: "#fff", fontWeight: 400,fontSize:"16px"}} variant="body1">{token.des1}</Typography>
+                </TabPanel>
+              </Grid2>
+            ))}
+          </Grid2>
+        </Box>
 
         {/* Buy Input */}
         <CustomTabPanel value={value} index={value}>

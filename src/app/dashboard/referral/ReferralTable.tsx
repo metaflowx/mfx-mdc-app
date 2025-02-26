@@ -68,7 +68,7 @@ value:"direct"
               <TableRow>
                 <TableCell>From</TableCell>
                 <TableCell>Level</TableCell>
-                <TableCell>
+                <TableCell sx={{whiteSpace:"pre"}}>
                   DR
                   <Tooltip title="Direct Referral">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -76,7 +76,7 @@ value:"direct"
                     </IconButton>
                   </Tooltip>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{whiteSpace:"pre"}}>
                   RP
                   <Tooltip title="Reward Points">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -85,7 +85,7 @@ value:"direct"
                   </Tooltip>
                 </TableCell>
                 <TableCell>Reward</TableCell>
-                <TableCell>
+                <TableCell sx={{whiteSpace:"pre"}}>
                   TCR
                   <Tooltip title="Total Claimed Reward">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -93,7 +93,7 @@ value:"direct"
                     </IconButton>
                   </Tooltip>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{whiteSpace:"pre"}}>
                   RR
                   <Tooltip title="Remaining Reward">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -101,7 +101,7 @@ value:"direct"
                     </IconButton>
                   </Tooltip>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{whiteSpace:"pre"}}>
                   ST
                   <Tooltip title="Staking Time">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -109,7 +109,7 @@ value:"direct"
                     </IconButton>
                   </Tooltip>
                 </TableCell>
-                <TableCell>Last Claim</TableCell>
+                <TableCell sx={{whiteSpace:"pre"}}>Last Claim</TableCell>
               
               </TableRow>
             </TableHead>
@@ -136,13 +136,13 @@ value:"direct"
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell>{row.dr} MDC</TableCell>
-                  <TableCell>{row.rp}</TableCell>
-                  <TableCell>{row.reward}</TableCell>
-                  <TableCell>{row.tcr}</TableCell>
-                  <TableCell>{row.rr}</TableCell>
-                  <TableCell>{row.st}</TableCell>
-                  <TableCell>{row.lastClaim}</TableCell>
+                  <TableCell sx={{whiteSpace:"pre"}}>{row.dr} MDC</TableCell>
+                  <TableCell sx={{whiteSpace:"pre"}}>{row.rp}</TableCell>
+                  <TableCell sx={{whiteSpace:"pre"}}>{row.reward}</TableCell>
+                  <TableCell sx={{whiteSpace:"pre"}}>{row.tcr}</TableCell>
+                  <TableCell sx={{whiteSpace:"pre"}}>{row.rr}</TableCell>
+                  <TableCell sx={{whiteSpace:"pre"}}>{row.st}</TableCell>
+                  <TableCell sx={{whiteSpace:"pre"}}>{row.lastClaim}</TableCell>
                 
                 </TableRow>
               ))}

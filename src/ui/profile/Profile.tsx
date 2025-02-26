@@ -22,7 +22,7 @@ export default function Profile() {
                 style={{ width: "60px", height: "60px" }}
               />
               <Typography  data-aos="fade-right" pl={2} sx={{display:"flex",alignItems:"center",color:"white",fontSize:"24px",fontWeight:400}} >
-              0x39deb3.....e2ac64rd  <Copy />
+              0x39deb3.....e2a<Copy />
               </Typography>
                 </Box>
              
