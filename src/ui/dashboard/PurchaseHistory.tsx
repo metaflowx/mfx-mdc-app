@@ -58,7 +58,7 @@ export default function PurchaseHistory() {
               <TableHead>
                 <TableRow>
                   <TableCell>User</TableCell>
-                  <TableCell>Date & Time</TableCell>
+                  <TableCell sx={{whiteSpace:"pre"}} >Date & Time</TableCell>
                   <TableCell>
                   Coin
                     

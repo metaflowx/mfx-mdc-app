@@ -200,7 +200,7 @@ const ReferralTab = () => {
             {tokensList.map((token, index) => (
               <Grid2
                 onClick={() => setValue1(index)}
-                size={{ xs: 4 }}
+                size={{ xs: 12,sm:4 }}
                 sx={{
                   border:
                     value1 === index ? "1px solid #1AB3E5" : "1px solid #1D1D20",
