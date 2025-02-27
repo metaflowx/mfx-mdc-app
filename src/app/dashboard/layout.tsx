@@ -33,7 +33,7 @@ export default async function RootLayout({children,}: { children: React.ReactNod
             <Topheader />
             <div className='dsboard w-full'>
 
-            <Container maxWidth="xl" className="flex-1  py-8 pt-[150px]  overflow-y-auto min-h-screen ">
+            <Container maxWidth="xl" className="flex-1  py-8 pt-[100px] sm:pt-[150px]  overflow-y-auto min-h-screen ">
               {children}
             
             </Container>

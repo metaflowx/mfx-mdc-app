@@ -238,13 +238,13 @@ export default function Hero() {
                         <CommonButton
                           onClick={() => router.push("/dashboard")}
                           title="Dashboard"
-                          width="100%"
+                          width="w-full"
                         />
                       ) : (
                         <CommonButton
                           onClick={async () => open()}
                           title="Connect Wallet"
-                         width="100%"
+                         width="w-full"
                         />
                       )}
 

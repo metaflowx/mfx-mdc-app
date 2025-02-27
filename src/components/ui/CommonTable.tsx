@@ -65,8 +65,8 @@ value:"self"
   };
 
   return (
-    <Box sx={{ p: 4, color: "white" }}>
-      <Box sx={{ mb: 3 }} className="displayCenter">
+    <Box sx={{ p: {xs:1, sm:4}, color: "white" }}>
+      <Box sx={{ mb: 3,mt:2 }} className="displayCenter">
         <CommonTabButton setActiveTab={setActiveTab} activeTab={activeTab} tabList={tabList} />
       </Box>
       <Box
@@ -77,9 +77,9 @@ value:"self"
           alignItems: "center",
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+        <h4 className="text-white text-[18px] sm:text-[30px] font-[] " >
           {activeTab === "self" ? "Self Earning Reward" : "Team Reward"}
-        </Typography>
+        </h4>
         {activeTab === "team" && (
           <ClaimAllButton>Claim All Reward</ClaimAllButton>
         )}
@@ -92,7 +92,7 @@ value:"self"
               <TableRow>
                 <TableCell>From</TableCell>
                 <TableCell>Level</TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace:"pre"}} >
                   DR
                   <Tooltip title="Direct Referral">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -100,7 +100,7 @@ value:"self"
                     </IconButton>
                   </Tooltip>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace:"pre"}}>
                   RP
                   <Tooltip title="Reward Points">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -109,7 +109,7 @@ value:"self"
                   </Tooltip>
                 </TableCell>
                 <TableCell>Reward</TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace:"pre"}}>
                   TCR
                   <Tooltip title="Total Claimed Reward">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -117,7 +117,7 @@ value:"self"
                     </IconButton>
                   </Tooltip>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace:"pre"}}>
                   RR
                   <Tooltip title="Remaining Reward">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -125,7 +125,7 @@ value:"self"
                     </IconButton>
                   </Tooltip>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{whiteSpace:"pre"}}>
                   ST
                   <Tooltip title="Staking Time">
                     <IconButton size="small" sx={{ color: "white", ml: 1 }}>
@@ -133,7 +133,7 @@ value:"self"
                     </IconButton>
                   </Tooltip>
                 </TableCell>
-                <TableCell>Last Claim</TableCell>
+                <TableCell style={{whiteSpace:"pre"}}>Last Claim</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -166,12 +166,12 @@ value:"self"
                   <TableCell>{row.tcr}</TableCell>
                   <TableCell>{row.rr}</TableCell>
                   <TableCell>{row.st}</TableCell>
-                  <TableCell>{row.lastClaim}</TableCell>
+                  <TableCell style={{whiteSpace:"pre"}}>{row.lastClaim}</TableCell>
                   <TableCell align="right">
                     <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                      <CommonButton title="Claim" width="83px" />
+                      <CommonButton title="Claim" width="w-[83px]" />
                       &nbsp;
-                      <CommonButton title="Unstake" width="104px" />
+                      <CommonButton title="Unstake" width="w-[104px]" />
                     </Box>
                   </TableCell>
                 </TableRow>

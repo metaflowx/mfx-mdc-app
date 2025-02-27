@@ -1,9 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Bitcoin, Gem, Box, Triangle } from "lucide-react";
-import Image from "next/image";
-import CommonButton from "../ui/CommonButton";
+
 import ButtonGradient from "../ui/ButtonGradient";
 
 export default function AboutSection({id}:{id:string}) {

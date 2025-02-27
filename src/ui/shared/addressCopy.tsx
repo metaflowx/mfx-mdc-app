@@ -27,7 +27,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
     fontWeight: 500,
     fontSize:'17px !important',
     '@media(max-width : 600px)':{
-            fontSize:'13px !important',
+            fontSize:'12px !important',
         }
 }));
 
@@ -47,12 +47,12 @@ const AddressCopy = ({ text,textColor, addresstext, hrefLink  }: props) => {
     return (
         <>
             <StyledBox>
-                <StyledLink sx={{color: textColor}} href={hrefLink} target="_black">
+                <StyledLink sx={{color: textColor,}} href={hrefLink} target="_black">
                     {addresstext}
                 </StyledLink>
 
                 <Box onClick={handleCopy}>
-                    <ContentCopyIcon sx={{ color: textColor, width: 18 }} />
+                    <ContentCopyIcon sx={{ color: "#fff", width: 18 }} />
                 </Box>
                 <Snackbar
 

@@ -9,7 +9,7 @@ export default function CommonTabButton({activeTab,setActiveTab,tabList}:{active
         color: active ? '#fff' : '#fff',
         background: active ? 'linear-gradient(90deg, #1AB3E5 0%, #034F89 50%, #1AB3E5 100%);' : 'transparent',
         borderRadius: '20px',
-        padding: '8px 24px',
+        padding: '8px 20px',
         border:active? "1px solid #1AB3E5":"none",
         boxShadow: "0px 4px 4px 0px #00000040",
 
@@ -18,7 +18,7 @@ export default function CommonTabButton({activeTab,setActiveTab,tabList}:{active
         },
       }));
   return (
-    <Box >
+    <Box width="100%" display="flex" justifyContent="center" >
         {tabList.map((item:any)=>{
             return(
 
@@ -32,19 +32,7 @@ export default function CommonTabButton({activeTab,setActiveTab,tabList}:{active
 
             )
         })}
-        {/* <TabButton
-          active={activeTab === 'self'}
-          onClick={() => setActiveTab('self')}
-          sx={{ mr: 1 }}
-        >
-          Self Earning
-        </TabButton>
-        <TabButton
-          active={activeTab === 'team'}
-          onClick={() => setActiveTab('team')}
-        >
-          Team Reward
-        </TabButton> */}
+        
       </Box>
   )
 }

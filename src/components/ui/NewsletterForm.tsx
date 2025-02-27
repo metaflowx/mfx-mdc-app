@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import CommonButton from "./CommonButton";
+
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("");

@@ -21,14 +21,14 @@ export const NavbarList = [
         Border: "1px solid #1ab3e5",
         Redius: "30px"
     },
-    {
-        id: 3,
-        Name: "Staking",
-        Url: "/dashboard/staking",
-        Gradient: "linear-gradient(90deg, #1ab3e5 0%, #034f89 50%, #1ab3e5 100%)",
-        Border: "1px solid #1ab3e5",
-        Redius: "30px"
-    },
+    // {
+    //     id: 3,
+    //     Name: "Staking",
+    //     Url: "/dashboard/staking",
+    //     Gradient: "linear-gradient(90deg, #1ab3e5 0%, #034f89 50%, #1ab3e5 100%)",
+    //     Border: "1px solid #1ab3e5",
+    //     Redius: "30px"
+    // },
     {
         id: 4,
         Name: "Referral",
