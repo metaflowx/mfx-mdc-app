@@ -17,7 +17,7 @@ const MobileMenuDashboard = () => {
     <Sheet>
       <SheetTrigger asChild className="xl:hidden">
         <Button variant="ghost" size="icon" className="xl:hidden">
-          <Menu className="h-6 w-6" color="#fff" />
+          <Menu style={{height:"35px",width:"35px"}} color="#fff" />
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:w-[300px] pt-12">

@@ -36,7 +36,7 @@ export default function PurchaseHistory() {
   };
   return (
     <Card  >
-      <Box sx={{ p: 4, color: "white" }}>
+      <Box sx={{ p: {xs:1, sm:4}, color: "white" }}>
        
 
         <Box
@@ -47,9 +47,9 @@ export default function PurchaseHistory() {
             alignItems: "center",
           }}
         >
-          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+          <h4 className="text-white text-[18px] sm:text-[28px] font-[700] " >
             Contributors History
-          </Typography>
+          </h4>
         </Box>
 
         <Card className="rounded-0">

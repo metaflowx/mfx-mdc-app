@@ -46,15 +46,18 @@ const Navbar = () => {
             <CommonButton
               onClick={() => router.push("/dashboard")}
               title="Dashboard"
-              width="150px"
+              
+                width="w-[120px] sm:w-[150px]  "
+              height="h-[40px]"
             />
           ) : (
             <CommonButton
               onClick={async () => open()}
               title="Connect Wallet"
-              width="214px "
+              width="w-[180px] sm:w-[214px]  "
+              height="h-[40px]"
             />
-          )}
+          )}&nbsp;
 
           <MobileMenu />
           </div>

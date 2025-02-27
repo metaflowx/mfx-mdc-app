@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CommonButton({title,width, onClick}:{title:string,width?:string, onClick?:any}) {
+export default function CommonButton({title,width, onClick,height}:{title:string,width?:string, onClick?:any,height?:string}) {
   return (
    <button 
    onClick={() => {
@@ -11,8 +11,9 @@ export default function CommonButton({title,width, onClick}:{title:string,width?
    style={{
     background: "linear-gradient(90deg, #1AB3E5 0%, #034F89 50%, #1AB3E5 100%)",
     border: "1px solid #1AB3E5"
-    ,width:width ? width :"100%"
-   }} className='rounded-[40px] hover:bg-[#1AB3E5] transition-all duration-300 ease-in-out hover:scale-105 h-[50px] text-center text-[20px] flex justify-center items-center' >
+    ,
+    // width:width ? width :"100%"
+   }} className={`${width ? width :"w-full"} rounded-[40px] hover:bg-[#1AB3E5] transition-all duration-300 ease-in-out hover:scale-105 ${height? height:"h-[50px]"}  text-center text-[20px] flex justify-center items-center`} >
     <p >
     {title}
     </p>

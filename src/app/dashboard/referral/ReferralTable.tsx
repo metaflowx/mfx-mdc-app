@@ -1,6 +1,5 @@
 "use client";
 import { Card } from '@/components/ui/card';
-import CommonButton from '@/components/ui/CommonButton';
 import CommonTabButton from '@/components/ui/CommonTabButton';
 import { StyledTableContainer } from '@/components/ui/StyledTableContainer';
 import { Box, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
@@ -41,7 +40,7 @@ value:"direct"
    
 
     <Card>
-         <Box sx={{ p: 4, color: "white" }}>
+         <Box sx={{  p: {xs:1, sm:4}, color: "white" }}>
 
 <Box sx={{ mb: 3 }} className="displayCenter">
         <CommonTabButton tabList={tabList} setActiveTab={setActiveTab} activeTab={activeTab} />
@@ -55,9 +54,9 @@ value:"direct"
           alignItems: "center",
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+        <h4 className="text-white text-[18px] sm:text-[28px] font-[700] ">
           {activeTab === "direct" ? "Direct Referral" : "Upline Referral"}
-        </Typography>
+        </h4>
        
       </Box>
 

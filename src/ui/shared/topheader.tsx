@@ -35,7 +35,8 @@ const Topheader = () => {
 <MobileMenuDashboard />
 
         </div>
-        <div className="hidden sm:block w-full" >
+       
+        <div className="hidden sm:flex items-center" >
 
         <Navbar />
         {address ? (

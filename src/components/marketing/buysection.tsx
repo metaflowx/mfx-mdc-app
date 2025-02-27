@@ -1,5 +1,4 @@
 import { Box, Typography } from "@mui/material";
-import CommonButton from "../ui/CommonButton";
 import Image from "next/image";
 
 const HowToBuySection = ({id}:{id:string}) => {

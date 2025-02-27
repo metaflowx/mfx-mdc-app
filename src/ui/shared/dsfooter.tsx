@@ -48,7 +48,7 @@ const Dsfooter = () => {
                 }
             }}>
                 <Box>
-                    <Typography color={'#fff'}>Copyright © 2025 mdccoin.com. All rights reserved.</Typography>
+                    <Typography color={'#fff'} style={{textAlign:"center"}} >Copyright © 2025 mdccoin.com. All rights reserved.</Typography>
                 </Box>
                 <Box component={'ul'} sx={{
                     margin: 0, padding: 0, listStyle: 'none',
