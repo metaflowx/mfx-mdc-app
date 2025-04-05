@@ -6,7 +6,7 @@ import ButtonGradient from "../ui/ButtonGradient";
 import Counter from "./counter/Counter";
 import { iocConfig, tokenConfig } from "@/constants/contract";
 import { useAccount, useReadContracts } from "wagmi";
-import { useAppKitNetwork } from "@reown/appkit/react";
+import { useAppKit, useAppKitNetwork } from "@reown/appkit/react";
 import {
   Address,
   erc20Abi,
@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 import "aos/dist/aos.css";
 export default function Hero() {
+    const { open, close } = useAppKit();
    const router = useRouter();
   const { address } = useAccount();
   const { chainId } = useAppKitNetwork();
