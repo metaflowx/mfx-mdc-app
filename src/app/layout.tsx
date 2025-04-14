@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { subheading } from "@/constants/fonts";
 import {Inter } from 'next/font/google';
 import 'animate.css';
+import { ToastContainer } from "react-toastify";
 
 // Importing Prompt font
 const prompt = Inter({
@@ -28,6 +29,7 @@ export default function RootLayout({
                     
                 )}
             >
+                  <ToastContainer />
                 <Toaster richColors theme="dark" position="top-right" />
                 {children}
             </body>

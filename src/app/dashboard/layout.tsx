@@ -9,6 +9,7 @@ import ContextProvider from '../context';
 import Dsfooter from '@/ui/shared/dsfooter';
 import { Container } from '@mui/material';
 import "aos/dist/aos.css";
+import { ToastContainer } from 'react-toastify';
 
 const prompt = Inter({
   subsets: ['latin'], // Optional
@@ -30,6 +31,7 @@ export default async function RootLayout({children,}: { children: React.ReactNod
         <ContextProvider
           cookies={cookies}
         >
+           <ToastContainer />
             <Topheader />
             <div className='dsboard w-full'>
 
