@@ -41,7 +41,7 @@ const Topheader = () => {
         <Navbar />
         {address ? (
           <>
-            {/* @ts-expect-error msg */}
+
             <appkit-account-button balance="hide" />
           </>
         ) : (

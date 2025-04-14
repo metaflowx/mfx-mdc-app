@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import {
   Box,
   Tabs,
@@ -17,7 +17,30 @@ import usdc from "../../../public/images/dashboard/usdc.svg";
 import bnb from "../../../public/images/dashboard/bnb.svg";
 import eth from "../../../public/images/dashboard/eth.svg";
 import mdcicon from "../../../public/images/dashboard/mdcicon.svg";
-
+import { toast } from "react-toastify";
+import { IcoABI } from "@/app/ABI/IcoABI";
+import {
+  contractConfig,
+  ICOContractAddress,
+  iocConfig,
+  tokenConfig,
+} from "@/constants/contract";
+import { useAccount, useBalance, useBlockNumber, useReadContract, useReadContracts, useWriteContract } from "wagmi";
+import {
+  Address,
+  erc20Abi,
+  formatEther,
+  formatUnits,
+  parseEther,
+  parseUnits,
+  zeroAddress,
+} from "viem";
+import { useAppKitNetwork } from "@reown/appkit/react";
+import { extractDetailsFromError } from "@/utils/extractDetailsFromError";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import useCheckAllowance from "@/hooks/useCheckAllowance";
+import CoinSelector from "./CoinSelector";
 const tokens = [
   { label: "USDT", icon: usdt },
   { label: "USDC", icon: usdc },
@@ -102,38 +125,198 @@ const GradientButton = styled(Button)({
 });
 
 const ReferralTab = () => {
+  const { data: blockNumber } = useBlockNumber({ watch: true });
+  const { address } = useAccount();
+  const [selectedToken, setSelectedToken] = useState({
+    tokenname: "BNB",
+    id: "tether",
+    imgurl: "/images/coin-icon/usdt.png",
+    address: zeroAddress,
+  });
+  const { writeContractAsync, isPending, isSuccess, isError } =
+    useWriteContract();
+  const queryClient = useQueryClient();
+  const searchparm = useSearchParams();
+  const { chainId } = useAppKitNetwork();
   const [value, setValue] = useState(0);
+  const [isAproveERC20, setIsApprovedERC20] = useState(true);
   const [value1, setValue1] = useState(0);
 
-  
-  const [buyInput, setBuyInput] = useState("");
+  const [amount, setAmount] = useState<string>("");
+  const [referrer, setReferrer] = useState(
+    searchparm.get("ref") || zeroAddress
+  );
+  const resultOfCheckAllowance = useCheckAllowance({
+    spenderAddress: ICOContractAddress,
+    token: selectedToken.address,
+  });
 
-    const TabPanel = ({
-      children,
-      value,
-      index,
-    }: {
-      children: any;
-      value: any;
-      index: any;
-    }) => {
-      return (
-        <Box
-          role="tabpanel"
-          // hidden={value !== index}
-          id={`tabpanel-${index}`}
-          aria-labelledby={`tab-${index}`}
-          sx={{ px: 2, color: "#fff",pb:2, borderRadius: "8px", mt: 2 }}
-        >
-          <Box>{children}</Box>
-        </Box>
+  const result = useReadContracts({
+    contracts: [
+      {
+        ...iocConfig,
+        functionName: "getSaleTokenPrice",
+        args: [1],
+        chainId: Number(chainId) ?? 56,
+      },
+
+      {
+        ...iocConfig,
+        functionName: "saleType2IcoDetail",
+        args: [1],
+        chainId: Number(chainId) ?? 56,
+      },
+      {
+        ...tokenConfig,
+        functionName: "totalSupply",
+        chainId: Number(chainId) ?? 56,
+      },
+      {
+        ...iocConfig,
+        functionName: "user2SaleType2Contributor",
+        args: [address as Address, 1],
+        chainId: Number(chainId) ?? 56,
+      },
+      {
+        ...iocConfig,
+        functionName: "saleType2IcoDetail",
+        args: [1],
+        chainId: Number(chainId),
+      },
+
+      {
+        ...contractConfig,
+        functionName: "getReferrer",
+        args: [address as Address],
+        chainId: Number(chainId) ?? 56,
+      },
+    ],
+  });
+
+ useEffect(() => {
+    if (resultOfCheckAllowance && address) {
+      const price = parseFloat(amount === "" ? "0" : amount);
+      const allowance = parseFloat(
+        formatEther?.(resultOfCheckAllowance.data ?? BigInt(0))
       );
-    };
+      if (allowance >= price) {
+        setIsApprovedERC20(true);
+      } else {
+        setIsApprovedERC20(false);
+      }
+    }
+  }, [resultOfCheckAllowance, address, amount]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: resultOfCheckAllowance.queryKey,
+    });
+    queryClient.invalidateQueries({
+      queryKey: result.queryKey,
+    });
+  }, [blockNumber, queryClient, result, resultOfCheckAllowance]);
+
+
+
+ 
+
+  const handleBuy = async () => {
+    try {
+      const formattedAmount = parseUnits(amount, 18);
+      const tokenAddress = selectedToken?.address;
+      const res = await writeContractAsync({
+        address: ICOContractAddress,
+        abi: IcoABI,
+        functionName: "buy",
+        args: [
+          1,
+          tokenAddress as Address,
+          formattedAmount,
+          result?.data?.[5]?.result !== zeroAddress
+            ? (result?.data?.[5]?.result as Address)
+            : (referrer as Address),
+        ],
+        value:
+          selectedToken?.tokenname === "BNB" ? parseEther(amount) : BigInt(0),
+      });
+
+      if (res) {
+        setAmount("");
+        toast.success("Transaction completed");
+      }
+    } catch (error: any) {
+      console.log(">>>>>>>>>>>>.error", error);
+
+      toast.error(extractDetailsFromError(error.message as string) as string);
+    }
+  };
+
+  const approveToken = async () => {
+    try {
+      const formattedAmount =
+        Number?.(amount) > 0
+          ? parseEther?.(amount)
+          : parseEther?.(
+              BigInt((Number.MAX_SAFE_INTEGER ** 1.3)?.toString())?.toString()
+            );
+      const res = await writeContractAsync({
+        abi: erc20Abi,
+        address: selectedToken.address,
+        functionName: "approve",
+        args: [ICOContractAddress, formattedAmount],
+        account: address,
+      });
+      if (res) {
+        setIsApprovedERC20(true);
+        toast.success("Token approved successfully");
+      }
+    } catch (error: any) {
+      toast.error(extractDetailsFromError(error.message as string) as string);
+    }
+  };
+
+
+  const { data: Balance } = useBalance({
+    address: address,
+  });
+
+  const { data: resultOfTokenBalance } = useReadContract({
+    abi: erc20Abi,
+    address: selectedToken.address,
+    functionName: "balanceOf",
+    args: [address as Address],
+    account: address,
+    query: {
+      enabled: selectedToken.tokenname === "BNB" ? false : true,
+    },
+  });
+
+  const TabPanel = ({
+    children,
+    value,
+    index,
+  }: {
+    children: any;
+    value: any;
+    index: any;
+  }) => {
+    return (
+      <Box
+        role="tabpanel"
+        // hidden={value !== index}
+        id={`tabpanel-${index}`}
+        aria-labelledby={`tab-${index}`}
+        sx={{ px: 2, color: "#fff", pb: 2, borderRadius: "8px", mt: 2 }}
+      >
+        <Box>{children}</Box>
+      </Box>
+    );
+  };
 
   return (
     <StyledBox>
       <InnerBox>
-        <Typography variant="h4" fontWeight={700} textAlign="center" mt={2}>
+        <Typography variant="h4" color="#fff" fontWeight={700} textAlign="center" mt={2}>
           Buy MDC Coins
         </Typography>
 
@@ -147,67 +330,28 @@ const ReferralTab = () => {
           </CustomTabPanel>
         ))}
 
-        {/* Tabs */}
-        <Tabs
-          value={value}
-          onChange={(_, newValue) => setValue(newValue)}
-          variant="fullWidth"
-          sx={{
-            mt: 3,
-            "& .MuiTabs-flexContainer": { gap: "1rem" },
-            "& .MuiButtonBase-root.MuiTab-root": {
-              minHeight: "40px",
-              padding: "8px 16px",
-            },
-            "& .MuiTabs-indicator": { display: "none" },
-          }}
-        >
-          {tokens.map((token, index) => (
-            <Tab
-              key={index}
-              icon={<Image src={token.icon} alt={token.label} width={36} height={36} />}
-              label={token.label}
-              {...a11yProps(index)}
-              sx={{
-                display:"flex",
-                flexDirection:"row",
-                textTransform: "capitalize",
-                color: value === index ? "#fff !important" : "#fff",
-                background: value === index
-                  ? "linear-gradient(90deg, #1AB3E5,rgba(26, 178, 229, 0), #1AB3E5)"
-                  : "#101012",
-                borderRadius: "12px",
-                padding: "8px 16px",
-                minWidth: "100px",
-                border: value === index ? "1px solid #1AB3E5" : "1px solid #1D1D20",
-                fontWeight: 600,
-              
-                alignItems: "center",
-                gap: "8px",
-                transition: "all 0.3s ease",
-                "&:hover": {
-                  background: value === index
-                    ? "linear-gradient(90deg, #1AB3E5,rgba(26, 178, 229, 0), #1AB3E5)"
-                    : "#19191C",
-                },
-              }}
+        
+
+        <CoinSelector
+              selectedToken={selectedToken}
+              setSelectedToken={setSelectedToken}
             />
-          ))}
-        </Tabs>
 
         <Box sx={{ width: "100%" }} mt={3}>
           <Grid2 container spacing={2}>
             {tokensList.map((token, index) => (
               <Grid2
                 onClick={() => setValue1(index)}
-                size={{ xs: 12,sm:4 }}
+                size={{ xs: 12, sm: 4 }}
                 sx={{
                   border:
-                    value1 === index ? "1px solid #1AB3E5" : "1px solid #1D1D20",
+                    value1 === index
+                      ? "1px solid #1AB3E5"
+                      : "1px solid #1D1D20",
                   background: "#101012",
                   borderRadius: "8px",
                   textAlign: "center",
-                  cursor:"pointer",
+                  cursor: "pointer",
                   "&:hover": {
                     background: value === index ? "#101012" : "#19191C",
                   },
@@ -224,7 +368,11 @@ const ReferralTab = () => {
                   >
                     <Typography
                       variant="h6"
-                      sx={{ color: "#1AB3E5", fontWeight: 700,fontSize:"17px" }}
+                      sx={{
+                        color: "#1AB3E5",
+                        fontWeight: 700,
+                        fontSize: "17px",
+                      }}
                     >
                       {token.label}
                     </Typography>
@@ -232,12 +380,27 @@ const ReferralTab = () => {
 
                   <Typography
                     variant="h6"
-                    sx={{ color: "#fff", fontWeight: 700,fontSize:"16px" ,pt:2}}
+                    sx={{
+                      color: "#fff",
+                      fontWeight: 700,
+                      fontSize: "16px",
+                      pt: 2,
+                    }}
                   >
                     {token.title}
                   </Typography>
-                  <Typography   sx={{ color: "#fff", fontWeight: 400,fontSize:"16px"}} variant="body1">{token.des}</Typography>
-                  <Typography sx={{ color: "#fff", fontWeight: 400,fontSize:"16px"}} variant="body1">{token.des1}</Typography>
+                  <Typography
+                    sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
+                    variant="body1"
+                  >
+                    {token.des}
+                  </Typography>
+                  <Typography
+                    sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
+                    variant="body1"
+                  >
+                    {token.des1}
+                  </Typography>
                 </TabPanel>
               </Grid2>
             ))}
@@ -248,8 +411,8 @@ const ReferralTab = () => {
         <CustomTabPanel value={value} index={value}>
           <MaxButtonWrap>
             <InputBase
-              value={buyInput}
-              onChange={(e) => setBuyInput(e.target.value)}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
               fullWidth
               placeholder="Enter Amount in MDC"
               type="number"
@@ -258,13 +421,14 @@ const ReferralTab = () => {
                 color: "#fff",
                 padding: "0.3rem 0.5rem",
                 "& input[type=number]": { "-moz-appearance": "textfield" },
-                "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button": {
-                  "-webkit-appearance": "none",
-                  margin: 0,
-                },
+                "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
+                  {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
               }}
             />
-            <GradientButton onClick={() => setBuyInput("0")}>Max</GradientButton>
+            <GradientButton onClick={() => setAmount("0")}>Max</GradientButton>
           </MaxButtonWrap>
 
           {/* Cost & Receive Details */}
@@ -272,20 +436,37 @@ const ReferralTab = () => {
             <Box display="flex" alignItems="center" gap="10px">
               <Image src={usdt} alt="USDT" width={30} height={30} />
               <Typography>
-                COST: <Typography component="span" fontWeight={700}>$0.0600</Typography>
+                COST:{" "}
+                <Typography component="span" fontWeight={700}>
+                  $0.0600
+                </Typography>
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" gap="10px">
               <Image src={mdcicon} alt="MDC" width={30} height={30} />
               <Typography>
-                Receive: <Typography component="span" fontWeight={700}>$0.0000</Typography>
+                Receive:{" "}
+                <Typography component="span" fontWeight={700}>
+                  $0.0000
+                </Typography>
               </Typography>
             </Box>
           </Box>
 
           {/* Buy Button */}
           <Box mt={2}>
-            <GradientButton fullWidth>Buy MDC Coin</GradientButton>
+            <GradientButton
+              fullWidth
+              onClick={() => {
+                if (selectedToken?.tokenname === "BNB") {
+                  handleBuy();
+                } else {
+                  !isAproveERC20 ? approveToken() : handleBuy();
+                }
+              }}
+            >
+              Buy MDC Coin
+            </GradientButton>
           </Box>
         </CustomTabPanel>
       </InnerBox>
