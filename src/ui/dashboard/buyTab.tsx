@@ -23,6 +23,7 @@ import {
   contractConfig,
   ICOContractAddress,
   iocConfig,
+  stakeConfig,
   tokenConfig,
 } from "@/constants/contract";
 import { useAccount, useBalance, useBlockNumber, useReadContract, useReadContracts, useWriteContract } from "wagmi";
@@ -48,26 +49,26 @@ const tokens = [
   { label: "ETH", icon: eth },
 ];
 
-const tokensList = [
-  {
-    label: "Package A",
-    title: "10% APR",
-    des: "Withdraw period monthly",
-    des1: "12 Months Lockup",
-  },
-  {
-    label: "Package B",
-    title: "18% APR",
-    des: "Withdraw period monthly",
-    des1: "18 Months Lockup",
-  },
-  {
-    label: "Package C",
-    title: "24% APR",
-    des: "Withdraw period monthly",
-    des1: "24 Months Lockup",
-  },
-];
+// const tokensList = [
+//   {
+//     label: "Package A",
+//     title: "10% APR",
+//     des: "Withdraw period monthly",
+//     des1: "12 Months Lockup",
+//   },
+//   {
+//     label: "Package B",
+//     title: "18% APR",
+//     des: "Withdraw period monthly",
+//     des1: "18 Months Lockup",
+//   },
+//   {
+//     label: "Package C",
+//     title: "24% APR",
+//     des: "Withdraw period monthly",
+//     des1: "24 Months Lockup",
+//   },
+// ];
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -230,6 +231,7 @@ const ReferralTab = () => {
         functionName: "buy",
         args: [
           1,
+         BigInt(value1),
           tokenAddress as Address,
           formattedAmount,
           result?.data?.[5]?.result !== zeroAddress
@@ -291,6 +293,19 @@ const ReferralTab = () => {
     },
   });
 
+  const totalTierLenth = useReadContract({
+    ...stakeConfig,
+    functionName: "totalTierLenth",
+    chainId: Number(chainId) ?? 56,
+  });
+
+  const tokensList = useReadContract({
+    ...stakeConfig,
+    functionName: "getTierList",
+    args: [BigInt(0), BigInt(totalTierLenth?.data || 0)],
+    chainId: Number(chainId) ?? 56,
+  });
+
   const TabPanel = ({
     children,
     value,
@@ -339,7 +354,7 @@ const ReferralTab = () => {
 
         <Box sx={{ width: "100%" }} mt={3}>
           <Grid2 container spacing={2}>
-            {tokensList.map((token, index) => (
+            {tokensList?.data && tokensList.data.length  && tokensList.data?.map((token:any, index:number) => (
               <Grid2
                 onClick={() => setValue1(index)}
                 size={{ xs: 12, sm: 4 }}
@@ -374,7 +389,7 @@ const ReferralTab = () => {
                         fontSize: "17px",
                       }}
                     >
-                      {token.label}
+                      {`Package ${index===0 ? "A" : index===1 ? "B":"C"}`}
                     </Typography>
                   </Box>
 
@@ -387,19 +402,21 @@ const ReferralTab = () => {
                       pt: 2,
                     }}
                   >
-                    {token.title}
+                    {/* {token.title} */}
+                    {`${Number(token.returnInPercent) / 1e2}% APR`}
                   </Typography>
                   <Typography
                     sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
                     variant="body1"
                   >
-                    {token.des}
+                    {/* {token.des} */}
+                    Withdraw period monthly
                   </Typography>
                   <Typography
                     sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
                     variant="body1"
                   >
-                    {token.des1}
+                     {`${Number(token.lockPeriod)} Months Lockup`}
                   </Typography>
                 </TabPanel>
               </Grid2>

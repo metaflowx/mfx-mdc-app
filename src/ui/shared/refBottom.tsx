@@ -2,8 +2,23 @@
 import { Box } from "@mui/material";
 import AddressCopy from "./addressCopy";
 import Modal from "./modal";
+import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import { sortAddress } from "@/utils";
 
 const RefBottom = () => {
+   const [url, setUrl] = useState("");
+      const [url1, setUrl1] = useState("");
+     const {address}=useAccount()
+    useEffect(() => {
+         
+          
+              if (typeof window !== "undefined") {
+                setUrl(`${window.location.host}/dashboard?ref=${sortAddress(address||"")}`);
+                setUrl1(`${window.location.host}/dashboard?ref=${address}`);
+      
+              }
+            }, [address]);
   return (
     <Box
     data-aos="fade-down"
@@ -21,11 +36,11 @@ const RefBottom = () => {
       }}
     >
       <AddressCopy
-        hrefLink={`https://ico.mdccoin.com/dashboard/?ref=${"address"}`}
-        text={`https://ico.mdccoin.com/dashboard/?ref=${"address"}`}
-        addresstext={`https://ico.mdccoin.com/dashboard/?ref=${""}`}
+        hrefLink={url}
+        text={url1}
+        addresstext={url}
       />
-      <Modal />
+      <Modal url={url} url1={url1}  />
     </Box>
   );
 };
