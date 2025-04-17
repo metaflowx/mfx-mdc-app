@@ -182,7 +182,7 @@ const VCContractPage = () => {
     queryClient.invalidateQueries({
       queryKey: resultStakelIst.queryKey,
     });
-  }, [blockNumber, queryClient,resultStakelIst, resultOfCheckAllowance]);
+  }, [blockNumber, queryClient, resultStakelIst, resultOfCheckAllowance]);
 
   console.log(">>>>>>>>>result", resultStakelIst);
   useEffect(() => {
@@ -290,28 +290,27 @@ const VCContractPage = () => {
       </Card>
 
       <Box sx={{ display: "flex", alignItems: "center" }} mt={2}>
-      <GradientButton
-    onClick={() => setActiveTab("bought")}
-    sx={{
-      opacity: activeTab === "bought" ? 1 : 0.5,
-      boxShadow: activeTab === "bought" ? "0px 0px 10px #00f0ff" : "none",
-    }}
-  >
-    Bought History
-  </GradientButton>  &nbsp;
-  <GradientButton
-    onClick={() => setActiveTab("monthly")}
-    sx={{
-      opacity: activeTab === "monthly" ? 1 : 0.5,
-      boxShadow: activeTab === "monthly" ? "0px 0px 10px #00f0ff" : "none",
-    }}
-  >
-    Monthly Returns
-  </GradientButton>
-
- 
-</Box>
-
+        <GradientButton
+          onClick={() => setActiveTab("bought")}
+          sx={{
+            opacity: activeTab === "bought" ? 1 : 0.5,
+            boxShadow: activeTab === "bought" ? "0px 0px 10px #00f0ff" : "none",
+          }}
+        >
+          Bought History
+        </GradientButton>{" "}
+        &nbsp;
+        <GradientButton
+          onClick={() => setActiveTab("monthly")}
+          sx={{
+            opacity: activeTab === "monthly" ? 1 : 0.5,
+            boxShadow:
+              activeTab === "monthly" ? "0px 0px 10px #00f0ff" : "none",
+          }}
+        >
+          Monthly Returns
+        </GradientButton>
+      </Box>
 
       {amount && activeTab === "monthly" && (
         <Box pt={2}>
@@ -369,24 +368,29 @@ const VCContractPage = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                    {loading &&
-    Array.from({ length: 5 }).map((_, index) => (
-      <TableRow key={index}>
-        {Array.from({ length: 7 }).map((__, cellIndex) => (
-          <TableCell key={cellIndex}>
-            <Skeleton variant="text" width="100%" height={30} />
-          </TableCell>
-        ))}
-      </TableRow>
-    ))}
-     {!loading && result?.data  &&  !result?.data?.length  && (
-    <TableRow>
-      <TableCell colSpan={7} align="center">
-        No data found
-      </TableCell>
-    </TableRow>
-  )}
-                      {!loading && resultStakelIst &&
+                      {loading &&
+                        Array.from({ length: 5 }).map((_, index) => (
+                          <TableRow key={index}>
+                            {Array.from({ length: 7 }).map((__, cellIndex) => (
+                              <TableCell key={cellIndex}>
+                                <Skeleton
+                                  variant="text"
+                                  width="100%"
+                                  height={30}
+                                />
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        ))}
+                      {!loading && result?.data && !result?.data?.length && (
+                        <TableRow>
+                          <TableCell colSpan={7} align="center">
+                            No data found
+                          </TableCell>
+                        </TableRow>
+                      )}
+                      {!loading &&
+                        resultStakelIst &&
                         resultStakelIst?.data &&
                         resultStakelIst?.data.map((row: any, index) => {
                           const startdate = new Date(
@@ -398,9 +402,7 @@ const VCContractPage = () => {
                           return (
                             <TableRow key={index}>
                               <TableCell>
-                                {Number(
-                                  formatEther(row?.amount)
-                                ).toFixed(2)}{" "}
+                                {Number(formatEther(row?.amount)).toFixed(2)}{" "}
                                 USDT
                               </TableCell>
 
@@ -425,9 +427,9 @@ const VCContractPage = () => {
                                 {moment(startdate).format("lll")}
                               </TableCell>
                               <TableCell>
-                                {parseFloat(
-                                  formatEther(row?.volume)
-                                ).toFixed(2)}{" "}
+                                {parseFloat(formatEther(row?.volume)).toFixed(
+                                  2
+                                )}{" "}
                                 MDC
                               </TableCell>
                               <TableCell>

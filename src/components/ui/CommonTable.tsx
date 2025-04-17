@@ -33,6 +33,7 @@ import { Copy } from "lucide-react";
 import moment from "moment";
 import { extractDetailsFromError } from "@/utils/extractDetailsFromError";
 import { StakingABI } from "@/app/ABI/StakingABI";
+import ClaimConfirmationModal from "./ClaimConfirmationModal";
 const ClaimAllButton = muiStyled(Button)({
   backgroundColor: "transparent",
   color: "#1AB3E5",
@@ -110,7 +111,7 @@ const { data: blockNumber } = useBlockNumber({ watch: true });
   return (
     <Box sx={{ p: {xs:1, sm:4}, color: "white" }}>
       <Box sx={{ mb: 3,mt:2 }} className="displayCenter">
-        <CommonTabButton setActiveTab={setActiveTab} activeTab={activeTab} tabList={tabList} />
+        {/* <CommonTabButton setActiveTab={setActiveTab} activeTab={activeTab} tabList={tabList} /> */}
       </Box>
       <Box
         sx={{
@@ -133,50 +134,30 @@ const { data: blockNumber } = useBlockNumber({ watch: true });
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>From</TableCell>
-                <TableCell>Level</TableCell>
+                <TableCell>User</TableCell>
+                <TableCell>Staked Amount</TableCell>
                 <TableCell style={{whiteSpace:"pre"}} >
-                  DR
-                  <Tooltip title="Direct Referral">
-                    <IconButton size="small" sx={{ color: "white", ml: 1 }}>
-                      <HelpOutlineIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                Tier
+                  
                 </TableCell>
                 <TableCell style={{whiteSpace:"pre"}}>
-                  RP
-                  <Tooltip title="Reward Points">
-                    <IconButton size="small" sx={{ color: "white", ml: 1 }}>
-                      <HelpOutlineIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                Reward
+                  
                 </TableCell>
-                <TableCell>Reward</TableCell>
+               
                 <TableCell style={{whiteSpace:"pre"}}>
-                  TCR
-                  <Tooltip title="Total Claimed Reward">
-                    <IconButton size="small" sx={{ color: "white", ml: 1 }}>
-                      <HelpOutlineIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                Claim Reward
+                  
                 </TableCell>
                 <TableCell style={{whiteSpace:"pre"}}>
-                  RR
-                  <Tooltip title="Remaining Reward">
-                    <IconButton size="small" sx={{ color: "white", ml: 1 }}>
-                      <HelpOutlineIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                  Start Time
+                  
                 </TableCell>
                 <TableCell style={{whiteSpace:"pre"}}>
-                  ST
-                  <Tooltip title="Staking Time">
-                    <IconButton size="small" sx={{ color: "white", ml: 1 }}>
-                      <HelpOutlineIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                Last Claimed
+                 
                 </TableCell>
-                <TableCell style={{whiteSpace:"pre"}}>Last Claim</TableCell>
+              
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -252,14 +233,14 @@ const { data: blockNumber } = useBlockNumber({ watch: true });
                       </div>
                     </TableCell>
                     <TableCell className="text-white whitespace-pre">
-                      {Number(formatEther(item?.amount)).toFixed(2)} AIZU
+                      {Number(formatEther(item?.volume)).toFixed(2)} MDC
                     </TableCell>
                     <TableCell className="text-white">
                       {Number(item?.tierId) + 1}
                     </TableCell>
                     <DailyReward index={index} address={address as Address} />
                     <TableCell className="text-white whitespace-pre">
-                      {parseFloat(formatEther(item?.claimedRewards)).toFixed(2)} AIZU
+                      {parseFloat(formatEther(item?.claimedRewards)).toFixed(2)} MDC
                     </TableCell>
                     <TableCell className="text-white whitespace-pre">
                       {moment(startdate).format("lll")}
@@ -282,6 +263,9 @@ const { data: blockNumber } = useBlockNumber({ watch: true });
 
 const ActionSection = ({ item, index }: { item: any; index: any }) => {
   const { address } = useAccount();
+  const[indexData,setIndexData]=useState(null)
+  const[openModal,setOpenModal]=useState(false)
+
   const { writeContractAsync, isPending, isSuccess, isError } =
     useWriteContract();
     const { writeContractAsync:writeContractAsyncClaim, isPending:isPendingClaim, isSuccess:isSuccessClaim, isError:isErrorClaim } =
@@ -296,24 +280,7 @@ const ActionSection = ({ item, index }: { item: any; index: any }) => {
     chainId: Number(chainId) ?? 56,
   });
 
-  const handleClaim = async () => {
-    try {
-      const res = await writeContractAsyncClaim({
-        address: StakeContractAddress,
-        abi: StakingABI,
-        functionName: "claimReward",
-        args: [BigInt(index)],
-      });
-
-      if (res) {
-        toast.success("claim successfully.");
-      }
-    } catch (error: any) {
-      console.log(">>>>>>>>>>>>.error", error);
-
-      toast.error(extractDetailsFromError(error.message as string) as string);
-    }
-  };
+ 
 
 
   const handleRestake = async () => {
@@ -353,29 +320,46 @@ const ActionSection = ({ item, index }: { item: any; index: any }) => {
       toast.error(extractDetailsFromError(error.message as string) as string);
     }
   };
+console.log(">>>>>>>>>>>>tierData",item);
 
 
   return (
+    <>
+    
     <TableCell className="text-white ">
       <div className="flex items-center justify-end space-x-2">
         <Button
-        onClick={()=>handleClaim()}
-          disabled={isPendingClaim}
+        
+        onClick={()=>{
+          setOpenModal(true)
+          setIndexData(index)}}
+          disabled={isPendingClaim || item?.claimedRewards <=0}
           className="w-[86px] bg-black border border-[#2865FF] text-white px-3 py-1 rounded-[50px] h-[50px] "
         >
          {isPendingClaim ? "Claiming...":"Claim"} 
         </Button>
-        {tierData?.data?.isUnstakedEnabled && (
-          <CommonButton onClick={()=>handleUnstake()} disabled={isPendingUnstake} title={`${isPendingUnstake ? "Unstaking..." : "Unstake"}`} width="100px" />
-        )}
-        <CommonButton
+       
+          <CommonButton onClick={()=>{
+          setOpenModal(true)
+          setIndexData(index)}}
+          
+          disabled={isPendingClaim || item?.claimedRewards <=0}
+          title= {isPendingClaim ? "Claiming...":"Claim"}  width="120px" />
+        
+        {/* <CommonButton
           disabled={isPending}
           onClick={() => handleRestake()}
           title={`${isPending ? "Restaking..." : "Restake"}`}
           width="100px"
-        />
+        /> */}
       </div>
     </TableCell>
+    {openModal && (
+      <ClaimConfirmationModal indexData={indexData} open={openModal} onClose={()=>{
+        setOpenModal(false)
+        setIndexData(null)}} />
+    )}
+    </>
   );
 };
 

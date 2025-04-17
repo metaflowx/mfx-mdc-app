@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useState ,useEffect,useMemo} from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Box,
   Tabs,
@@ -26,7 +26,14 @@ import {
   stakeConfig,
   tokenConfig,
 } from "@/constants/contract";
-import { useAccount, useBalance, useBlockNumber, useReadContract, useReadContracts, useWriteContract } from "wagmi";
+import {
+  useAccount,
+  useBalance,
+  useBlockNumber,
+  useReadContract,
+  useReadContracts,
+  useWriteContract,
+} from "wagmi";
 import {
   Address,
   erc20Abi,
@@ -50,26 +57,7 @@ const tokens = [
   { label: "ETH", icon: eth },
 ];
 
-// const tokensList = [
-//   {
-//     label: "Package A",
-//     title: "10% APR",
-//     des: "Withdraw period monthly",
-//     des1: "12 Months Lockup",
-//   },
-//   {
-//     label: "Package B",
-//     title: "18% APR",
-//     des: "Withdraw period monthly",
-//     des1: "18 Months Lockup",
-//   },
-//   {
-//     label: "Package C",
-//     title: "24% APR",
-//     des: "Withdraw period monthly",
-//     des1: "24 Months Lockup",
-//   },
-// ];
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -195,7 +183,7 @@ const BuyTab = () => {
     ],
   });
 
- useEffect(() => {
+  useEffect(() => {
     if (resultOfCheckAllowance && address) {
       const price = parseFloat(amount === "" ? "0" : amount);
       const allowance = parseFloat(
@@ -218,10 +206,6 @@ const BuyTab = () => {
     });
   }, [blockNumber, queryClient, result, resultOfCheckAllowance]);
 
-
-
- 
-
   const handleBuy = async () => {
     try {
       const formattedAmount = parseUnits(amount, 18);
@@ -232,7 +216,7 @@ const BuyTab = () => {
         functionName: "buy",
         args: [
           1,
-         BigInt(value1),
+          BigInt(value1),
           tokenAddress as Address,
           formattedAmount,
           result?.data?.[5]?.result !== zeroAddress
@@ -249,7 +233,6 @@ const BuyTab = () => {
       }
     } catch (error: any) {
       console.log(">>>>>>>>>>>>.error", error);
-
       toast.error(extractDetailsFromError(error.message as string) as string);
     }
   };
@@ -278,7 +261,6 @@ const BuyTab = () => {
     }
   };
 
-
   const { data: Balance } = useBalance({
     address: address,
   });
@@ -301,11 +283,11 @@ const BuyTab = () => {
   });
 
   const minBuy = result?.data?.[4]?.result?.minBuy
-  ? Number(formatEther(BigInt(result.data[4].result.minBuy)))
-  : 0;
+    ? Number(formatEther(BigInt(result.data[4].result.minBuy)))
+    : 0;
 
   const tokenAddress =
-  selectedToken.tokenname === "BNB" ? zeroAddress : selectedToken.address;
+    selectedToken.tokenname === "BNB" ? zeroAddress : selectedToken.address;
 
   const calculationresult = useReadContracts({
     contracts: [
@@ -336,7 +318,6 @@ const BuyTab = () => {
       },
     ],
   });
-
 
   const tokensList = useReadContract({
     ...stakeConfig,
@@ -429,7 +410,13 @@ const BuyTab = () => {
   return (
     <StyledBox>
       <InnerBox>
-        <Typography variant="h4" color="#fff" fontWeight={700} textAlign="center" mt={2}>
+        <Typography
+          variant="h4"
+          color="#fff"
+          fontWeight={700}
+          textAlign="center"
+          mt={2}
+        >
           Buy MDC Coins
         </Typography>
 
@@ -443,82 +430,84 @@ const BuyTab = () => {
           </CustomTabPanel>
         ))}
 
-        
-
         <CoinSelector
-              selectedToken={selectedToken}
-              setSelectedToken={setSelectedToken}
-            />
+          selectedToken={selectedToken}
+          setSelectedToken={setSelectedToken}
+        />
 
         <Box sx={{ width: "100%" }} mt={3}>
           <Grid2 container spacing={2}>
-            {tokensList?.data && tokensList.data.length  && tokensList.data?.map((token:any, index:number) => (
-              <Grid2
-                onClick={() => setValue1(index)}
-                size={{ xs: 12, sm: 4 }}
-                sx={{
-                  border:
-                    value1 === index
-                      ? "1px solid #1AB3E5"
-                      : "1px solid #1D1D20",
-                  background: "#101012",
-                  borderRadius: "8px",
-                  textAlign: "center",
-                  cursor: "pointer",
-                  "&:hover": {
-                    background: value === index ? "#101012" : "#19191C",
-                  },
-                }}
-              >
-                <TabPanel key={index} value={value} index={index}>
-                  <Box
-                    sx={{
-                      background: "#000000",
-                      borderRadius: "6px",
-                      height: "40px",
-                    }}
-                    className="displayCenter"
-                  >
+            {tokensList?.data &&
+              tokensList.data.length &&
+              tokensList.data?.map((token: any, index: number) => (
+                <Grid2
+                  onClick={() => setValue1(index)}
+                  size={{ xs: 12, sm: 4 }}
+                  sx={{
+                    border:
+                      value1 === index
+                        ? "1px solid #1AB3E5"
+                        : "1px solid #1D1D20",
+                    background: "#101012",
+                    borderRadius: "8px",
+                    textAlign: "center",
+                    cursor: "pointer",
+                    "&:hover": {
+                      background: value === index ? "#101012" : "#19191C",
+                    },
+                  }}
+                >
+                  <TabPanel key={index} value={value} index={index}>
+                    <Box
+                      sx={{
+                        background: "#000000",
+                        borderRadius: "6px",
+                        height: "40px",
+                      }}
+                      className="displayCenter"
+                    >
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          color: "#1AB3E5",
+                          fontWeight: 700,
+                          fontSize: "17px",
+                        }}
+                      >
+                        {`Package ${
+                          index === 0 ? "A" : index === 1 ? "B" : "C"
+                        }`}
+                      </Typography>
+                    </Box>
+
                     <Typography
                       variant="h6"
                       sx={{
-                        color: "#1AB3E5",
+                        color: "#fff",
                         fontWeight: 700,
-                        fontSize: "17px",
+                        fontSize: "16px",
+                        pt: 2,
                       }}
                     >
-                      {`Package ${index===0 ? "A" : index===1 ? "B":"C"}`}
+                      {/* {token.title} */}
+                      {`${Number(token.returnInPercent) / 1e2}% APR`}
                     </Typography>
-                  </Box>
-
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      color: "#fff",
-                      fontWeight: 700,
-                      fontSize: "16px",
-                      pt: 2,
-                    }}
-                  >
-                    {/* {token.title} */}
-                    {`${Number(token.returnInPercent) / 1e2}% APR`}
-                  </Typography>
-                  <Typography
-                    sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
-                    variant="body1"
-                  >
-                    {/* {token.des} */}
-                    Withdraw period monthly
-                  </Typography>
-                  <Typography
-                    sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
-                    variant="body1"
-                  >
-                     {`${Number(token.lockPeriod)} Months Lockup`}
-                  </Typography>
-                </TabPanel>
-              </Grid2>
-            ))}
+                    <Typography
+                      sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
+                      variant="body1"
+                    >
+                      {/* {token.des} */}
+                      Withdraw period monthly
+                    </Typography>
+                    <Typography
+                      sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
+                      variant="body1"
+                    >
+                      {`${Number(token.lockPeriod)} Months Lockup`}
+                    </Typography>
+                  </TabPanel>
+                </Grid2>
+              ))}
           </Grid2>
         </Box>
 
@@ -526,10 +515,10 @@ const BuyTab = () => {
         <CustomTabPanel value={value} index={value}>
           <MaxButtonWrap>
             <InputBase
-            disabled={isPending}
-             onKeyDown={(e) => {
-              handleNegativeValue(e);
-            }}
+              disabled={isPending}
+              onKeyDown={(e) => {
+                handleNegativeValue(e);
+              }}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               fullWidth
@@ -551,54 +540,54 @@ const BuyTab = () => {
           </MaxButtonWrap>
 
           {amount &&
-                  (calculationresult?.data?.[0]?.result ||
-                    calculationresult?.data?.[3]?.result) && (
-                    <>
-                      {calculationresult?.data?.[3]?.result?.isStable &&
-                        Number(amount) < Number(minBuy) && (
-                          <p className="pt-1" style={{ color: "red" }}>
-                            Min: ${minBuy}
-                          </p>
-                        )}
-
-                      {
-                        <>
-                          {!calculationresult?.data?.[3]?.result?.isStable &&
-                            Number(
-                              formatEther(
-                                BigInt(calculationresult?.data[0]?.result ?? 0)
-                              )
-                            ) < Number(minBuy) && (
-                              <p className="pt-1" style={{ color: "red" }}>
-                                Min: ${minBuy}
-                              </p>
-                            )}
-                        </>
-                      }
-                    </>
+            (calculationresult?.data?.[0]?.result ||
+              calculationresult?.data?.[3]?.result) && (
+              <>
+                {calculationresult?.data?.[3]?.result?.isStable &&
+                  Number(amount) < Number(minBuy) && (
+                    <p className="pt-1" style={{ color: "red" }}>
+                      Min: ${minBuy}
+                    </p>
                   )}
+
+                {
+                  <>
+                    {!calculationresult?.data?.[3]?.result?.isStable &&
+                      Number(
+                        formatEther(
+                          BigInt(calculationresult?.data[0]?.result ?? 0)
+                        )
+                      ) < Number(minBuy) && (
+                        <p className="pt-1" style={{ color: "red" }}>
+                          Min: ${minBuy}
+                        </p>
+                      )}
+                  </>
+                }
+              </>
+            )}
 
           {/* Cost & Receive Details */}
           <Box display="flex" justifyContent="center" gap="1.5rem" mt={3}>
             <Box display="flex" alignItems="center" gap="10px">
-            <img
-                        src={
-                          selectedToken?.tokenname === "BTCB"
-                            ? "/images/coin-icon/btcb.png"
-                            : selectedToken?.tokenname === "USDT"
-                            ? "/images/coin-icon/usdt.png"
-                            : `/images/coin-icon/${
-                                selectedToken?.address === zeroAddress
-                                  ? "bnb"
-                                  : selectedToken?.tokenname?.toLowerCase()
-                              }.svg`
-                        }
-                        className="w-[30px] h-[30px] rounded-full"
-                      />
+              <img
+                src={
+                  selectedToken?.tokenname === "BTCB"
+                    ? "/images/coin-icon/btcb.png"
+                    : selectedToken?.tokenname === "USDT"
+                    ? "/images/coin-icon/usdt.png"
+                    : `/images/coin-icon/${
+                        selectedToken?.address === zeroAddress
+                          ? "bnb"
+                          : selectedToken?.tokenname?.toLowerCase()
+                      }.svg`
+                }
+                className="w-[30px] h-[30px] rounded-full"
+              />
               <Typography>
                 COST:{" "}
                 <Typography component="span" fontWeight={700}>
-                 {amount}
+                  {amount}
                 </Typography>
               </Typography>
             </Box>
@@ -607,7 +596,7 @@ const BuyTab = () => {
               <Typography>
                 Receive:{" "}
                 <Typography component="span" fontWeight={700}>
-                {calciulatedToken?.getToken || 0}
+                  {calciulatedToken?.getToken || 0}
                 </Typography>
               </Typography>
             </Box>
@@ -617,7 +606,6 @@ const BuyTab = () => {
           <Box mt={2}>
             <GradientButton
               fullWidth
-
               disabled={
                 (calculationresult?.data?.[3]?.result?.isStable &&
                   Number(amount) < Number(minBuy)) ||
@@ -644,32 +632,25 @@ const BuyTab = () => {
                 }
               }}
             >
-
-{
-                    isPending
-                      ? selectedToken?.tokenname === "BNB" || isAproveERC20
-                        ? "Buying..."
-                        : "Approving..."
-                      : selectedToken?.tokenname === "BNB" && amount === ""
-                      ? "Please enter amount"
-                      : selectedToken?.tokenname === "BNB" &&
-                        Number(amount) <= 0
-                      ? "Please enter correct amount"
-                      : (
-                          selectedToken?.tokenname === "BNB"
-                            ? Number(Balance?.formatted) < Number(amount) ||
-                              Number(Balance?.formatted) === 0
-                            : Number(
-                                formatEther(BigInt(resultOfTokenBalance ?? 0))
-                              ) < Number(amount)
-                        )
-                      ? "Insufficient funds"
-                      : selectedToken?.tokenname === "BNB" || isAproveERC20
-                      ? " Buy MDC Coin"
-                      : "Approve"
-                  }
-
-             
+              {isPending
+                ? selectedToken?.tokenname === "BNB" || isAproveERC20
+                  ? "Buying..."
+                  : "Approving..."
+                : selectedToken?.tokenname === "BNB" && amount === ""
+                ? "Please enter amount"
+                : selectedToken?.tokenname === "BNB" && Number(amount) <= 0
+                ? "Please enter correct amount"
+                : (
+                    selectedToken?.tokenname === "BNB"
+                      ? Number(Balance?.formatted) < Number(amount) ||
+                        Number(Balance?.formatted) === 0
+                      : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
+                        Number(amount)
+                  )
+                ? "Insufficient funds"
+                : selectedToken?.tokenname === "BNB" || isAproveERC20
+                ? " Buy MDC Coin"
+                : "Approve"}
             </GradientButton>
           </Box>
         </CustomTabPanel>
