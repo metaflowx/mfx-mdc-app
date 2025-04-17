@@ -73,9 +73,9 @@ value:"direct"
     <Card>
          <Box sx={{  p: {xs:1, sm:4}, color: "white" }}>
 
-<Box sx={{ mb: 3 }} className="displayCenter">
+{/* <Box sx={{ mb: 3 }} className="displayCenter">
         <CommonTabButton tabList={tabList} setActiveTab={setActiveTab} activeTab={activeTab} />
-      </Box>
+      </Box> */}
 
       <Box
         sx={{
