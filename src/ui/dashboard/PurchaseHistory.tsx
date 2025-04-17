@@ -204,7 +204,7 @@ export default function PurchaseHistory() {
                     {item?.coin === "Native" ? "BNB" : item?.coin || "--"}
                   </TableCell>
                   <TableCell className="text-white">
-                    {Number(formatUnits(item?.volume, 18)).toFixed(2)} AIZU
+                    {Number(formatUnits(item?.volume, 18)).toFixed(2)} MDC
                   </TableCell>
                   <TableCell className="text-white">
                     {dateTime(item?.at) || "--"}
