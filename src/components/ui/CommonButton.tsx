@@ -1,8 +1,9 @@
 import React from 'react'
 
-export default function CommonButton({title,width, onClick,height}:{title:string,width?:string, onClick?:any,height?:string}) {
+export default function CommonButton({title,width, onClick,height,disabled}:{title:string,width?:string, onClick?:any,height?:string,disabled?:any}) {
   return (
    <button 
+   disabled={disabled}
    onClick={() => {
     if (onClick) {
       onClick();

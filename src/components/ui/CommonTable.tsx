@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -21,7 +21,18 @@ import CommonTabButton from "./CommonTabButton";
 import { Card } from "./card";
 import { StyledTableContainer } from "./StyledTableContainer";
 import CommonButton from "./CommonButton";
-
+import { stakeConfig, StakeContractAddress } from "@/constants/contract";
+import { useAccount, useBlockNumber, useReadContract, useWriteContract } from "wagmi";
+import { useAppKitNetwork } from "@reown/appkit/react";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import copy from "clipboard-copy";
+import { Address, formatEther } from "viem";
+import { sortAddress } from "@/utils";
+import { Copy } from "lucide-react";
+import moment from "moment";
+import { extractDetailsFromError } from "@/utils/extractDetailsFromError";
+import { StakingABI } from "@/app/ABI/StakingABI";
 const ClaimAllButton = muiStyled(Button)({
   backgroundColor: "transparent",
   color: "#1AB3E5",
@@ -60,9 +71,41 @@ value:"self"
         value:"team"
                 },
 ]
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-  };
+const { data: blockNumber } = useBlockNumber({ watch: true });
+  const { address } = useAccount();
+  const { chainId } = useAppKitNetwork();
+  const queryClient = useQueryClient();
+  const totalStakeLenth = useReadContract({
+    ...stakeConfig,
+    functionName: "totalStakedLengthForUser",
+    args: [address as Address],
+    chainId: Number(chainId) ?? 56,
+  });
+
+  const result = useReadContract({
+    ...stakeConfig,
+    functionName: "user2StakerList",
+    args: [address as Address, BigInt(0), BigInt(totalStakeLenth?.data || 0)],
+    chainId: Number(chainId) ?? 56,
+  });
+
+
+  const isLoading = result?.isLoading;
+  const data = result?.data ?? [];
+
+    useEffect(() => {
+      queryClient.invalidateQueries({
+        queryKey: totalStakeLenth.queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: result.queryKey,
+      });
+    }, [blockNumber, queryClient,totalStakeLenth, result]);
+
+     const handleCopy = (item: any) => {
+        copy(item);
+        toast.success("Address copied to clipboard!");
+      };
 
   return (
     <Box sx={{ p: {xs:1, sm:4}, color: "white" }}>
@@ -138,7 +181,7 @@ value:"self"
               </TableRow>
             </TableHead>
             <TableBody>
-              {mockData.map((row, index) => (
+              {/* {mockData.map((row, index) => (
                 <TableRow  data-aos="fade-up" key={index}>
                   <TableCell>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -175,7 +218,60 @@ value:"self"
                     </Box>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))} */}
+
+{isLoading ? (
+              [...Array(5)].map((_, index) => (
+                <TableRow key={index} className="animate-pulse border-b-0">
+                  {Array(8).fill("").map((_, i) => (
+                    <TableCell key={i} className="py-4">
+                      <div className="h-4 bg-gray-700 rounded w-3/4 mx-auto" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : data.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center text-white py-6">
+                  No Data Found
+                </TableCell>
+              </TableRow>
+            ) : (
+              data.map((item, index) => {
+                const startdate = new Date(Number(item?.startTime) * 1000);
+                const lastdate = new Date(Number(item?.lastClaimTime) * 1000);
+
+                return (
+                  <TableRow key={index} className="border-b-0">
+                    <TableCell className="text-white whitespace-pre">
+                      <div className="flex items-center">
+                      {address ? sortAddress(address) : ""}&nbsp;
+                      <IconButton onClick={() => handleCopy(address)}>
+                         <Copy color="#fff" />
+                      </IconButton>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-white whitespace-pre">
+                      {Number(formatEther(item?.amount)).toFixed(2)} AIZU
+                    </TableCell>
+                    <TableCell className="text-white">
+                      {Number(item?.tierId) + 1}
+                    </TableCell>
+                    <DailyReward index={index} address={address as Address} />
+                    <TableCell className="text-white whitespace-pre">
+                      {parseFloat(formatEther(item?.claimedRewards)).toFixed(2)} AIZU
+                    </TableCell>
+                    <TableCell className="text-white whitespace-pre">
+                      {moment(startdate).format("lll")}
+                    </TableCell>
+                    <TableCell className="text-white whitespace-pre">
+                      {moment(lastdate).format("lll")}
+                    </TableCell>
+                    <ActionSection item={item} index={index} />
+                  </TableRow>
+                );
+              })
+            )}
             </TableBody>
           </Table>
         </StyledTableContainer>
@@ -183,3 +279,135 @@ value:"self"
     </Box>
   );
 }
+
+const ActionSection = ({ item, index }: { item: any; index: any }) => {
+  const { address } = useAccount();
+  const { writeContractAsync, isPending, isSuccess, isError } =
+    useWriteContract();
+    const { writeContractAsync:writeContractAsyncClaim, isPending:isPendingClaim, isSuccess:isSuccessClaim, isError:isErrorClaim } =
+    useWriteContract();
+    const { writeContractAsync:writeContractAsyncUnstake, isPending:isPendingUnstake, isSuccess:isSuccessUnstake, isError:isErrorUnstake } =
+    useWriteContract();
+  const { chainId } = useAppKitNetwork();
+  const tierData = useReadContract({
+    ...stakeConfig,
+    functionName: "getTier",
+    args: [item?.tierId],
+    chainId: Number(chainId) ?? 56,
+  });
+
+  const handleClaim = async () => {
+    try {
+      const res = await writeContractAsyncClaim({
+        address: StakeContractAddress,
+        abi: StakingABI,
+        functionName: "claimReward",
+        args: [BigInt(index)],
+      });
+
+      if (res) {
+        toast.success("claim successfully.");
+      }
+    } catch (error: any) {
+      console.log(">>>>>>>>>>>>.error", error);
+
+      toast.error(extractDetailsFromError(error.message as string) as string);
+    }
+  };
+
+
+  const handleRestake = async () => {
+    try {
+      const res = await writeContractAsync({
+        address: StakeContractAddress,
+        abi: StakingABI,
+        functionName: "restake",
+        args: [BigInt(index)],
+      });
+
+      if (res) {
+        toast.success("Re-Stake successfully");
+      }
+    } catch (error: any) {
+      console.log(">>>>>>>>>>>>.error", error);
+
+      toast.error(extractDetailsFromError(error.message as string) as string);
+    }
+  };
+
+  const handleUnstake = async () => {
+    try {
+      const res = await writeContractAsyncUnstake({
+        address: StakeContractAddress,
+        abi: StakingABI,
+        functionName: "unstake",
+        args: [address as Address, BigInt(index)],
+      });
+
+      if (res) {
+        toast.success("Un-Stake successfully");
+      }
+    } catch (error: any) {
+      console.log(">>>>>>>>>>>>.error", error);
+
+      toast.error(extractDetailsFromError(error.message as string) as string);
+    }
+  };
+
+
+  return (
+    <TableCell className="text-white ">
+      <div className="flex items-center justify-end space-x-2">
+        <Button
+        onClick={()=>handleClaim()}
+          disabled={isPendingClaim}
+          className="w-[86px] bg-black border border-[#2865FF] text-white px-3 py-1 rounded-[50px] h-[50px] "
+        >
+         {isPendingClaim ? "Claiming...":"Claim"} 
+        </Button>
+        {tierData?.data?.isUnstakedEnabled && (
+          <CommonButton onClick={()=>handleUnstake()} disabled={isPendingUnstake} title={`${isPendingUnstake ? "Unstaking..." : "Unstake"}`} width="100px" />
+        )}
+        <CommonButton
+          disabled={isPending}
+          onClick={() => handleRestake()}
+          title={`${isPending ? "Restaking..." : "Restake"}`}
+          width="100px"
+        />
+      </div>
+    </TableCell>
+  );
+};
+
+const DailyReward = ({
+  index,
+  address,
+}: {
+  index: number;
+  address: Address;
+}) => {
+  const { data: blockNumber } = useBlockNumber({ watch: true });
+  const queryClient = useQueryClient();
+  const { chainId } = useAppKitNetwork();
+  const dailyReward = useReadContract({
+    ...stakeConfig,
+    functionName: "calculateRewards",
+    args: [address, BigInt(index)],
+    chainId: Number(chainId) ?? 56,
+  });
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: dailyReward.queryKey,
+    });
+    
+  }, [blockNumber, queryClient,dailyReward]);
+
+  return (
+    <TableCell className="text-white whitespace-pre">
+      {dailyReward?.data
+        ? parseFloat(formatEther(dailyReward?.data)).toFixed(2)
+        : "0.00"}{" "}
+      MDC
+    </TableCell>
+  );
+};

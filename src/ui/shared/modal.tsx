@@ -37,7 +37,7 @@ const BoxSocial = styled(Box)(({ theme }) => ({
     padding: '0rem 2rem'
 }));
 
-export default function Modal() {
+export default function Modal({url,url1}:{url:any,url1:any}) {
     const [open, setOpen] = React.useState(false);
     const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
 
@@ -62,7 +62,7 @@ export default function Modal() {
         }
     }, [open]);
 
-    const referLink = `https://ico.mdccoin.com/dashboard/?ref=${'address'}`
+    const referLink = url
 
     return (
         <React.Fragment>
@@ -109,7 +109,7 @@ export default function Modal() {
                         display: 'inline-flex',
                         justifyContent: 'center'
                     }}>
-                        <AddressCopy textColor={'#000 !important'} text={referLink} addresstext={'Reffer'} hrefLink={''} />
+                        <AddressCopy textColor={'#000 !important'} text={url1} addresstext={'Reffer'} hrefLink={''} />
                     </Box>
                 </Box>
                 <BoxSocial>

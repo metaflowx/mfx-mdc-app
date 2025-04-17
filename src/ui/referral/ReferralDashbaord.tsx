@@ -1,8 +1,48 @@
 import { Card } from "@/components/ui/card";
+import { contractConfig } from "@/constants/contract";
 import { Box, Grid2, Typography } from "@mui/material";
-import React from "react";
+import { useAppKitNetwork } from "@reown/appkit/react";
+import { useQueryClient } from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import { Address, formatEther, parseEther } from "viem";
+import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
 
 export default function ReferralDashbaord() {
+
+
+  const { address } = useAccount();
+  const {chainId} = useAppKitNetwork()
+  const { data: blockNumber } = useBlockNumber({ watch: true });
+  const queryClient = useQueryClient();
+  const result = useReadContracts({
+    contracts: [
+     
+      {
+        ...contractConfig,
+        functionName: "getReferralRewards",
+        args: [address as Address ],
+        chainId: Number(chainId)??97
+      },
+      {
+        ...contractConfig,
+        functionName: 'getReferralsCount',
+        args: [address as Address ],
+        chainId: Number(chainId)??97
+        
+      },
+      {
+        ...contractConfig,
+        functionName: 'getReferrer',
+        args: [address as Address ],
+        chainId: Number(chainId)??97
+      },
+      
+     
+     
+    ],
+  })
+
+
   const dataList = [
     {
       title: "One",
@@ -10,7 +50,7 @@ export default function ReferralDashbaord() {
       nestedData: [
         {
           title: "YOUR REFERRALS",
-          value: "0.00",
+          value: result?.data?.[1]?.result? Number(result?.data[1]?.result) : 0,
           logo: "/referral/2.png",
         },
         
@@ -21,13 +61,19 @@ export default function ReferralDashbaord() {
       nestedData: [
         {
           title: "YOUR REFERRAL EARNINGS",
-          value: "0.00",
+          value: `${result?.data?.[0]?.result? Number(formatEther(BigInt(result?.data[0]?.result))).toFixed(2) : 0} MDC`,
           logo: "/referral/2.png",
         },
         
       ],
     },
   ];
+   useEffect(() => {
+      queryClient.invalidateQueries({
+        queryKey: result.queryKey,
+      });
+      
+    }, [blockNumber, queryClient,result]);
   return (
     <div>
       <Grid2 container spacing={2}>
