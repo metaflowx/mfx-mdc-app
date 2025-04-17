@@ -7,6 +7,10 @@ import React, { useState } from 'react'
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { TeamReward } from '@/types';
+import { useAppKitNetwork } from '@reown/appkit/react';
+import { useAccount, useReadContract } from 'wagmi';
+import { Address, formatEther, formatUnits, parseUnits } from "viem";
+import { contractConfig } from '@/constants/contract';
 const mockData: TeamReward[] = Array(7).fill({
   from: "0x578e...ea4",
   level: "8K MDC",
@@ -35,6 +39,33 @@ value:"direct"
      const handleCopy = (text: string) => {
         navigator.clipboard.writeText(text);
       };
+
+
+      const { chainId } = useAppKitNetwork();
+      const { address } = useAccount();
+    
+      const getRef = useReadContract({
+        ...contractConfig,
+        functionName: "getReferralsCount",
+        args: [address as Address],
+        chainId: Number(chainId) ?? 56,
+      });
+    
+      const dataRef =
+        Number(getRef?.data) > 0 ? BigInt(Number(getRef.data)) : BigInt(0);
+    
+      const result = useReadContract({
+        ...contractConfig,
+        functionName: "getDirectReferrals",
+        args: [address as Address, BigInt(0), dataRef],
+        chainId: Number(chainId) ?? 56,
+      });
+
+
+
+
+
+
   return (
 
    

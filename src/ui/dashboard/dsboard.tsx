@@ -2,11 +2,15 @@
 import { Box, Container, Typography, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
+import { Address, erc20Abi, formatEther } from "viem";
+import { convertToAbbreviated } from "@/utils";
+import { useAccount, useReadContract } from "wagmi";
+import { iocConfig, TokenContractAddress } from "@/constants/contract";
+import { useAppKitNetwork } from "@reown/appkit/react";
+import PurchaseHistory from "./PurchaseHistory";
+import RefBottom from "../shared/refBottom";
 import Referral from "./referral";
 import BuyTab from "./buyTab";
-import RefBottom from "../shared/refBottom";
-import Dsfooter from "../shared/dsfooter";
-import PurchaseHistory from "./PurchaseHistory";
 
 const MainDiv = styled(Box)(({ theme }) => ({
   margin: "3rem 30px 20px 30px",
@@ -31,28 +35,56 @@ const ListBox = styled(Box)({
   },
 });
 
-const BoxList = [
-  {
-    id: 1,
-    title: "Your Wallet Balance",
-    data: "0.000",
-    valueInUsd: "$0.000",
-  },
-  {
-    id: 2,
-    title: "Self Staking Income",
-    data: "0.000 MDC",
-    valueInUsd: "$0.000",
-  },
-  {
-    id: 3,
-    title: "Your Spot Income",
-    data: "0.000 MDC",
-    valueInUsd: "$0.000",
-  },
-];
+
 
 const Dsboard = () => {
+  const { chainId } = useAppKitNetwork();
+  const { address } = useAccount();
+  const { data: resultOfTokenBalance } = useReadContract({
+    abi: erc20Abi,
+    address: TokenContractAddress,
+    functionName: "balanceOf",
+    args: [address as Address],
+    account: address,
+  });
+
+  const { data: tokenPriceUSDT } = useReadContract({
+    ...iocConfig,
+    functionName: "getSaleTokenPrice",
+    args: [1],
+    chainId: Number(chainId) ?? 56,
+  });
+
+  const tokenPrice = tokenPriceUSDT && tokenPriceUSDT;
+  const tokenPriceBig = Number(formatEther(BigInt(tokenPrice ?? 0)));
+  const aizuUSDTAmount =
+    Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) * tokenPriceBig;
+
+
+  const BoxList = [
+    {
+      id: 1,
+      title: "Your Wallet Balance",
+      data:`${convertToAbbreviated(Number(
+        formatEther(BigInt(resultOfTokenBalance ?? 0))
+      ))}`,
+      valueInUsd:`$${convertToAbbreviated(Number(aizuUSDTAmount))}`,
+    },
+    {
+      id: 2,
+      title: "Self Staking Income",
+      data: "0.000 MDC",
+      valueInUsd: "$0.000",
+    },
+    {
+      id: 3,
+      title: "Your Spot Income",
+      data: "0.000 MDC",
+      valueInUsd: "$0.000",
+    },
+  ];
+
+
   return (
     <Box >
      

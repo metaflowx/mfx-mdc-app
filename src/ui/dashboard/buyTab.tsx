@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useState ,useEffect} from "react";
+import { useState ,useEffect,useMemo} from "react";
 import {
   Box,
   Tabs,
@@ -42,6 +42,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import useCheckAllowance from "@/hooks/useCheckAllowance";
 import CoinSelector from "./CoinSelector";
+import { handleNegativeValue } from "@/utils";
 const tokens = [
   { label: "USDT", icon: usdt },
   { label: "USDC", icon: usdc },
@@ -125,7 +126,7 @@ const GradientButton = styled(Button)({
   },
 });
 
-const ReferralTab = () => {
+const BuyTab = () => {
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const { address } = useAccount();
   const [selectedToken, setSelectedToken] = useState({
@@ -299,12 +300,109 @@ const ReferralTab = () => {
     chainId: Number(chainId) ?? 56,
   });
 
+  const minBuy = result?.data?.[4]?.result?.minBuy
+  ? Number(formatEther(BigInt(result.data[4].result.minBuy)))
+  : 0;
+
+  const tokenAddress =
+  selectedToken.tokenname === "BNB" ? zeroAddress : selectedToken.address;
+
+  const calculationresult = useReadContracts({
+    contracts: [
+      {
+        ...iocConfig,
+        functionName: "calculateUSDAmount",
+        args: [tokenAddress as Address, parseEther(amount)],
+        chainId: Number(chainId),
+      },
+      {
+        ...iocConfig,
+        functionName: "exchangelaunchDate",
+        chainId: Number(chainId),
+      },
+
+      {
+        ...iocConfig,
+        functionName: "totalContributor",
+        args: [1],
+        chainId: Number(chainId),
+      },
+
+      {
+        ...iocConfig,
+        functionName: "getPaymentOption",
+        args: [tokenAddress as Address],
+        chainId: Number(chainId),
+      },
+    ],
+  });
+
+
   const tokensList = useReadContract({
     ...stakeConfig,
     functionName: "getTierList",
     args: [BigInt(0), BigInt(totalTierLenth?.data || 0)],
     chainId: Number(chainId) ?? 56,
   });
+
+  const calciulatedToken = useMemo(() => {
+    if ((result && result?.data) || amount || calculationresult) {
+      const tokenPrice = result?.data && result?.data[0]?.result;
+      const dividedVa = calculationresult?.data
+        ? (Number(
+            formatEther(BigInt(calculationresult?.data[0]?.result ?? 0))
+          ) > 0
+            ? Number(
+                formatEther(BigInt(calculationresult?.data[0]?.result ?? 0))
+              )
+            : Number(amount)) / Number(formatEther(BigInt(tokenPrice ?? 0)))
+        : 0;
+      const purchaseToken =
+        result &&
+        result?.data &&
+        result?.data[3]?.result &&
+        formatEther(BigInt(result?.data[3]?.result?.volume));
+      const tokeninUSD =
+        result && result?.data
+          ? Number(formatEther(BigInt(result?.data[0]?.result ?? 0)))
+          : 0;
+      const totalTokenSupply =
+        result &&
+        result?.data &&
+        result?.data[4]?.result &&
+        formatEther(BigInt(result?.data[4]?.result?.saleTokenAmount));
+      const totalTokenQty =
+        result &&
+        result?.data &&
+        result?.data[4]?.result &&
+        formatEther(BigInt(result?.data[4]?.result?.saleQuantity));
+
+      const totalTokenSale =
+        result &&
+        result?.data &&
+        result?.data[4]?.result &&
+        formatEther(BigInt(result?.data[4]?.result?.saleTokenAmount));
+
+      const purchaseTokenUSD = Number(purchaseToken) * Number(tokeninUSD);
+      const totalTokenSupplyUSD = Number(totalTokenSupply) * Number(tokeninUSD);
+      const totalSoldToken = Number(totalTokenSale) - Number(totalTokenQty);
+      const totalSaleTokenUSD = Number(totalSoldToken) * Number(tokeninUSD);
+      const launchDate = calculationresult?.data?.[1]?.result;
+      const totalContributors = calculationresult?.data?.[2]?.result;
+      const tokenPriceData = Number(formatEther(BigInt(tokenPrice ?? 0)));
+
+      return {
+        getToken: dividedVa?.toFixed(2),
+        purchaseTokenUSD: purchaseTokenUSD.toFixed(2),
+        totalTokenSupplyUSD: totalTokenSupplyUSD,
+        totalSale: totalSaleTokenUSD.toFixed(2),
+        purchaseToken: Number(purchaseToken).toFixed(2),
+        launchDate: launchDate,
+        totalContributors: Number(totalContributors),
+        tokenPriceData: tokenPriceData,
+      };
+    }
+  }, [result, amount, calculationresult]);
 
   const TabPanel = ({
     children,
@@ -428,10 +526,14 @@ const ReferralTab = () => {
         <CustomTabPanel value={value} index={value}>
           <MaxButtonWrap>
             <InputBase
+            disabled={isPending}
+             onKeyDown={(e) => {
+              handleNegativeValue(e);
+            }}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               fullWidth
-              placeholder="Enter Amount in MDC"
+              placeholder="Enter Amount"
               type="number"
               sx={{
                 flex: 1,
@@ -445,17 +547,58 @@ const ReferralTab = () => {
                   },
               }}
             />
-            <GradientButton onClick={() => setAmount("0")}>Max</GradientButton>
+            {/* <GradientButton onClick={() => setAmount("0")}>Max</GradientButton> */}
           </MaxButtonWrap>
+
+          {amount &&
+                  (calculationresult?.data?.[0]?.result ||
+                    calculationresult?.data?.[3]?.result) && (
+                    <>
+                      {calculationresult?.data?.[3]?.result?.isStable &&
+                        Number(amount) < Number(minBuy) && (
+                          <p className="pt-1" style={{ color: "red" }}>
+                            Min: ${minBuy}
+                          </p>
+                        )}
+
+                      {
+                        <>
+                          {!calculationresult?.data?.[3]?.result?.isStable &&
+                            Number(
+                              formatEther(
+                                BigInt(calculationresult?.data[0]?.result ?? 0)
+                              )
+                            ) < Number(minBuy) && (
+                              <p className="pt-1" style={{ color: "red" }}>
+                                Min: ${minBuy}
+                              </p>
+                            )}
+                        </>
+                      }
+                    </>
+                  )}
 
           {/* Cost & Receive Details */}
           <Box display="flex" justifyContent="center" gap="1.5rem" mt={3}>
             <Box display="flex" alignItems="center" gap="10px">
-              <Image src={usdt} alt="USDT" width={30} height={30} />
+            <img
+                        src={
+                          selectedToken?.tokenname === "BTCB"
+                            ? "/images/coin-icon/btcb.png"
+                            : selectedToken?.tokenname === "USDT"
+                            ? "/images/coin-icon/usdt.png"
+                            : `/images/coin-icon/${
+                                selectedToken?.address === zeroAddress
+                                  ? "bnb"
+                                  : selectedToken?.tokenname?.toLowerCase()
+                              }.svg`
+                        }
+                        className="w-[30px] h-[30px] rounded-full"
+                      />
               <Typography>
                 COST:{" "}
                 <Typography component="span" fontWeight={700}>
-                  $0.0600
+                 {amount}
                 </Typography>
               </Typography>
             </Box>
@@ -464,7 +607,7 @@ const ReferralTab = () => {
               <Typography>
                 Receive:{" "}
                 <Typography component="span" fontWeight={700}>
-                  $0.0000
+                {calciulatedToken?.getToken || 0}
                 </Typography>
               </Typography>
             </Box>
@@ -474,6 +617,25 @@ const ReferralTab = () => {
           <Box mt={2}>
             <GradientButton
               fullWidth
+
+              disabled={
+                (calculationresult?.data?.[3]?.result?.isStable &&
+                  Number(amount) < Number(minBuy)) ||
+                (!calculationresult?.data?.[3]?.result?.isStable &&
+                  Number(
+                    formatEther(
+                      BigInt(calculationresult?.data?.[0]?.result ?? 0)
+                    )
+                  ) < Number(minBuy)) ||
+                isPending ||
+                amount === "" ||
+                Number(amount) <= 0 ||
+                (selectedToken?.tokenname === "BNB"
+                  ? Number(Balance?.formatted) < Number(amount) ||
+                    Number(Balance?.formatted) === 0
+                  : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
+                    Number(amount))
+              }
               onClick={() => {
                 if (selectedToken?.tokenname === "BNB") {
                   handleBuy();
@@ -482,7 +644,32 @@ const ReferralTab = () => {
                 }
               }}
             >
-              Buy MDC Coin
+
+{
+                    isPending
+                      ? selectedToken?.tokenname === "BNB" || isAproveERC20
+                        ? "Buying..."
+                        : "Approving..."
+                      : selectedToken?.tokenname === "BNB" && amount === ""
+                      ? "Please enter amount"
+                      : selectedToken?.tokenname === "BNB" &&
+                        Number(amount) <= 0
+                      ? "Please enter correct amount"
+                      : (
+                          selectedToken?.tokenname === "BNB"
+                            ? Number(Balance?.formatted) < Number(amount) ||
+                              Number(Balance?.formatted) === 0
+                            : Number(
+                                formatEther(BigInt(resultOfTokenBalance ?? 0))
+                              ) < Number(amount)
+                        )
+                      ? "Insufficient funds"
+                      : selectedToken?.tokenname === "BNB" || isAproveERC20
+                      ? " Buy MDC Coin"
+                      : "Approve"
+                  }
+
+             
             </GradientButton>
           </Box>
         </CustomTabPanel>
@@ -491,4 +678,4 @@ const ReferralTab = () => {
   );
 };
 
-export default ReferralTab;
+export default BuyTab;
