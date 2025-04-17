@@ -43,13 +43,14 @@ import {
   parseUnits,
   zeroAddress,
 } from "viem";
-import { useAppKitNetwork } from "@reown/appkit/react";
+import { useAppKit, useAppKitNetwork } from "@reown/appkit/react";
 import { extractDetailsFromError } from "@/utils/extractDetailsFromError";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import useCheckAllowance from "@/hooks/useCheckAllowance";
 import CoinSelector from "./CoinSelector";
 import { handleNegativeValue } from "@/utils";
+import CommonButton from "@/components/ui/CommonButton";
 const tokens = [
   { label: "USDT", icon: usdt },
   { label: "USDC", icon: usdc },
@@ -115,6 +116,7 @@ const GradientButton = styled(Button)({
 });
 
 const BuyTab = () => {
+   const { open, close } = useAppKit();
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const { address } = useAccount();
   const [selectedToken, setSelectedToken] = useState({
@@ -604,54 +606,70 @@ const BuyTab = () => {
 
           {/* Buy Button */}
           <Box mt={2}>
-            <GradientButton
-              fullWidth
-              disabled={
-                (calculationresult?.data?.[3]?.result?.isStable &&
-                  Number(amount) < Number(minBuy)) ||
-                (!calculationresult?.data?.[3]?.result?.isStable &&
-                  Number(
-                    formatEther(
-                      BigInt(calculationresult?.data?.[0]?.result ?? 0)
-                    )
-                  ) < Number(minBuy)) ||
-                isPending ||
-                amount === "" ||
-                Number(amount) <= 0 ||
-                (selectedToken?.tokenname === "BNB"
-                  ? Number(Balance?.formatted) < Number(amount) ||
-                    Number(Balance?.formatted) === 0
-                  : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
-                    Number(amount))
-              }
-              onClick={() => {
-                if (selectedToken?.tokenname === "BNB") {
-                  handleBuy();
-                } else {
-                  !isAproveERC20 ? approveToken() : handleBuy();
-                }
-              }}
-            >
-              {isPending
-                ? selectedToken?.tokenname === "BNB" || isAproveERC20
-                  ? "Buying..."
-                  : "Approving..."
-                : selectedToken?.tokenname === "BNB" && amount === ""
-                ? "Please enter amount"
-                : selectedToken?.tokenname === "BNB" && Number(amount) <= 0
-                ? "Please enter correct amount"
-                : (
-                    selectedToken?.tokenname === "BNB"
-                      ? Number(Balance?.formatted) < Number(amount) ||
-                        Number(Balance?.formatted) === 0
-                      : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
-                        Number(amount)
-                  )
-                ? "Insufficient funds"
-                : selectedToken?.tokenname === "BNB" || isAproveERC20
-                ? " Buy MDC Coin"
-                : "Approve"}
-            </GradientButton>
+
+            {address ? (
+                         <GradientButton
+                         fullWidth
+                         disabled={
+                           (calculationresult?.data?.[3]?.result?.isStable &&
+                             Number(amount) < Number(minBuy)) ||
+                           (!calculationresult?.data?.[3]?.result?.isStable &&
+                             Number(
+                               formatEther(
+                                 BigInt(calculationresult?.data?.[0]?.result ?? 0)
+                               )
+                             ) < Number(minBuy)) ||
+                           isPending ||
+                           amount === "" ||
+                           Number(amount) <= 0 ||
+                           (selectedToken?.tokenname === "BNB"
+                             ? Number(Balance?.formatted) < Number(amount) ||
+                               Number(Balance?.formatted) === 0
+                             : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
+                               Number(amount))
+                         }
+                         onClick={() => {
+                           if (selectedToken?.tokenname === "BNB") {
+                             handleBuy();
+                           } else {
+                             !isAproveERC20 ? approveToken() : handleBuy();
+                           }
+                         }}
+                       >
+                         {isPending
+                           ? selectedToken?.tokenname === "BNB" || isAproveERC20
+                             ? "Buying..."
+                             : "Approving..."
+                           : selectedToken?.tokenname === "BNB" && amount === ""
+                           ? "Please enter amount"
+                           : selectedToken?.tokenname === "BNB" && Number(amount) <= 0
+                           ? "Please enter correct amount"
+                           : (
+                               selectedToken?.tokenname === "BNB"
+                                 ? Number(Balance?.formatted) < Number(amount) ||
+                                   Number(Balance?.formatted) === 0
+                                 : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
+                                   Number(amount)
+                             )
+                           ? "Insufficient funds"
+                           : selectedToken?.tokenname === "BNB" || isAproveERC20
+                           ? " Buy MDC Coin"
+                           : "Approve"}
+                       </GradientButton>
+                        ) : (
+                          <CommonButton
+                            onClick={async () => open()}
+                            title="Connect Wallet"
+                            width="w-full"
+                          />
+            
+            
+            
+                          
+                        )}
+
+           
+           
           </Box>
         </CustomTabPanel>
       </InnerBox>
