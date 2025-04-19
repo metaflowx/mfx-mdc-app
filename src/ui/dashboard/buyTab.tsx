@@ -426,8 +426,8 @@ const BuyTab = () => {
         {tokens.map((token, index) => (
           <CustomTabPanel key={index} value={value} index={index}>
             <Box display="flex" justifyContent="center" gap="1rem" mt={2}>
-              <Typography>{token.label} Price: $0.0600</Typography>
-              <Typography>MDC Coin Price: $0.0170</Typography>
+             
+              <Typography>1 MDC = ${calciulatedToken?.tokenPriceData}</Typography>
             </Box>
           </CustomTabPanel>
         ))}
