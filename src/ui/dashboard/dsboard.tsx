@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 import { Address, erc20Abi, formatEther } from "viem";
 import { convertToAbbreviated } from "@/utils";
 import { useAccount, useReadContract } from "wagmi";
-import { iocConfig, TokenContractAddress } from "@/constants/contract";
+import { iocConfig, stakeConfig, TokenContractAddress } from "@/constants/contract";
 import { useAppKitNetwork } from "@reown/appkit/react";
 import PurchaseHistory from "./PurchaseHistory";
 import RefBottom from "../shared/refBottom";
@@ -60,7 +60,12 @@ const Dsboard = () => {
   const aizuUSDTAmount =
     Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) * tokenPriceBig;
 
-
+const dailyReward = useReadContract({
+        ...stakeConfig,
+        functionName: "user2Staker",
+        args: [address as Address],
+        chainId: Number(chainId) ?? 56,
+      });
   const BoxList = [
     {
       id: 1,
@@ -73,15 +78,19 @@ const Dsboard = () => {
     {
       id: 2,
       title: "Self Staking Income",
-      data: "0.000 MDC",
-      valueInUsd: "$0.000",
+      data: `${ Number(
+                        Number(formatEther(BigInt(dailyReward?.data?.volume ?? 0))) 
+                      ).toFixed(2)}`,
+      valueInUsd:  `$${dailyReward?.data?.amount
+                      ? Number(formatEther(dailyReward?.data?.amount)).toFixed(2)
+                      : "0"} `,
     },
-    {
-      id: 3,
-      title: "Your Spot Income",
-      data: "0.000 MDC",
-      valueInUsd: "$0.000",
-    },
+    // {
+    //   id: 3,
+    //   title: "Your Spot Income",
+    //   data: "0.000 MDC",
+    //   valueInUsd: "$0.000",
+    // },
   ];
 
 
@@ -91,7 +100,7 @@ const Dsboard = () => {
         <StepTwo>
           <Grid container spacing={2}>
             {BoxList.map((item, index) => (
-              <Grid key={index} size={{ xs: 12, md: 4, lg: 4 }}>
+              <Grid key={index} size={{ xs: 12, md: 6, lg: 6 }}>
                 <ListBox data-aos="fade-down">
                   <Box
                     sx={{
