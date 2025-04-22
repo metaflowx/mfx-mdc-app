@@ -195,17 +195,18 @@ const VCContractPage = () => {
     const totalReward = resultStakelIst &&
     resultStakelIst?.data &&
     resultStakelIst?.data.map((item:any)=>{
-      console.log(">>>>>>>>>>item",item?.amount8*2);
+     
      const amount= Number(formatEther(item?.amount))
       return amount*2
       
     })
-    console.log(">>>>>>>>>>>totalReward",totalReward);
+   
     return totalReward?.reduce((a,b)=>Number(a)+Number(b))
   
     
 
-  }, [])
+  }, [resultStakelIst])
+  console.log(">>>>>>>>>>>totalReward",totalVCReward);
 
   const claimRewardHandler =async(index:any)=>{
     try {
@@ -356,7 +357,9 @@ const VCContractPage = () => {
               </Typography>
               <Card className="rounded-0">
               <Box sx={{padding:"20px"}} >
-              {totalVCReward ? `${totalVCReward} MDC`:""}
+              <Typography style={{color:"#fff",padding:"5px"}}  >
+              {totalVCReward ? `${totalVCReward} MDC`:") MDC"}
+              </Typography>
               </Box>
               </Card>
             </Box>
