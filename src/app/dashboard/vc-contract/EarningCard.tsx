@@ -83,14 +83,14 @@ export default function EarningPage() {
       ? Number(formatEther(dailyReward?.data?.amount)).toFixed(2)
       : "0",
     },
-    {
-      id: 2,
-      title: "Total USDT Raised",
-      amount:`$${Number( Number(
-        Number(formatEther(BigInt(tottalContribute?.data ?? 0))) 
-      ) * Number(formatEther(BigInt(tokenPrice?.data ?? 0)))).toFixed(2)}` ,
-      sunvalue: "",
-    },
+    // {
+    //   id: 2,
+    //   title: "Total USDT Raised",
+    //   amount:`$${Number( Number(
+    //     Number(formatEther(BigInt(tottalContribute?.data ?? 0))) 
+    //   ) * Number(formatEther(BigInt(tokenPrice?.data ?? 0)))).toFixed(2)}` ,
+    //   sunvalue: "",
+    // },
    
   ];
   return (
