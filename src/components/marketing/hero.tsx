@@ -139,7 +139,7 @@ export default function Hero() {
       Number(calciulatedToken?.totalTokenSupplyUSD)) *
     100;
 
-    console.log(">>>>>>>>>>>>>result142",result);
+   
     
 
   return (
@@ -253,6 +253,10 @@ export default function Hero() {
                 title="Connect Wallet"
                 width="w-full"
               />
+
+
+
+              
             )}
           </div>
         </div>
