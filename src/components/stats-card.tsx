@@ -12,7 +12,7 @@ interface StatsCardProps {
           background:
             " linear-gradient(180deg, #2D67FE 0%, rgba(45, 103, 254, 0) 100%)",
         }}
-        className="p-[1px] rounded-[20px]"
+        className="p-[1px] rounded-[20px] h-[100%] "
       >
         <div className="rounded-[20px] bg-[#07070A] p-6 ">
           <div className="space-y-2">

@@ -38,6 +38,16 @@ export default function EarningPage() {
     chainId: Number(chainId) ?? 56,
   });
 
+  const tottalContribute = useReadContract({
+    ...vcConfig,
+    functionName: "totalStaked",
+    chainId: Number(chainId) ?? 56,
+  });
+  
+
+  console.log(">>>>>>>>>>tottalContribute",tottalContribute);
+  
+
   const totalPrice = useMemo(() => {
     const data = result?.data ?? [];
     const totalVol = data.map((amt:any)=>{
@@ -57,7 +67,7 @@ export default function EarningPage() {
       id: 1,
       title: "Total Earnings",
       amount: totalPrice
-        ? Number(totalPrice).toFixed(2)
+        ? `${Number(totalPrice).toFixed(2)} MDC`
         : "0",
       sunvalue:
         Number(formatEther(BigInt(dailyReward?.data?.claimedRewards ?? 0))) *
@@ -66,12 +76,20 @@ export default function EarningPage() {
     {
       id: 2,
       title: "Total Staking Amount",
-      amount:Number(
+      amount:`${Number(
         Number(formatEther(BigInt(dailyReward?.data?.volume ?? 0))) 
-      ).toFixed(2) ,
+      ).toFixed(2)} MDC` ,
       sunvalue:    dailyReward?.data?.amount
       ? Number(formatEther(dailyReward?.data?.amount)).toFixed(2)
       : "0",
+    },
+    {
+      id: 2,
+      title: "Total USDT Raised",
+      amount:`$${Number( Number(
+        Number(formatEther(BigInt(tottalContribute?.data ?? 0))) 
+      ) * Number(formatEther(BigInt(tokenPrice?.data ?? 0)))).toFixed(2)}` ,
+      sunvalue: "",
     },
    
   ];
@@ -79,12 +97,12 @@ export default function EarningPage() {
     <>
       {/* <ComingSoon /> */}
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 mb-8">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
         {earningsData.map((item) => (
           <StatsCard
             title={item?.title}
-            value={`${item?.amount} MDC`}
-            subValue={`$${Number(item?.sunvalue).toFixed(2)}`}
+            value={`${item?.amount}`}
+            subValue={Number(item?.sunvalue)>0 ? ` $${Number(item?.sunvalue).toFixed(2)}`:""}
           />
         ))}
       </div>
