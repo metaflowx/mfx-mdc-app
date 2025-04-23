@@ -372,7 +372,7 @@ const BuyTab = () => {
       const totalSaleTokenUSD = Number(totalSoldToken) * Number(tokeninUSD);
       const launchDate = calculationresult?.data?.[1]?.result;
       const totalContributors = calculationresult?.data?.[2]?.result;
-      const tokenPriceData = Number(formatEther(BigInt(tokenPrice ?? 0.1)));
+      const tokenPriceData = Number(formatEther(BigInt(tokenPrice ?? 0)));
 
       return {
         getToken: dividedVa?.toFixed(2),
@@ -427,7 +427,7 @@ const BuyTab = () => {
           <CustomTabPanel key={index} value={value} index={index}>
             <Box display="flex" justifyContent="center" gap="1rem" mt={2}>
              
-              <Typography>1 MDC = ${calciulatedToken?.tokenPriceData}</Typography>
+              <Typography>1 MDC = ${calciulatedToken?.tokenPriceData==0?0.1:calciulatedToken?.tokenPriceData}</Typography>
             </Box>
           </CustomTabPanel>
         ))}
