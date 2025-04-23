@@ -372,7 +372,7 @@ const BuyTab = () => {
       const totalSaleTokenUSD = Number(totalSoldToken) * Number(tokeninUSD);
       const launchDate = calculationresult?.data?.[1]?.result;
       const totalContributors = calculationresult?.data?.[2]?.result;
-      const tokenPriceData = Number(formatEther(BigInt(tokenPrice ?? 0)));
+      const tokenPriceData = Number(formatEther(BigInt(tokenPrice ?? 0.1)));
 
       return {
         getToken: dividedVa?.toFixed(2),
