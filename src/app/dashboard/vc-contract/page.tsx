@@ -235,7 +235,7 @@ const VCContractPage = () => {
 
   const totalMDC = useMemo(() => {
 
-    const calculate = Number(amount) /  Number(formatEther(BigInt(tokenPrice?.data ?? 0.1)))
+    const calculate = Number(amount) /  Number(formatEther(tokenPrice?.data==0?BigInt(tokenPrice?.data ?? 0):"100000000000000000"))
     const mdcValue = (calculate * 30/100)/24
     return mdcValue
     
