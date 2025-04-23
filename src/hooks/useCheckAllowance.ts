@@ -17,7 +17,7 @@ const useCheckAllowance = ({ spenderAddress,token }: { spenderAddress: Address,t
                 spenderAddress !== zeroAddress
             )
         },
-        chainId: Number(chainId)??97
+        chainId: Number(chainId)??56
     });
 
     return {

@@ -42,20 +42,20 @@ const Referral = () => {
         ...contractConfig,
         functionName: "getReferralRewards",
         args: [address as Address ],
-        chainId: Number(chainId)??97
+        chainId: Number(chainId)??56
       },
       {
         ...contractConfig,
         functionName: 'getReferralsCount',
         args: [address as Address ],
-        chainId: Number(chainId)??97
+        chainId: Number(chainId)??56
         
       },
       {
         ...contractConfig,
         functionName: 'getReferrer',
         args: [address as Address ],
-        chainId: Number(chainId)??97
+        chainId: Number(chainId)??56
       },
       
      
