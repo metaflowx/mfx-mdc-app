@@ -27,6 +27,7 @@ import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { StyledTableContainer } from "@/components/ui/StyledTableContainer";
 import {
   ICOContractAddress,
+  iocConfig,
   USDTAddress,
   vcConfig,
   VCContractAddress,
@@ -186,13 +187,13 @@ const VCContractPage = () => {
     });
   }, [blockNumber, queryClient, resultStakelIst, resultOfCheckAllowance]);
 
-  console.log(">>>>>>>>>result", resultStakelIst);
+ 
   useEffect(() => {
     if (resultStakelIst) setLoading(false);
   }, [resultStakelIst]);
 
   const totalVCReward = useMemo(() => {
-    const totalReward = resultStakelIst &&
+    const totalReward:any = resultStakelIst &&
     resultStakelIst?.data &&
     resultStakelIst?.data.map((item:any)=>{
      
@@ -201,12 +202,12 @@ const VCContractPage = () => {
       
     })
    
-    return totalReward?.reduce((a,b)=>Number(a)+Number(b))
+    return totalReward?.length>0 ? totalReward?.reduce((a:any,b:any)=>Number(a)+Number(b)):"0"
   
     
 
   }, [resultStakelIst])
-  console.log(">>>>>>>>>>>totalReward",totalVCReward);
+ 
 
   const claimRewardHandler =async(index:any)=>{
     try {
@@ -224,6 +225,23 @@ const VCContractPage = () => {
       toast.error(extractDetailsFromError(error.message as string) as string);
     }
   }
+
+  const tokenPrice = useReadContract({
+      ...iocConfig,
+      functionName: "getSaleTokenPrice",
+      args: [1],
+      chainId: Number(chainId) ?? 56,
+    });
+
+  const totalMDC = useMemo(() => {
+
+    const calculate = Number(amount) /  Number(formatEther(BigInt(tokenPrice?.data ?? 0)))
+    const mdcValue = (calculate * 30/100)/24
+    return mdcValue
+    
+    
+
+  }, [amount,tokenPrice])
 
   return (
     <Box>
@@ -294,7 +312,7 @@ const VCContractPage = () => {
                   APR: 30%
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                  Monthly Return: {((Number(amount) * 0.3) / 12).toFixed(2)} MDC
+                  Monthly Return: {((Number(totalMDC))).toFixed(2)} MDC
                   for 24 months
                 </Typography>
               </Box>
@@ -357,8 +375,8 @@ const VCContractPage = () => {
               </Typography>
               <Card className="rounded-0">
               <Box sx={{padding:"20px"}} >
-              <Typography style={{color:"#fff",padding:"5px"}}  >
-              {totalVCReward ? `${totalVCReward} MDC`:") MDC"}
+              <Typography style={{color:"#fff",padding:"5px"}}>
+              {totalVCReward ? `${totalVCReward} MDC`:"0 MDC"}
               </Typography>
               </Box>
               </Card>

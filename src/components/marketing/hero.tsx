@@ -37,25 +37,25 @@ export default function Hero() {
         ...iocConfig,
         functionName: "getSaleTokenPrice",
         args: [1],
-        chainId: Number(chainId) ?? 97,
+        chainId: Number(chainId) ?? 56,
       },
 
       {
         ...iocConfig,
         functionName: "saleType2IcoDetail",
         args: [1],
-        chainId: Number(chainId) ?? 97,
+        chainId: Number(chainId) ?? 56,
       },
       {
         ...tokenConfig,
         functionName: "totalSupply",
-        chainId: Number(chainId) ?? 97,
+        chainId: Number(chainId) ?? 56,
       },
       {
         ...iocConfig,
         functionName: "user2SaleType2Contributor",
         args: [address as Address, 1],
-        chainId: Number(chainId) ?? 97,
+        chainId: Number(chainId) ?? 56,
       },
       {
         ...iocConfig,

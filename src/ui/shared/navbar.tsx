@@ -77,8 +77,8 @@ const Navbar = () => {
     return (
         <Box>
             <ListBox>
-                {NavbarList.map((item) => (
-                    <ListItem key={item.id}>
+                {NavbarList.map((item,index) => (
+                    <ListItem key={index}>
                         <Link
                             style={{
                                 background: pathname === item.Url ? item.Gradient : '',

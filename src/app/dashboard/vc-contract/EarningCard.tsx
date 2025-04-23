@@ -45,7 +45,7 @@ export default function EarningPage() {
   });
   
 
-  console.log(">>>>>>>>>>tottalContribute",tottalContribute);
+
   
 
   const totalPrice = useMemo(() => {
@@ -97,9 +97,10 @@ export default function EarningPage() {
     <>
       {/* <ComingSoon /> */}
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-        {earningsData.map((item) => (
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 mb-8">
+        {earningsData.map((item,index) => (
           <StatsCard
+          key={index+1}
             title={item?.title}
             value={`${item?.amount}`}
             subValue={Number(item?.sunvalue)>0 ? ` $${Number(item?.sunvalue).toFixed(2)}`:""}

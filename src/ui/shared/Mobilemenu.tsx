@@ -26,14 +26,14 @@ const MobileMenuDashboard = () => {
         </SheetHeader>
 
         <nav className="flex flex-col space-y-4">
-          {NavbarList.map((link, index) => (
-            <SheetTrigger asChild>
+          {NavbarList?.map((link, index) => (
+            <SheetTrigger asChild  key={link?.id}>
               <Link
-                key={index}
-                href={link.Url}
+                key={link?.id}
+                href={link?.Url}
                 className="text-base text-white font-medium transition-colors hover:text-primary"
               >
-                {link.Name}
+                {link?.Name}
               </Link>
             </SheetTrigger>
           ))}
