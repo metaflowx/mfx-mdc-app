@@ -81,6 +81,8 @@ const VCContractPage = () => {
   const scrollRef: any = useRef(null);
   const { writeContractAsync, isPending, isSuccess, isError } =
     useWriteContract();
+    const { writeContractAsync:writeContractAsyncStake, isPending:isPendingStake } =
+    useWriteContract();
     const { writeContractAsync:calimWriteAsync, isPending:pending, isSuccess:success, isError:error } =
     useWriteContract();
     const resultOfCheckAllowance = useCheckAllowance({
@@ -123,10 +125,33 @@ const VCContractPage = () => {
     ],
   });
 
+  useEffect(() => {
+    if (resultOfCheckAllowance && address) {
+      const price = parseFloat(amount === "" ? "0" : amount);
+      const allowance = parseFloat(
+        formatEther?.(resultOfCheckAllowance.data ?? BigInt(0))
+      );
+      if (allowance >= price) {
+        setIsApprovedERC20(true);
+      } else {
+        setIsApprovedERC20(false);
+      }
+    }
+  }, [resultOfCheckAllowance, address, amount]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: resultOfCheckAllowance.queryKey,
+    });
+    queryClient.invalidateQueries({
+      queryKey: resultStakelIst.queryKey,
+    });
+  }, [blockNumber, queryClient, resultOfCheckAllowance,resultStakelIst]);
+
   const stakeHandler = async () => {
     try {
       const formattedAmount = parseUnits(amount, 18);
-      const res = await writeContractAsync({
+      const res = await writeContractAsyncStake({
         ...vcConfig,
         functionName: "stake",
         args: [formattedAmount],
@@ -166,28 +191,6 @@ const VCContractPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (resultOfCheckAllowance && address) {
-      const price = parseFloat(amount === "" ? "0" : amount);
-      const allowance = parseFloat(
-        formatEther?.(resultOfCheckAllowance.data ?? BigInt(0))
-      );
-      if (allowance >= price) {
-        setIsApprovedERC20(true);
-      } else {
-        setIsApprovedERC20(false);
-      }
-    }
-  }, [resultOfCheckAllowance, address, amount]);
-
-  useEffect(() => {
-    queryClient.invalidateQueries({
-      queryKey: resultOfCheckAllowance.queryKey,
-    });
-    queryClient.invalidateQueries({
-      queryKey: resultStakelIst.queryKey,
-    });
-  }, [blockNumber, queryClient, resultStakelIst, resultOfCheckAllowance]);
 
  
   useEffect(() => {
@@ -274,7 +277,7 @@ const VCContractPage = () => {
             >
               {predefinedAmounts.map((value) => (
                 <Button
-                  disabled={isPending}
+                  disabled={isPending || isPendingStake}
                   key={value}
                   variant="outlined"
                   onClick={() => setAmount(value.toString())}
@@ -323,7 +326,7 @@ const VCContractPage = () => {
 
           <Box mt={2}>
             <GradientButton
-              disabled={isPending || amount === ""}
+              disabled={isPending || isPendingStake || amount === ""}
               onClick={async () => {
                 if (isAproveERC20) {
                   await stakeHandler();
@@ -335,7 +338,7 @@ const VCContractPage = () => {
             >
               {isPending && !isAproveERC20
                 ? "Approving..."
-                : isPending && isAproveERC20
+                : isPendingStake && isAproveERC20
                 ? "Buying..."
                 : isAproveERC20
                 ? " Buy Plan"
