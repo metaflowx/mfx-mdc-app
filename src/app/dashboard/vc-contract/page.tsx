@@ -72,10 +72,6 @@ const calculateReturns = (amount: number) => {
 const VCContractPage = () => {
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const queryClient = useQueryClient();
-  const resultOfCheckAllowance = useCheckAllowance({
-    spenderAddress: VCContractAddress,
-    token: USDTAddress,
-  });
   const { chainId } = useAppKitNetwork();
   const [activeTab, setActiveTab] = useState("bought");
   const [isAproveERC20, setIsApprovedERC20] = useState(true);
@@ -87,6 +83,10 @@ const VCContractPage = () => {
     useWriteContract();
     const { writeContractAsync:calimWriteAsync, isPending:pending, isSuccess:success, isError:error } =
     useWriteContract();
+    const resultOfCheckAllowance = useCheckAllowance({
+      spenderAddress: VCContractAddress,
+      token: USDTAddress,
+    });
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -100, behavior: "smooth" });
@@ -130,6 +130,7 @@ const VCContractPage = () => {
         ...vcConfig,
         functionName: "stake",
         args: [formattedAmount],
+        chainId: Number(chainId) ?? 56
       });
       if (res) {
         setAmount("");
@@ -154,6 +155,7 @@ const VCContractPage = () => {
         functionName: "approve",
         args: [VCContractAddress, formattedAmount],
         account: address,
+        chainId: Number(chainId) ?? 56
       });
       if (res) {
         setIsApprovedERC20(true);
@@ -322,11 +324,11 @@ const VCContractPage = () => {
           <Box mt={2}>
             <GradientButton
               disabled={isPending || amount === ""}
-              onClick={() => {
+              onClick={async () => {
                 if (isAproveERC20) {
-                  stakeHandler();
+                  await stakeHandler();
                 } else {
-                  approveToken();
+                  await approveToken();
                 }
               }}
               fullWidth
