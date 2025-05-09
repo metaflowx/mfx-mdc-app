@@ -1,7 +1,6 @@
 import { useAccount, useReadContract } from "wagmi";
 import { Address, erc20Abi, zeroAddress } from "viem";
 import { useAppKitNetworkCore } from "@reown/appkit/react";
-import { TokenContractAddress } from "@/constants/contract";
 
 const useCheckAllowance = ({ spenderAddress,token }: { spenderAddress: Address,token:Address }) => {
     const { address } = useAccount();

@@ -12,7 +12,7 @@ if (!projectId) {
   throw new Error('Project ID is not defined')
 }
 
-export const networks = [bsc] as [AppKitNetwork, ...AppKitNetwork[]]
+export const networks = [bsc,bscTestnet] as [AppKitNetwork, ...AppKitNetwork[]]
 
 //Set up the Wagmi Adapter (Config)
 export const wagmiAdapter = new WagmiAdapter({
@@ -23,7 +23,8 @@ export const wagmiAdapter = new WagmiAdapter({
   projectId,
   networks,
   transports: {
-    [bsc.id]: http('https://bsc.drpc.org')
+    [bsc.id]: http('https://bsc.drpc.org'),
+    [bscTestnet.id]: http('https://endpoints.omniatech.io/v1/bsc/testnet/public'),
   },
 })
 
