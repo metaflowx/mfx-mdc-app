@@ -81,14 +81,20 @@ const VCContractPage = () => {
   const scrollRef: any = useRef(null);
   const { writeContractAsync, isPending, isSuccess, isError } =
     useWriteContract();
-    const { writeContractAsync:writeContractAsyncStake, isPending:isPendingStake } =
-    useWriteContract();
-    const { writeContractAsync:calimWriteAsync, isPending:pending, isSuccess:success, isError:error } =
-    useWriteContract();
-    const resultOfCheckAllowance = useCheckAllowance({
-      spenderAddress: VCContractAddress,
-      token: USDTAddress,
-    });
+  const {
+    writeContractAsync: writeContractAsyncStake,
+    isPending: isPendingStake,
+  } = useWriteContract();
+  const {
+    writeContractAsync: calimWriteAsync,
+    isPending: pending,
+    isSuccess: success,
+    isError: error,
+  } = useWriteContract();
+  const resultOfCheckAllowance = useCheckAllowance({
+    spenderAddress: VCContractAddress,
+    token: USDTAddress,
+  });
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -100, behavior: "smooth" });
@@ -114,6 +120,13 @@ const VCContractPage = () => {
     chainId: Number(chainId) ?? 56,
   });
 
+  const resultDistributionRewardDetail = useReadContract({
+    ...vcConfig,
+    functionName: "getUserSpecialDistributionRewardDetail",
+    args: [address as Address], // 👈 Hardcoded address
+    chainId: Number(chainId) ?? 56,
+  });
+
   const result = useReadContracts({
     contracts: [
       {
@@ -124,6 +137,42 @@ const VCContractPage = () => {
       },
     ],
   });
+
+  const [monthlyLoading, setMonthlyLoading] = useState(false);
+
+  const [totalValue, setTotalValue] = useState(0);
+  // Log in useEffect after data is fetched
+  useEffect(() => {
+    if (resultDistributionRewardDetail.data) {
+      const [rewardsPerMonth, remaining, claimed, totalMonthly] =
+        resultDistributionRewardDetail.data as [
+          bigint[],
+          bigint,
+          bigint,
+          bigint
+        ];
+
+      console.log(
+        "Rewards Per Month:",
+        rewardsPerMonth.map((r) => Number(r) / 1e18)
+      );
+      console.log("Remaining:", Number(remaining) / 1e18);
+      console.log("Claimed:", Number(claimed) / 1e18);
+
+      console.log("Total Monthly:", Number(totalMonthly) / 1e18);
+      setTotalValue(Number(totalMonthly) / 1e18);
+    }
+
+    if (resultDistributionRewardDetail.error) {
+      console.error(
+        "Error fetching reward detail:",
+        resultDistributionRewardDetail.error
+      );
+    }
+  }, [
+    resultDistributionRewardDetail.data,
+    resultDistributionRewardDetail.error,
+  ]);
 
   useEffect(() => {
     if (resultOfCheckAllowance && address) {
@@ -146,7 +195,7 @@ const VCContractPage = () => {
     queryClient.invalidateQueries({
       queryKey: resultStakelIst.queryKey,
     });
-  }, [blockNumber, queryClient, resultOfCheckAllowance,resultStakelIst]);
+  }, [blockNumber, queryClient, resultOfCheckAllowance, resultStakelIst]);
 
   const stakeHandler = async () => {
     try {
@@ -155,7 +204,7 @@ const VCContractPage = () => {
         ...vcConfig,
         functionName: "stake",
         args: [formattedAmount],
-        chainId: Number(chainId) ?? 56
+        chainId: Number(chainId) ?? 56,
       });
       if (res) {
         setAmount("");
@@ -180,7 +229,7 @@ const VCContractPage = () => {
         functionName: "approve",
         args: [VCContractAddress, formattedAmount],
         account: address,
-        chainId: Number(chainId) ?? 56
+        chainId: Number(chainId) ?? 56,
       });
       if (res) {
         setIsApprovedERC20(true);
@@ -191,62 +240,53 @@ const VCContractPage = () => {
     }
   };
 
-
- 
   useEffect(() => {
     if (resultStakelIst) setLoading(false);
   }, [resultStakelIst]);
 
   const totalVCReward = useMemo(() => {
-    const totalReward:any = resultStakelIst &&
-    resultStakelIst?.data &&
-    resultStakelIst?.data.map((item:any)=>{
-     
-     const amount= Number(formatEther(item?.amount))
-      return amount*2
-      
-    })
-   
-    return totalReward?.length>0 ? totalReward?.reduce((a:any,b:any)=>Number(a)+Number(b)):"0"
-  
-    
+    const totalReward: any =
+      resultStakelIst &&
+      resultStakelIst?.data &&
+      resultStakelIst?.data.map((item: any) => {
+        const amount = Number(formatEther(item?.amount));
+        return amount * 2;
+      });
 
-  }, [resultStakelIst])
- 
+    return totalReward?.length > 0
+      ? totalReward?.reduce((a: any, b: any) => Number(a) + Number(b))
+      : "0";
+  }, [resultStakelIst]);
 
-  const claimRewardHandler =async(index:any)=>{
+  const claimRewardHandler = async (index: any) => {
     try {
-    
       const res = await calimWriteAsync({
         ...vcConfig,
         functionName: "claimReward",
         args: [BigInt(index)],
       });
       if (success) {
-       
         toast.success("Claimed successfully.");
       }
     } catch (error: any) {
       toast.error(extractDetailsFromError(error.message as string) as string);
     }
-  }
+  };
 
   const tokenPrice = useReadContract({
-      ...iocConfig,
-      functionName: "getSaleTokenPrice",
-      args: [1],
-      chainId: Number(chainId) ?? 56,
-    });
+    ...iocConfig,
+    functionName: "getSaleTokenPrice",
+    args: [1],
+    chainId: Number(chainId) ?? 56,
+  });
 
   const totalMDC = useMemo(() => {
-
-    const calculate = Number(amount) /  Number(formatEther(BigInt(tokenPrice?.data ?? '100000000000000000')))
-    const mdcValue = (calculate * 30/100)/24
-    return mdcValue
-    
-    
-
-  }, [amount,tokenPrice])
+    const calculate =
+      Number(amount) /
+      Number(formatEther(BigInt(tokenPrice?.data ?? "100000000000000000")));
+    const mdcValue = (calculate * 30) / 100 / 24;
+    return mdcValue;
+  }, [amount, tokenPrice]);
 
   return (
     <Box>
@@ -317,8 +357,8 @@ const VCContractPage = () => {
                   APR: 30%
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                  Monthly Return: {((Number(totalMDC))).toFixed(2)} MDC
-                  for 24 months
+                  Monthly Return: {Number(totalMDC).toFixed(2)} MDC for 24
+                  months
                 </Typography>
               </Box>
             </Card>
@@ -367,28 +407,102 @@ const VCContractPage = () => {
               activeTab === "monthly" ? "0px 0px 10px #00f0ff" : "none",
           }}
         >
-        VC Rewards
+          VC Rewards
         </GradientButton>
       </Box>
 
-      { activeTab === "monthly" && (
+      {activeTab === "monthly" && resultDistributionRewardDetail?.data && (
         <Box pt={2}>
           <Card>
             <Box p={4}>
               <Typography variant="h6" gutterBottom>
-               VC rewards for next 10 months.
+                VC rewards for next 10 months
               </Typography>
+
               <Card className="rounded-0">
-              <Box sx={{padding:"20px"}} >
-              <Typography style={{color:"#fff",padding:"5px"}}>
-              {totalVCReward ? `${totalVCReward} MDC`:"0 MDC"}
-              </Typography>
-              </Box>
+                <StyledTableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Month</TableCell>
+                        <TableCell>Reward (MDC)</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {monthlyLoading && // ✅ Optional loading skeleton
+                        Array.from({ length: 3 }).map((_, rowIndex) => (
+                          <TableRow key={rowIndex}>
+                            {Array.from({ length: 2 }).map((__, cellIndex) => (
+                              <TableCell key={cellIndex}>
+                                <Skeleton
+                                  variant="text"
+                                  width="100%"
+                                  height={30}
+                                />
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        ))}
+
+                      {!monthlyLoading &&
+                        resultDistributionRewardDetail.data?.[0]
+                          ?.map((reward: bigint, index: number) => ({
+                            reward,
+                            index,
+                          }))
+                          .filter(({ reward }) => Number(reward) > 0)
+                          .map(({ reward, index }) => (
+                            <TableRow key={index}>
+                              <TableCell>{`Month ${index + 1}`}</TableCell>
+                              <TableCell>
+                                {(Number(reward) / 1e18).toFixed(4)} MDC
+                              </TableCell>
+                            </TableRow>
+                          ))}
+
+                      {!monthlyLoading &&
+                        resultDistributionRewardDetail.data?.[0]?.every(
+                          (r: bigint) => Number(r) === 0
+                        ) && (
+                          <TableRow>
+                            <TableCell colSpan={2} align="center">
+                              No rewards found
+                            </TableCell>
+                          </TableRow>
+                        )}
+                    </TableBody>
+                  </Table>
+                </StyledTableContainer>
               </Card>
+
+              <Box mt={3}>
+                <Typography>
+                  <strong>Remaining:</strong>{" "}
+                  {(
+                    Number(resultDistributionRewardDetail.data?.[1]) / 1e18
+                  ).toFixed(4)}{" "}
+                  MDC
+                </Typography>
+                <Typography>
+                  <strong>Claimed:</strong>{" "}
+                  {(
+                    Number(resultDistributionRewardDetail.data?.[2]) / 1e18
+                  ).toFixed(4)}{" "}
+                  MDC
+                </Typography>
+                <Typography>
+                  <strong>Total Monthly:</strong>{" "}
+                  {(
+                    Number(resultDistributionRewardDetail.data?.[3]) / 1e18
+                  ).toFixed(4)}{" "}
+                  MDC
+                </Typography>
+              </Box>
             </Box>
           </Card>
         </Box>
       )}
+
       {activeTab === "bought" && (
         <Box pt={2}>
           <Card>
@@ -439,8 +553,8 @@ const VCContractPage = () => {
                         resultStakelIst &&
                         resultStakelIst?.data &&
                         resultStakelIst?.data.map((row: any, index) => {
-                          console.log(">>>>>>>>>row",row);
-                          
+                          console.log(">>>>>>>>>row", row);
+
                           const startdate = new Date(
                             Number(row?.startTime) * 1000
                           );
@@ -453,7 +567,10 @@ const VCContractPage = () => {
                                 {Number(formatEther(row?.amount)).toFixed(2)}{" "}
                                 USDT
                               </TableCell>
-                              <DailyReward index={index} address={address as Address} />
+                              <DailyReward
+                                index={index}
+                                address={address as Address}
+                              />
 
                               <TableCell>
                                 {parseFloat(
@@ -483,13 +600,13 @@ const VCContractPage = () => {
                               </TableCell>
                               <TableCell>
                                 <GradientButton
-                                 disabled={pending}
+                                  disabled={pending}
                                   onClick={() => {
                                     claimRewardHandler(index);
                                   }}
                                   fullWidth
                                 >
-                                 {pending ? "Claiming...":"Claim"} 
+                                  {pending ? "Claiming..." : "Claim"}
                                 </GradientButton>
                               </TableCell>
                             </TableRow>
@@ -508,7 +625,6 @@ const VCContractPage = () => {
 };
 
 export default VCContractPage;
-
 
 const DailyReward = ({
   index,
@@ -530,8 +646,7 @@ const DailyReward = ({
     queryClient.invalidateQueries({
       queryKey: dailyReward.queryKey,
     });
-    
-  }, [blockNumber, queryClient,dailyReward]);
+  }, [blockNumber, queryClient, dailyReward]);
 
   return (
     <TableCell className="text-white whitespace-pre">
