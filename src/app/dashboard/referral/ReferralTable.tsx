@@ -48,6 +48,7 @@ export default function ReferralTable() {
     },
   ];
   const [activeTab, setActiveTab] = useState("direct");
+  const [selectedLevel, setSelectedLevel] = useState(1);
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -60,6 +61,13 @@ export default function ReferralTable() {
     ...contractConfig,
     functionName: "getReferralsCount",
     args: [address as Address],
+    chainId: Number(chainId) ?? 56,
+  });
+
+  const getLevelResult = useReadContract({
+    ...contractConfig,
+    functionName: "getDownlineReferralAtLevel",
+    args: [address as Address, BigInt(selectedLevel)],
     chainId: Number(chainId) ?? 56,
   });
 
@@ -79,7 +87,6 @@ export default function ReferralTable() {
         {/* <Box sx={{ mb: 3 }} className="displayCenter">
         <CommonTabButton tabList={tabList} setActiveTab={setActiveTab} activeTab={activeTab} />
       </Box> */}
-
         <Box
           sx={{
             display: "flex",
@@ -89,48 +96,68 @@ export default function ReferralTable() {
           }}
         >
           <h4 className="text-white text-[18px] sm:text-[28px] font-[700] ">
-            {activeTab === "direct" ? "Direct Referral" : "Upline Referral"}
+            {activeTab === "direct" ? "My Team" : "Upline Referral"}
           </h4>
-        </Box>
 
+          <div className="relative">
+            <select
+              className="bg-[#1f1f1f] max-h-[200px] text-white border border-gray-600 rounded-xl px-4 py-2 pr-8 appearance-none focus:outline-none focus:ring-2 focus:ring-[#2caee2] text-sm sm:text-base"
+              value={selectedLevel}
+              onChange={(e) => setSelectedLevel(Number(e.target.value))}
+            >
+              {Array.from({ length: 20 }, (_, i) => (
+                <option key={i + 1} value={i + 1} >
+                  Level {i + 1}
+                </option>
+              ))}
+            </select>
+
+            {/* Chevron Icon */}
+            <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 ">
+              ▼
+            </div>
+          </div>
+        </Box>
         <Card className="rounded-0">
           <StyledTableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>User</TableCell>
-                  <TableCell>Bonus</TableCell>
-                  <TableCell sx={{ whiteSpace: "pre" }}>
-                  Profit
-                   
-                  </TableCell>
-                 
-                 
-                 
+                  <TableCell>Level</TableCell>
+                  <TableCell>Address</TableCell>
+                  {/* <TableCell sx={{ whiteSpace: "pre" }}>Profit</TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
-              {result.isLoading ? (
-              [...Array(3)].map((_, index) => (
-                <TableRow key={index} className="border-b-0">
-                  {[...Array(3)].map((_, i) => (
-                    <TableCell key={i} className="text-white">
-                      <Skeleton variant="text" width={100} height={20} />
+                {getLevelResult.isLoading ? (
+                  [...Array(3)].map((_, index) => (
+                    <TableRow key={index} className="border-b-0">
+                      {[...Array(3)].map((_, i) => (
+                        <TableCell key={i} className="text-white">
+                          <Skeleton variant="text" width={100} height={20} />
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : getLevelResult?.data && getLevelResult?.data?.length > 0 ? (
+                  getLevelResult.data.map((item: any, index: number) => (
+                    <TableBodyData
+                      key={index}
+                      index={index}
+                      item={item}
+                      selectedLevel={selectedLevel}
+                    />
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={8}
+                      className="text-center text-white py-4"
+                    >
+                      No Data Found
                     </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : result?.data && result?.data?.length > 0 ? (
-              result?.data.map((item: any, index: number) => (
-                <TableBodyData index={index} item={item} />
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={8} className="text-center text-white py-4">
-                  No Data Found
-                </TableCell>
-              </TableRow>
-            )}
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </StyledTableContainer>
@@ -140,38 +167,33 @@ export default function ReferralTable() {
   );
 }
 
-const TableBodyData = ({ index, item }: { index: number; item: any }) => {
-  const { chainId } = useAppKitNetwork();
-  const getRef = useReadContract({
-    ...iocConfig,
-    functionName: "user2SaleType2Contributor",
-    args: [item as Address, 1],
-    chainId: Number(chainId) ?? 56,
-    query: {
-      select(data) {
-        const value = parseFloat(formatEther(data.volume)) * 0.1;
-        return value.toFixed(2);
-      },
-    },
-  });
-
+const TableBodyData = ({
+  index,
+  item,
+  selectedLevel,
+}: {
+  index: number;
+  item: any;
+  selectedLevel: number;
+}) => {
   const handleCopy = (item: any) => {
     copy(item);
     toast.success("Address copied to clipboard!");
   };
+
   return (
     <TableRow key={index} className="border-b-0">
+      {/* Level */}
+      <TableCell className="text-white">{selectedLevel}</TableCell>
+
+      {/* Address */}
       <TableCell className="text-white">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {sortAddress(item)}&nbsp;
-          <Box onClick={() => handleCopy(item)}>
-            <Copy color="#fff" />
+          <Box onClick={() => handleCopy(item)} className="cursor-pointer">
+            <Copy color="#fff" size={16} />
           </Box>
         </Box>
-      </TableCell>
-      <TableCell className="text-white">10%</TableCell>
-      <TableCell className="text-white">
-        {getRef?.data ? getRef?.data : 0} MDC
       </TableCell>
     </TableRow>
   );

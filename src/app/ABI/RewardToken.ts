@@ -99,12 +99,32 @@ export const RefferABI = [
   },
   {
     inputs: [
+      { internalType: "address", name: "_user", type: "address" },
+      { internalType: "uint256", name: "_max", type: "uint256" },
+    ],
+    name: "getAllDownlinesDynamic",
+    outputs: [{ internalType: "address[]", name: "", type: "address[]" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
       { internalType: "address", name: "referrer_", type: "address" },
       { internalType: "uint256", name: "startIndex_", type: "uint256" },
       { internalType: "uint256", name: "endIndex_", type: "uint256" },
     ],
     name: "getDirectReferrals",
     outputs: [{ internalType: "address[]", name: "users", type: "address[]" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_user", type: "address" },
+      { internalType: "uint256", name: "_level", type: "uint256" },
+    ],
+    name: "getDownlineReferralAtLevel",
+    outputs: [{ internalType: "address[]", name: "", type: "address[]" }],
     stateMutability: "view",
     type: "function",
   },
