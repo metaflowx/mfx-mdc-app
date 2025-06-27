@@ -58,8 +58,6 @@ const tokens = [
   { label: "ETH", icon: eth },
 ];
 
-
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -116,7 +114,7 @@ const GradientButton = styled(Button)({
 });
 
 const BuyTab = () => {
-   const { open, close } = useAppKit();
+  const { open, close } = useAppKit();
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const { address } = useAccount();
   const [selectedToken, setSelectedToken] = useState({
@@ -135,9 +133,9 @@ const BuyTab = () => {
   const [value1, setValue1] = useState(0);
 
   const [amount, setAmount] = useState<string>("");
-  const [referrer, setReferrer] = useState(
-    searchparm.get("ref") || zeroAddress
-  );
+  // const [inputAddress, setInputAddress] = useState("");
+
+  const [referrer, setReferrer] = useState(searchparm.get("ref"));
   const resultOfCheckAllowance = useCheckAllowance({
     spenderAddress: ICOContractAddress,
     token: selectedToken.address,
@@ -426,8 +424,12 @@ const BuyTab = () => {
         {tokens.map((token, index) => (
           <CustomTabPanel key={index} value={value} index={index}>
             <Box display="flex" justifyContent="center" gap="1rem" mt={2}>
-             
-              <Typography>1 MDC = ${calciulatedToken?.tokenPriceData==0?0.1:calciulatedToken?.tokenPriceData}</Typography>
+              <Typography>
+                1 MDC = $
+                {calciulatedToken?.tokenPriceData == 0
+                  ? 0.1
+                  : calciulatedToken?.tokenPriceData}
+              </Typography>
             </Box>
           </CustomTabPanel>
         ))}
@@ -604,72 +606,91 @@ const BuyTab = () => {
             </Box>
           </Box>
 
+          <MaxButtonWrap>
+            <InputBase
+              disabled={isPending}
+              onKeyDown={(e) => {
+                handleNegativeValue(e);
+              }}
+              value={referrer}
+              onChange={(e) => setReferrer(e.target.value)}
+              fullWidth
+              placeholder="Enter Referrer Address"
+              type="number"
+              sx={{
+                flex: 1,
+                color: "#fff",
+                padding: "0.3rem 0.5rem",
+                "& input[type=number]": { "-moz-appearance": "textfield" },
+                "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
+                  {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
+              }}
+            />
+            {/* <GradientButton onClick={() => setAmount("0")}>Max</GradientButton> */}
+          </MaxButtonWrap>
+
           {/* Buy Button */}
           <Box mt={2}>
-
             {address ? (
-                         <GradientButton
-                         fullWidth
-                         disabled={
-                           (calculationresult?.data?.[3]?.result?.isStable &&
-                             Number(amount) < Number(minBuy)) ||
-                           (!calculationresult?.data?.[3]?.result?.isStable &&
-                             Number(
-                               formatEther(
-                                 BigInt(calculationresult?.data?.[0]?.result ?? 0)
-                               )
-                             ) < Number(minBuy)) ||
-                           isPending ||
-                           amount === "" ||
-                           Number(amount) <= 0 ||
-                           (selectedToken?.tokenname === "BNB"
-                             ? Number(Balance?.formatted) < Number(amount) ||
-                               Number(Balance?.formatted) === 0
-                             : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
-                               Number(amount))
-                         }
-                         onClick={() => {
-                           if (selectedToken?.tokenname === "BNB") {
-                             handleBuy();
-                           } else {
-                             !isAproveERC20 ? approveToken() : handleBuy();
-                           }
-                         }}
-                       >
-                         {isPending
-                           ? selectedToken?.tokenname === "BNB" || isAproveERC20
-                             ? "Buying..."
-                             : "Approving..."
-                           : selectedToken?.tokenname === "BNB" && amount === ""
-                           ? "Please enter amount"
-                           : selectedToken?.tokenname === "BNB" && Number(amount) <= 0
-                           ? "Please enter correct amount"
-                           : (
-                               selectedToken?.tokenname === "BNB"
-                                 ? Number(Balance?.formatted) < Number(amount) ||
-                                   Number(Balance?.formatted) === 0
-                                 : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
-                                   Number(amount)
-                             )
-                           ? "Insufficient funds"
-                           : selectedToken?.tokenname === "BNB" || isAproveERC20
-                           ? " Buy MDC Coin"
-                           : "Approve"}
-                       </GradientButton>
-                        ) : (
-                          <CommonButton
-                            onClick={async () => open()}
-                            title="Connect Wallet"
-                            width="w-full"
-                          />
-            
-            
-            
-                          
-                        )}
-
-           
-           
+              <GradientButton
+                fullWidth
+                disabled={
+                  (calculationresult?.data?.[3]?.result?.isStable &&
+                    Number(amount) < Number(minBuy)) ||
+                  (!calculationresult?.data?.[3]?.result?.isStable &&
+                    Number(
+                      formatEther(
+                        BigInt(calculationresult?.data?.[0]?.result ?? 0)
+                      )
+                    ) < Number(minBuy)) ||
+                  isPending ||
+                  amount === "" ||
+                  Number(amount) <= 0 ||
+                  (selectedToken?.tokenname === "BNB"
+                    ? Number(Balance?.formatted) < Number(amount) ||
+                      Number(Balance?.formatted) === 0
+                    : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
+                      Number(amount))
+                }
+                onClick={() => {
+                  if (selectedToken?.tokenname === "BNB") {
+                    handleBuy();
+                  } else {
+                    !isAproveERC20 ? approveToken() : handleBuy();
+                  }
+                }}
+              >
+                {isPending
+                  ? selectedToken?.tokenname === "BNB" || isAproveERC20
+                    ? "Buying..."
+                    : "Approving..."
+                  : selectedToken?.tokenname === "BNB" && amount === ""
+                  ? "Please enter amount"
+                  : selectedToken?.tokenname === "BNB" && Number(amount) <= 0
+                  ? "Please enter correct amount"
+                  : (
+                      selectedToken?.tokenname === "BNB"
+                        ? Number(Balance?.formatted) < Number(amount) ||
+                          Number(Balance?.formatted) === 0
+                        : Number(
+                            formatEther(BigInt(resultOfTokenBalance ?? 0))
+                          ) < Number(amount)
+                    )
+                  ? "Insufficient funds"
+                  : selectedToken?.tokenname === "BNB" || isAproveERC20
+                  ? " Buy MDC Coin"
+                  : "Approve"}
+              </GradientButton>
+            ) : (
+              <CommonButton
+                onClick={async () => open()}
+                title="Connect Wallet"
+                width="w-full"
+              />
+            )}
           </Box>
         </CustomTabPanel>
       </InnerBox>

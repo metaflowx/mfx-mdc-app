@@ -7,7 +7,7 @@ const data = {
   publicPrice: "$0.06",
   chartData: [
     {
-      name: "Watch To Earn Reward(25%)",
+      name: "Watch To Earn Reward(39%)",
       value: 25,
       color: "text-[#6E2CCB]",
       bg: "#F9BC01",
@@ -21,7 +21,7 @@ const data = {
       width: "37px",
     },
     {
-      name: "Backup & Reverse(5%)",
+      name: "Backup & Reverse(8%)",
       value: 5,
       color: "text-[#FFBB28]",
       bg: "#0247FC",
@@ -35,21 +35,21 @@ const data = {
       width: "247px",
     },
     {
-      name: "Exchange Liquidity(10%)",
+      name: "Exchange Liquidity(5%)",
       value: 5,
       color: "text-[#CD3939]",
       bg: "#A7184D",
       width: "37px",
     },
     {
-      name: "Legal & Compliances(5%)",
+      name: "Legal & Compliances(1.5%)",
       value: 10,
       color: "text-[#C156D0]",
       bg: "#0392CE",
       width: "71px",
     },
     {
-      name: "Marketing(10%)",
+      name: "Marketing(5%)",
       value: 10,
       color: "text-[#EF45A1]",
       bg: "#FD5306",
@@ -70,14 +70,14 @@ const data = {
       width: "71px",
     },
     {
-      name: "Airdrop(1%)",
+      name: "Airdrop(0.5%)",
       value: 10,
       color: "text-[#EF45A1]",
       bg: "#FEFF35",
       width: "71px",
     },
     {
-      name: "Content Creator(5%)",
+      name: "Content Creator(1%)",
       value: 10,
       color: "text-[#EF45A1]",
       bg: "#3C02A6",
@@ -91,7 +91,7 @@ const data = {
       width: "71px",
     },
     {
-      name: "Referral Reward1%",
+      name: "Referral Reward(2%)",
       value: 10,
       color: "text-[#EF45A1]",
       bg: "#C1C212",
@@ -105,10 +105,10 @@ const data = {
   ],
 };
 
-const TokenomicsPage = ({id}:{id:string}) => {
+const TokenomicsPage = ({ id }: { id: string }) => {
   return (
     <div
-    id={id}
+      id={id}
       style={{
         background: "url(/images/tokenomics/tokenomicabg.png)",
         backgroundRepeat: "no-repeat",
@@ -119,26 +119,41 @@ const TokenomicsPage = ({id}:{id:string}) => {
       <div className="container mx-auto mt-[50px] pb-[50px] ">
         <div className="text-white  flex flex-col items-center justify-center space-y-6">
           <div className="text-left sm:text-center">
-            <h2 data-aos="fade-right" className="text-white text-[40px] md:text-[60px] font-bold">
+            <h2
+              data-aos="fade-right"
+              className="text-white text-[40px] md:text-[60px] font-bold"
+            >
               Tokenomics
             </h2>
-            <h3 data-aos="fade-left" className="text-white text-[30px] md:text-[40px] font-[700]">
+            <h3
+              data-aos="fade-left"
+              className="text-white text-[30px] md:text-[40px] font-[700]"
+            >
               Total Supply
             </h3>
-            <h3 data-aos="fade-right" className="text-white text-[30px] md:text-[50px] font-[400]">
+            <h3
+              data-aos="fade-right"
+              className="text-white text-[30px] md:text-[50px] font-[400]"
+            >
               {data.supply}
             </h3>
           </div>
 
-          <div data-aos="fade-up" className="flex   items-center overflow-hidden">
-            <img src="/images/tokenomics/chartimg.png" className="transition-all duration-300 ease-in-out hover:scale-105" />
+          <div
+            data-aos="fade-up"
+            className="flex   items-center overflow-hidden"
+          >
+            <img
+              src="/images/tokenomics/chartimg.png"
+              className="transition-all duration-300 ease-in-out hover:scale-105"
+            />
           </div>
         </div>
         <div
           style={{
             background:
               "linear-gradient(1deg, #1AB3E5 0%, rgba(26, 179, 229, 0) 100%)",
-              padding:"1px"
+            padding: "1px",
           }}
           className="rounded-[20px] mt-20 "
         >
@@ -149,9 +164,12 @@ const TokenomicsPage = ({id}:{id:string}) => {
             }}
             className="relative grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-4 rounded-[20px] p-6"
           >
-            {data?.chartData.map((item,index) => {
+            {data?.chartData.map((item, index) => {
               return (
-                <div key={`card${index+1}`} className="rounded-[12px]  py-1 px-5 mt-[10px] transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer ">
+                <div
+                  key={`card${index + 1}`}
+                  className="rounded-[12px]  py-1 px-5 mt-[10px] transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer "
+                >
                   <div data-aos="fade-down" className="flex items-center">
                     <div
                       style={{
