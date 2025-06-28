@@ -3,12 +3,12 @@ import { RefferABI } from "@/app/ABI/RewardToken";
 import { StakingABI } from "@/app/ABI/StakingABI";
 import { TokenABI } from "@/app/ABI/TokenSupply";
 import { VCABI } from "@/app/ABI/VCABI";
-export const TokenContractAddress = "0xebfa9073A0fA6d440185352175ce1a625FbBf819";
-export const ICOContractAddress = "0xa4A84814a48eb0caE1d1C7531BDdD27f135FCdEb"
-export const ReferralContractAddress = "0xA86d21673e1810224113b7805FEAc494835F9e3a"
+export const TokenContractAddress = "0x95B93aa56d953fe7D1c315Caa10b7843D3fdfDfB";
+export const ICOContractAddress = "0xB01caBB79b45Fd9e1e2c1180B4a3f39e65f2549F"
+export const ReferralContractAddress = "0x066520d328C403E62923f16B433bAbf1457AbEE5";
 export const VCContractAddress = "0xAFb5De95758bD9d818c52cd037d8a856aFBEE914"
 export const USDTAddress = "0x55d398326f99059fF775485246999027B3197955"
-export const StakeContractAddress = "0xEAb25c6D419b3458A129Db2096d47Dee2Cec5E84"
+export const StakeContractAddress = "0x090077db858FF4232db32847F321eD6D7148e1D5";
 
 
 export const contractConfig = {

@@ -1,6 +1,7 @@
 export const RefferABI = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   { inputs: [], name: "AlreadyInitialize", type: "error" },
+  { inputs: [], name: "ClaimCooldownPeriodNotOver", type: "error" },
   { inputs: [], name: "InsufficientRewardToken", type: "error" },
   { inputs: [], name: "InvalidAddress", type: "error" },
   {
@@ -83,8 +84,54 @@ export const RefferABI = [
         name: "reward",
         type: "uint256",
       },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "level",
+        type: "uint256",
+      },
     ],
     name: "ReferralReward",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "address", name: "user", type: "address" },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "reward",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "level",
+        type: "uint256",
+      },
+    ],
+    name: "ReferralRewardsClaimed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: "address", name: "user", type: "address" },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amountInUSD",
+        type: "uint256",
+      },
+    ],
+    name: "SwapUSDT",
     type: "event",
   },
   {
@@ -93,6 +140,40 @@ export const RefferABI = [
       { internalType: "address", name: "referrer_", type: "address" },
     ],
     name: "addReferral",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "amount_", type: "uint256" }],
+    name: "addReferralBonusAllocation",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "amount_", type: "uint256" }],
+    name: "addSwapUSDTAlloaction",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "bool", name: "isSwapUSDT_", type: "bool" },
+      { internalType: "uint256", name: "level_", type: "uint256" },
+    ],
+    name: "claimReferralReward",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "account_", type: "address" },
+      { internalType: "uint256", name: "tokenAmount_", type: "uint256" },
+    ],
+    name: "distributeRewards",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -129,9 +210,30 @@ export const RefferABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "referrer_", type: "address" }],
+    inputs: [
+      { internalType: "address", name: "referrer_", type: "address" },
+      { internalType: "uint256", name: "level_", type: "uint256" },
+    ],
     name: "getReferralRewards",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    outputs: [
+      {
+        components: [
+          { internalType: "uint256", name: "amount", type: "uint256" },
+          { internalType: "uint256", name: "claimed", type: "uint256" },
+          { internalType: "uint256", name: "lastClaimTime", type: "uint256" },
+        ],
+        internalType: "struct IMDCReferral.ReferralsReward",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "getReferralUplineTree",
+    outputs: [{ internalType: "address[]", name: "users", type: "address[]" }],
     stateMutability: "view",
     type: "function",
   },
@@ -150,8 +252,23 @@ export const RefferABI = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "address", name: "referrer_", type: "address" }],
+    name: "getTotalReferralRewards",
+    outputs: [
+      { internalType: "uint256", name: "totalReward", type: "uint256" },
+      { internalType: "uint256", name: "totalClaimed", type: "uint256" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "initialHandler_", type: "address" },
+      { internalType: "address", name: "mdcToken_", type: "address" },
+      { internalType: "address", name: "usdtToken_", type: "address" },
+      { internalType: "address", name: "mdcIcoContract_", type: "address" },
+      { internalType: "address", name: "mdcStakingContract_", type: "address" },
+      { internalType: "address", name: "swapTreasureWallet_", type: "address" },
     ],
     name: "initialize",
     outputs: [],
@@ -162,6 +279,39 @@ export const RefferABI = [
     inputs: [],
     name: "isInitialized",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "user_", type: "address" },
+      { internalType: "address", name: "referrer_", type: "address" },
+    ],
+    name: "isValidReferrer",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "mdcIcoContract",
+    outputs: [{ internalType: "contract IMDCICO", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "mdcStakingContract",
+    outputs: [
+      { internalType: "contract IMDCStaking", name: "", type: "address" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "mdcToken",
+    outputs: [{ internalType: "contract IERC20", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
@@ -180,6 +330,20 @@ export const RefferABI = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "swapFee",
+    outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "swapTreasureWallet",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "totalReferralBonusAllocation",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -189,6 +353,13 @@ export const RefferABI = [
   {
     inputs: [],
     name: "totalReferralBonusReward",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "totalSwapUSDTAlloaction",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -221,4 +392,27 @@ export const RefferABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-] as const;
+  {
+    inputs: [{ internalType: "uint8[]", name: "fee_", type: "uint8[]" }],
+    name: "updateSwapFee",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "swapTreasureWallet_", type: "address" },
+    ],
+    name: "updateSwapTreasureWallet",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "usdtToken",
+    outputs: [{ internalType: "contract IERC20", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+];

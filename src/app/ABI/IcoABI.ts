@@ -555,6 +555,28 @@ export const IcoABI = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "mdcReferralContract_",
+        type: "address",
+      },
+    ],
+    name: "updateMdcReferralContract",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "mdcStakingContract_", type: "address" },
+    ],
+    name: "updateMdcStakingContract",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "enum IMDCICO.SaleType",
         name: "saleType_",
         type: "uint8",
@@ -594,19 +616,6 @@ export const IcoABI = [
       },
     ],
     name: "updateVesting",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "mdcReferralContract_",
-        type: "address",
-      },
-    ],
-    name: "updatemdcReferralContract",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -693,4 +702,4 @@ export const IcoABI = [
     type: "function",
   },
   { stateMutability: "payable", type: "receive" },
-] as const;
+];

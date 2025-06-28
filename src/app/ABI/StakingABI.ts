@@ -377,6 +377,28 @@ export const StakingABI = [
   },
   {
     inputs: [
+      { internalType: "address", name: "user_", type: "address" },
+      { internalType: "uint256", name: "level_", type: "uint256" },
+    ],
+    name: "getTotalBusinessPerDirectUpToLevelList",
+    outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "user_", type: "address" },
+      { internalType: "uint256", name: "level_", type: "uint256" },
+    ],
+    name: "getTotalCappedBusinessSum",
+    outputs: [
+      { internalType: "uint256", name: "totalCappedBusiness", type: "uint256" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
       { internalType: "address", name: "mdcToken_", type: "address" },
       { internalType: "address", name: "usdtToken_", type: "address" },
       { internalType: "address", name: "mdcIcoContract_", type: "address" },
@@ -385,6 +407,7 @@ export const StakingABI = [
         name: "mdcReferralContract_",
         type: "address",
       },
+      { internalType: "address", name: "swapTreasureWallet_", type: "address" },
     ],
     name: "initialize",
     outputs: [],
@@ -431,6 +454,16 @@ export const StakingABI = [
   {
     inputs: [],
     name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "bool", name: "isSwapUSDT_", type: "bool" },
+      { internalType: "uint256", name: "amount_", type: "uint256" },
+    ],
+    name: "requestTeamReward",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -562,6 +595,26 @@ export const StakingABI = [
     type: "function",
   },
   {
+    inputs: [
+      { internalType: "address", name: "swapTreasureWallet_", type: "address" },
+    ],
+    name: "updateSwapTreasureWallet",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "account_", type: "address" },
+      { internalType: "uint256", name: "amount_", type: "uint256" },
+      { internalType: "uint256", name: "index_", type: "uint256" },
+    ],
+    name: "updateTeamRewardRequest",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "usdtToken",
     outputs: [{ internalType: "contract IERC20", name: "", type: "address" }],
@@ -574,6 +627,7 @@ export const StakingABI = [
     outputs: [
       { internalType: "uint256", name: "claimedRewards", type: "uint256" },
       { internalType: "uint256", name: "lastClaimTime", type: "uint256" },
+      { internalType: "uint256", name: "monthlyCount", type: "uint256" },
     ],
     stateMutability: "view",
     type: "function",
@@ -636,4 +690,19 @@ export const StakingABI = [
     stateMutability: "view",
     type: "function",
   },
-] as const;
+  {
+    inputs: [
+      { internalType: "address", name: "", type: "address" },
+      { internalType: "uint256", name: "", type: "uint256" },
+    ],
+    name: "user2TeamRewardRequestList",
+    outputs: [
+      { internalType: "uint256", name: "amount", type: "uint256" },
+      { internalType: "uint256", name: "at", type: "uint256" },
+      { internalType: "bool", name: "isSwapUSDT", type: "bool" },
+      { internalType: "bool", name: "done", type: "bool" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+];

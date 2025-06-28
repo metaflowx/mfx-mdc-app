@@ -34,9 +34,13 @@ export default function AboutSection({ id }: { id: string }) {
             data-aos="fade-up"
             className="block sm:flex justify-center gap-4 mt-8"
           >
-            <Link href={""}>
+            <Link
+              href={
+                "https://bscscan.com/address/0xebfa9073A0fA6d440185352175ce1a625FbBf819"
+              }
+            >
               <ButtonGradient
-                btnName="0x578e...ea4"
+                btnName="0xebfa...819"
                 width="w-full sm:w-[209px]"
               />
             </Link>
