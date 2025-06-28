@@ -18,6 +18,7 @@ import {
 } from "viem";
 import { useRouter } from "next/navigation";
 import "aos/dist/aos.css";
+import Link from "next/link";
 export default function Hero() {
   const { open, close } = useAppKit();
   const router = useRouter();
@@ -139,9 +140,6 @@ export default function Hero() {
       Number(calciulatedToken?.totalTokenSupplyUSD)) *
     100;
 
-   
-    
-
   return (
     <main className="min-h-screen  flex items-center justify-center sm:mt-10 mt-10 heroBg">
       <div className="contentbg"></div>
@@ -253,10 +251,6 @@ export default function Hero() {
                 title="Connect Wallet"
                 width="w-full"
               />
-
-
-
-              
             )}
           </div>
         </div>
@@ -294,9 +288,17 @@ export default function Hero() {
             data-aos="fade-right"
             className="flex justify-start w-full mt-10"
           >
-            <ButtonGradient  onClick={() => router.push("/dashboard")} btnName="Buy Token" width="w-[195px]" />
+            <Link href={""}>
+              <ButtonGradient
+                onClick={() => router.push("/dashboard")}
+                btnName="Buy Token"
+                width="w-[195px]"
+              />
+            </Link>
             &nbsp;
-            <ButtonGradient btnName="Read Whitepaper" width="w-[195px]" />
+            <Link href={"/WHITEPAPER.pdf"} target="_blank">
+              <ButtonGradient btnName="Read Whitepaper" width="w-[195px]" />
+            </Link>
           </div>
         </div>
       </div>

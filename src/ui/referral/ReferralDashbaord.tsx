@@ -1,6 +1,17 @@
 import { Card } from "@/components/ui/card";
+import { StyledTableContainer } from "@/components/ui/StyledTableContainer";
 import { contractConfig } from "@/constants/contract";
-import { Box, Button, Grid2, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid2,
+  Table,
+  TableCell,
+  TableRow,
+  TableHead,
+  TableBody,
+  Typography,
+} from "@mui/material";
 import { useAppKitNetwork } from "@reown/appkit/react";
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useEffect } from "react";
@@ -35,7 +46,7 @@ export default function ReferralDashbaord() {
     ],
   });
 
-  const dataList = [
+  const dataList1 = [
     {
       title: "One",
 
@@ -76,6 +87,82 @@ export default function ReferralDashbaord() {
         },
       ],
     },
+    // {
+    //   title: "Four",
+    //   nestedData: [
+    //     {
+    //       title: "LAST CLAIM DATE",
+    //       value: (
+    //         <Box sx={{ display: "flex", alignItems: "center", gap: 16 }}>
+    //           <Typography>
+    //             {result?.data?.[0]?.result
+    //               ? new Date(
+    //                   Number(result.data[0].result) * 1000
+    //                 ).toLocaleString()
+    //               : "N/A"}
+    //           </Typography>
+    //           <Button
+    //             variant="contained"
+    //             size="small"
+    //             sx={{
+    //               backgroundColor: "rgb(26, 179, 229)",
+    //               textTransform: "none",
+    //               "&:hover": {
+    //                 backgroundColor: "rgb(22, 160, 205)", // Optional: a slightly darker hover effect
+    //               },
+    //             }}
+    //           >
+    //             Claim
+    //           </Button>
+    //         </Box>
+    //       ),
+    //       logo: "/referral/2.png",
+    //     },
+    //   ],
+    // },
+  ];
+
+  const dataList2 = [
+    // {
+    //   title: "One",
+
+    //   nestedData: [
+    //     {
+    //       title: "YOUR REFERRALS",
+    //       value: result?.data?.[1]?.result
+    //         ? Number(result?.data[1]?.result)
+    //         : 0,
+    //       logo: "/referral/2.png",
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Two",
+    //   nestedData: [
+    //     {
+    //       title: "YOUR REFERRAL EARNINGS",
+    //       value: `${
+    //         result?.data?.[0]?.result
+    //           ? Number(formatEther(BigInt(result?.data[0]?.result))).toFixed(2)
+    //           : 0
+    //       } MDC`,
+    //       logo: "/referral/2.png",
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Three",
+
+    //   nestedData: [
+    //     {
+    //       title: "YOUR REFERRALS CLAIM",
+    //       value: `${
+    //         result?.data?.[1]?.result ? Number(result?.data[1]?.result) : 0
+    //       } MDC`,
+    //       logo: "/referral/2.png",
+    //     },
+    //   ],
+    // },
     {
       title: "Four",
       nestedData: [
@@ -116,46 +203,90 @@ export default function ReferralDashbaord() {
     });
   }, [blockNumber, queryClient, result]);
   return (
-    <div>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
       <Grid2 container spacing={2}>
-        {dataList.map((data, index) => {
+        {dataList1.map((data, index) => {
           return (
-            <Grid2
-              data-aos="fade-up"
-              key={index}
-              size={{ xs: 12, sm: 3, md: 3, lg: 3 }}
-            >
-              <Card>
-                {data.nestedData.map((item) => {
-                  return (
-                    <Box
-                      sx={{
-                        padding: "10px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <img
-                        src={item.logo}
-                        style={{ width: "60px", height: "60px" }}
-                      />
-                      <Box pl={2}>
-                        <Typography>{item.title}</Typography>
-                        <Typography>{item.value}</Typography>
-                        {/* {data.title === "Four" && (
+            <>
+              <Grid2
+                data-aos="fade-up"
+                key={index}
+                size={{ xs: 12, sm: 4, md: 4, lg: 4 }}
+              >
+                <Card>
+                  {data.nestedData.map((item) => {
+                    return (
+                      <Box
+                        sx={{
+                          padding: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <img
+                          src={item.logo}
+                          style={{ width: "60px", height: "60px" }}
+                        />
+                        <Box pl={2}>
+                          <Typography>{item.title}</Typography>
+                          <Typography>{item.value}</Typography>
+                          {/* {data.title === "Four" && (
                           <Button variant="contained" fullWidth>
                             Claim
                           </Button>
                         )} */}
+                        </Box>
                       </Box>
-                    </Box>
-                  );
-                })}
-              </Card>
-            </Grid2>
+                    );
+                  })}
+                </Card>
+              </Grid2>
+            </>
           );
         })}
       </Grid2>
-    </div>
+      <Grid2 container spacing={2}>
+        <Grid2 data-aos="fade-up" size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+          <Card sx={{ p: 2, backgroundColor: "#1e1e1e" }}>
+            <StyledTableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ color: "white" }}>Level</TableCell>
+                    <TableCell sx={{ color: "white" }}>
+                      Referral Amount
+                    </TableCell>
+                    <TableCell sx={{ color: "white" }}>
+                      Referral Claimed
+                    </TableCell>
+                    <TableCell sx={{ color: "white" }}>
+                      Last Claimed Date
+                    </TableCell>
+                    <TableCell sx={{ color: "white" }}>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {[1, 2, 3, 4].map((level) => (
+                    <TableRow key={level}>
+                      <TableCell sx={{ color: "white" }}>{level}</TableCell>
+                      <TableCell sx={{ color: "white" }}>0</TableCell>
+                      <TableCell sx={{ color: "white" }}>0</TableCell>
+                      <TableCell sx={{ color: "white" }}>
+                        {new Date().toLocaleDateString()}
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="contained" size="small">
+                          Claim
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </StyledTableContainer>
+          </Card>
+        </Grid2>
+      </Grid2>
+    </Box>
   );
 }
