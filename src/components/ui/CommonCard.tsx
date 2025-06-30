@@ -11,7 +11,11 @@ import CommonButton from "./CommonButton";
 
 export default function CommonCard({ item }: { item?: any }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isClaimChecking, setIsClaimChecking] = useState(false);
+  const [isClaimChecking, setIsClaimChecking] = useState<Record<string,boolean>>({
+    royalty: false,
+    team: false,
+    referra: false,
+  });
 
   const ListBox = styled(Box)({
     background: "linear-gradient(145deg, #16A4D7, #034F89)",
@@ -41,13 +45,16 @@ export default function CommonCard({ item }: { item?: any }) {
           {item.data}
         </Typography>
         <Typography color="#ffffff73">{item.valueInUsd}</Typography>
-        {item?.isButton !== "" && item.data > 0 &&  (
+        {item?.isButton !== ""  &&  (
           <>
             <Box sx={{ display: "flex", justifyContent: "center", mt: 1 }}>
               <CommonButton
                 onClick={() => {
                   setIsClaimChecking(
-                    item?.isButton === "teamReward" ? false : true
+                    {
+                      ...isClaimChecking,
+                      [item.isButton]: true,
+                    }
                   );
                   setIsModalOpen(true);
                 }}

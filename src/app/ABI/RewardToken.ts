@@ -415,4 +415,4 @@ export const RefferABI = [
     stateMutability: "view",
     type: "function",
   },
-];
+] as const;

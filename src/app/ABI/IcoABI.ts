@@ -702,4 +702,4 @@ export const IcoABI = [
     type: "function",
   },
   { stateMutability: "payable", type: "receive" },
-];
+] as const;

@@ -1,4 +1,6 @@
+import ClaimModalConfirmation from "@/components/modal/ClaimModalConfirmation";
 import { Card } from "@/components/ui/card";
+import CommonButton from "@/components/ui/CommonButton";
 import { StyledTableContainer } from "@/components/ui/StyledTableContainer";
 import { contractConfig } from "@/constants/contract";
 import {
@@ -14,7 +16,7 @@ import {
 } from "@mui/material";
 import { useAppKitNetwork } from "@reown/appkit/react";
 import { useQueryClient } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { Address, formatEther, parseEther } from "viem";
 import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
 
@@ -27,7 +29,7 @@ export default function ReferralDashbaord() {
     contracts: [
       {
         ...contractConfig,
-        functionName: "getReferralRewards",
+        functionName: "getTotalReferralRewards",
         args: [address as Address],
         chainId: Number(chainId) ?? 56,
       },
@@ -67,7 +69,7 @@ export default function ReferralDashbaord() {
           title: "YOUR REFERRAL EARNINGS",
           value: `${
             result?.data?.[0]?.result
-              ? Number(formatEther(BigInt(result?.data[0]?.result))).toFixed(2)
+              ? Number(formatEther(BigInt(result?.data[0]?.result?.[0]))).toFixed(2)
               : 0
           } MDC`,
           logo: "/referral/2.png",
@@ -79,9 +81,9 @@ export default function ReferralDashbaord() {
 
       nestedData: [
         {
-          title: "YOUR REFERRALS CLAIM",
+          title: "YOUR REFERRALS CLAIMED",
           value: `${
-            result?.data?.[1]?.result ? Number(result?.data[1]?.result) : 0
+            result?.data?.[1]?.result ? Number(result?.data[0]?.result?.[1]) : 0
           } MDC`,
           logo: "/referral/2.png",
         },
@@ -172,14 +174,14 @@ export default function ReferralDashbaord() {
       </Grid2>
       <Grid2 container spacing={2}>
         <Grid2 data-aos="fade-up" size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-          <Card sx={{ p: 2, backgroundColor: "#1e1e1e" }}>
+          <Card>
             <StyledTableContainer>
               <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ color: "white" }}>Level</TableCell>
                     <TableCell sx={{ color: "white" }}>
-                      Referral Amount
+                      Referral Earning
                     </TableCell>
                     <TableCell sx={{ color: "white" }}>
                       Referral Claimed
@@ -192,19 +194,12 @@ export default function ReferralDashbaord() {
                 </TableHead>
                 <TableBody>
                   {[1, 2, 3, 4].map((level) => (
-                    <TableRow key={level}>
-                      <TableCell sx={{ color: "white" }}>{level}</TableCell>
-                      <TableCell sx={{ color: "white" }}>0</TableCell>
-                      <TableCell sx={{ color: "white" }}>0</TableCell>
-                      <TableCell sx={{ color: "white" }}>
-                        {new Date().toLocaleDateString()}
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="contained" size="small">
-                          Claim
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                    <TableBodyData
+                      key={level}
+                      index={level}
+                      address={address as Address}
+                      chainId={Number(chainId)}
+                    />
                   ))}
                 </TableBody>
               </Table>
@@ -213,5 +208,83 @@ export default function ReferralDashbaord() {
         </Grid2>
       </Grid2>
     </Box>
+  );
+}
+
+const TableBodyData = ({
+  index,
+  address,
+  chainId,
+}: {
+  index: number;
+  address: Address | undefined;
+  chainId: number;
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isClaimChecking, setIsClaimChecking] = useState<Record<string,boolean>>({
+      royalty: false,
+      team: false,
+      referra: false,
+    });
+  const { data: getReferralRewardsResult } = useReadContracts({
+    contracts: [
+      {
+        ...contractConfig,
+        functionName: "getReferralRewards",
+        args: [address as Address, BigInt(index)],
+        chainId: Number(chainId) ?? 56,
+      },
+    ],
+  });
+
+  
+  return (
+    <TableRow>
+      <TableCell sx={{ color: "white" }}>{index}</TableCell>
+      <TableCell sx={{ color: "white" }}>
+        {getReferralRewardsResult?.[0]?.result
+          ? Number(formatEther(BigInt(getReferralRewardsResult?.[0].result?.amount))).toFixed(2)
+          : 0}{" "}
+        MDC
+      </TableCell>
+      <TableCell sx={{ color: "white" }}>
+        {getReferralRewardsResult?.[0]?.result
+          ? Number(formatEther(BigInt(getReferralRewardsResult?.[0].result?.claimed))).toFixed(2)
+          : 0}{" "}
+        MDC
+      </TableCell>
+      <TableCell sx={{ color: "white" }}>
+        {getReferralRewardsResult?.[0]?.result && getReferralRewardsResult?.[0]?.result?.lastClaimTime>0
+          ? new Date(Number(getReferralRewardsResult?.[0].result?.lastClaimTime) * 1000).toLocaleString()
+          : "-"}
+      </TableCell>
+      <TableCell sx={{ color: "white" }}>
+        <CommonButton 
+             onClick={() => {
+                  setIsClaimChecking(
+                     {
+                      ...isClaimChecking,
+                      ['referral']: true,
+                    }
+                  );
+                  setIsModalOpen(true);
+                }}
+                title="Claim"
+                width="w-[120px] sm:w-[150px]  "
+                height="h-[40px]"
+        />
+        
+      </TableCell>
+        {isModalOpen && (
+        <ClaimModalConfirmation
+          open={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+          isClaimChecking={isClaimChecking}
+          level={index}
+        />
+      )}
+    </TableRow>
   );
 }

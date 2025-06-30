@@ -6,7 +6,7 @@ import { useAppKitNetwork } from "@reown/appkit/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
 import React, { useEffect } from "react";
-import { Address, formatEther, parseEther } from "viem";
+import { Address, formatEther, parseEther, zeroAddress } from "viem";
 import { useAccount, useBlockNumber, useReadContracts } from "wagmi";
 
 export default function Profile() {
@@ -19,7 +19,7 @@ export default function Profile() {
        
         {
           ...contractConfig,
-          functionName: "getReferralRewards",
+          functionName: "getTotalReferralRewards",
           args: [address as Address ],
           chainId: Number(chainId)??56
         },
@@ -88,7 +88,31 @@ export default function Profile() {
                 />
                <Box pl={1} >
                <Typography  data-aos="fade-right" sx={{color:"#fff",fontSize:"20px",fontWeight:400}}>Your referral earnings</Typography>
-               <Typography  data-aos="fade-right" sx={{color:"#fff",fontSize:"24px",fontWeight:700}}>{`${result?.data?.[0]?.result? Number(formatEther(BigInt(result?.data[0]?.result))).toFixed(2) : 0} MDC`}</Typography>
+               <Typography  data-aos="fade-right" sx={{color:"#fff",fontSize:"24px",fontWeight:700}}>{`${result?.data?.[0]?.result? Number(formatEther(BigInt(result?.data[0]?.result[0]))).toFixed(2) : 0} MDC`}</Typography>
+               </Box>
+              </Box>
+              <Box  sx={{display:"flex" ,alignItems:"center"}} mt={4} >
+                <img
+                 data-aos="fade-right"
+                  src="/profile/dollar.png"
+                  style={{ width: "60px", height: "60px" }}
+                />
+               <Box pl={1} >
+               <Typography  data-aos="fade-right" sx={{color:"#fff",fontSize:"20px",fontWeight:400}}>Your referral claimed</Typography>
+               <Typography  data-aos="fade-right" sx={{color:"#fff",fontSize:"24px",fontWeight:700}}>{`${result?.data?.[0]?.result? Number(formatEther(BigInt(result?.data[0]?.result[1]))).toFixed(2) : 0} MDC`}</Typography>
+               </Box>
+              </Box>
+              <Box  sx={{display:"flex" ,alignItems:"center"}} mt={4} >
+                <img
+                 data-aos="fade-right"
+                  src="/referral/2.png"
+                  style={{ width: "60px", height: "60px" }}
+                />
+               <Box pl={1} >
+               <Typography  data-aos="fade-right" sx={{color:"#fff",fontSize:"20px",fontWeight:400}}>You Referred By : </Typography>
+               <Typography  data-aos="fade-right" sx={{color:"#fff",fontSize:"24px",fontWeight:700}}>{result?.data?.[2]?.result?
+               result?.data?.[2].result?.toString()!==zeroAddress?sortAddress(result?.data?.[2].result?.toString() as string):"-"
+               :"-"}</Typography>
                </Box>
               </Box>
             </Box>

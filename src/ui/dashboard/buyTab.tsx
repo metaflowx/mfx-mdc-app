@@ -616,7 +616,7 @@ const BuyTab = () => {
               onChange={(e) => setReferrer(e.target.value)}
               fullWidth
               placeholder="Enter Referrer Address"
-              type="number"
+              type="text"
               sx={{
                 flex: 1,
                 color: "#fff",

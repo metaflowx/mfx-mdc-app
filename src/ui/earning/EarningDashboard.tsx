@@ -86,7 +86,7 @@ export default function EarningDashboard() {
     args: [address as Address],
     chainId: Number(chainId) ?? 56,
   });
-  console.log(">>>>>>>>>>>teamClaimed", yourReward);
+
 
   const lastClaimedTeam = new Date(Number(teamClaimed?.data?.[1]) * 1000);
 
@@ -146,7 +146,7 @@ export default function EarningDashboard() {
       id: 5,
       title: "APR %",
       data: `${
-        getUserRoi?.data ? parseFloat(getUserRoi?.data.toString()) / 100 : ""
+        getUserRoi?.data ? parseFloat(getUserRoi?.data.toString()) / 100 : "0"
       }%`,
       valueInUsd: "",
       isButton: "",
@@ -173,7 +173,7 @@ export default function EarningDashboard() {
     {
       id: 9,
       title: "Your Team Reward",
-      data: teamReward?.data ? `$${formatEther(BigInt(teamReward?.data))}` : "",
+      data: teamReward?.data ? `${parseFloat(formatEther(BigInt(teamReward?.data))).toFixed(5)} MDC` : "0 MDC",
       valueInUsd: "",
       isButton: "",
     },
@@ -188,7 +188,7 @@ export default function EarningDashboard() {
           ? moment(lastClaimedTeam).format("lll")
           : "N/A"
       }`,
-      isButton: "teamReward",
+      isButton: "team",
     },
     {
       id: 11,
@@ -201,11 +201,11 @@ export default function EarningDashboard() {
           ? moment(royalityClaimedTeam).format("lll")
           : "N/A"
       }`,
-      isButton: "royalityIcome",
+      isButton: "royalty",
     },
   ];
   return (
-    <div>
+    <>
       <Grid2 container spacing={2}>
         {BoxList.map((item, index) => (
           <Grid2 data-aos="fade-up" key={index} size={{ xs: 12, md: 4, lg: 3 }}>
@@ -213,6 +213,6 @@ export default function EarningDashboard() {
           </Grid2>
         ))}
       </Grid2>
-    </div>
+    </>
   );
 }

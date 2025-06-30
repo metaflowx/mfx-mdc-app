@@ -40,7 +40,7 @@ const Referral = () => {
      
       {
         ...contractConfig,
-        functionName: "getReferralRewards",
+        functionName: "getTotalReferralRewards",
         args: [address as Address ],
         chainId: Number(chainId)??56
       },
@@ -64,7 +64,8 @@ const Referral = () => {
   })
   const ReferralList = [
     { id: 1, Name: "Your Referrals", Data: result?.data?.[1]?.result? Number(result?.data[1]?.result) : 0, Img: r1 },
-    { id: 2, Name: "Your referral Earnings", Data:  `${result?.data?.[0]?.result? Number(formatEther(BigInt(result?.data[0]?.result))).toFixed(2) : 0} MDC`, Img: r1 },
+    { id: 2, Name: "Your referral Earnings", Data:  `${result?.data?.[0]?.result? Number(formatEther(BigInt(result?.data[0]?.result?.[0]))).toFixed(2) : 0} MDC`, Img: r1 },
+    { id: 2, Name: "Your referral Claimed", Data:  `${result?.data?.[0]?.result? Number(formatEther(BigInt(result?.data[0]?.result?.[1]))).toFixed(2) : 0} MDC`, Img: r1 },
    
   ];
   useEffect(() => {

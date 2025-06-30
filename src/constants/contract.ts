@@ -5,10 +5,10 @@ import { TokenABI } from "@/app/ABI/TokenSupply";
 import { VCABI } from "@/app/ABI/VCABI";
 export const TokenContractAddress = "0x95B93aa56d953fe7D1c315Caa10b7843D3fdfDfB";
 export const ICOContractAddress = "0xB01caBB79b45Fd9e1e2c1180B4a3f39e65f2549F"
-export const ReferralContractAddress = "0x066520d328C403E62923f16B433bAbf1457AbEE5";
+export const ReferralContractAddress = "0x7C6972D3B517827148422B3b4892CF5d7DcB29B9";
 export const VCContractAddress = "0xAFb5De95758bD9d818c52cd037d8a856aFBEE914"
 export const USDTAddress = "0x55d398326f99059fF775485246999027B3197955"
-export const StakeContractAddress = "0x090077db858FF4232db32847F321eD6D7148e1D5";
+export const StakeContractAddress = "0x8cA4475caDE2d6676730171Cc6D74a0b6325CD63";
 
 
 export const contractConfig = {
