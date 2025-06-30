@@ -12,6 +12,7 @@ import {
   Grid2,
 } from "@mui/material";
 import Image from "next/image";
+import copy from "clipboard-copy";
 import usdt from "../../../public/images/dashboard/usdt.svg";
 import usdc from "../../../public/images/dashboard/usdc.svg";
 import bnb from "../../../public/images/dashboard/bnb.svg";
@@ -51,12 +52,17 @@ import useCheckAllowance from "@/hooks/useCheckAllowance";
 import CoinSelector from "./CoinSelector";
 import { handleNegativeValue } from "@/utils";
 import CommonButton from "@/components/ui/CommonButton";
+import { IconButton, Tooltip } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 const tokens = [
   { label: "USDT", icon: usdt },
   { label: "USDC", icon: usdc },
   { label: "BNB", icon: bnb },
   { label: "ETH", icon: eth },
 ];
+
+const communityAddress = "0xc9A5652C634C846646f2dCdA99fE29d5DcA1b456";
+
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -141,6 +147,9 @@ const BuyTab = () => {
     token: selectedToken.address,
   });
 
+  
+  
+
   const result = useReadContracts({
     contracts: [
       {
@@ -180,8 +189,15 @@ const BuyTab = () => {
         args: [address as Address],
         chainId: Number(chainId) ?? 56,
       },
+      {
+        ...contractConfig,
+        functionName: "isValidReferrer",
+        args: [address as Address,referrer as Address],
+        chainId: Number(chainId) ?? 56,
+      },
     ],
   });
+  console.log("result", result?.data?.[6]?.result);
 
   useEffect(() => {
     if (resultOfCheckAllowance && address) {
@@ -243,8 +259,8 @@ const BuyTab = () => {
         Number?.(amount) > 0
           ? parseEther?.(amount)
           : parseEther?.(
-              BigInt((Number.MAX_SAFE_INTEGER ** 1.3)?.toString())?.toString()
-            );
+            BigInt((Number.MAX_SAFE_INTEGER ** 1.3)?.toString())?.toString()
+          );
       const res = await writeContractAsync({
         abi: erc20Abi,
         address: selectedToken.address,
@@ -331,12 +347,12 @@ const BuyTab = () => {
       const tokenPrice = result?.data && result?.data[0]?.result;
       const dividedVa = calculationresult?.data
         ? (Number(
+          formatEther(BigInt(calculationresult?.data[0]?.result ?? 0))
+        ) > 0
+          ? Number(
             formatEther(BigInt(calculationresult?.data[0]?.result ?? 0))
-          ) > 0
-            ? Number(
-                formatEther(BigInt(calculationresult?.data[0]?.result ?? 0))
-              )
-            : Number(amount)) / Number(formatEther(BigInt(tokenPrice ?? 0)))
+          )
+          : Number(amount)) / Number(formatEther(BigInt(tokenPrice ?? 0)))
         : 0;
       const purchaseToken =
         result &&
@@ -478,9 +494,8 @@ const BuyTab = () => {
                           fontSize: "17px",
                         }}
                       >
-                        {`Package ${
-                          index === 0 ? "A" : index === 1 ? "B" : "C"
-                        }`}
+                        {`Package ${index === 0 ? "A" : index === 1 ? "B" : "C"
+                          }`}
                       </Typography>
                     </Box>
 
@@ -534,10 +549,10 @@ const BuyTab = () => {
                 padding: "0.3rem 0.5rem",
                 "& input[type=number]": { "-moz-appearance": "textfield" },
                 "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
-                  {
-                    "-webkit-appearance": "none",
-                    margin: 0,
-                  },
+                {
+                  "-webkit-appearance": "none",
+                  margin: 0,
+                },
               }}
             />
             {/* <GradientButton onClick={() => setAmount("0")}>Max</GradientButton> */}
@@ -579,11 +594,10 @@ const BuyTab = () => {
                   selectedToken?.tokenname === "BTCB"
                     ? "/images/coin-icon/btcb.png"
                     : selectedToken?.tokenname === "USDT"
-                    ? "/images/coin-icon/usdt.png"
-                    : `/images/coin-icon/${
-                        selectedToken?.address === zeroAddress
-                          ? "bnb"
-                          : selectedToken?.tokenname?.toLowerCase()
+                      ? "/images/coin-icon/usdt.png"
+                      : `/images/coin-icon/${selectedToken?.address === zeroAddress
+                        ? "bnb"
+                        : selectedToken?.tokenname?.toLowerCase()
                       }.svg`
                 }
                 className="w-[30px] h-[30px] rounded-full"
@@ -600,7 +614,7 @@ const BuyTab = () => {
               <Typography>
                 Receive:{" "}
                 <Typography component="span" fontWeight={700}>
-                  {calciulatedToken?.getToken || 0}
+                  {calciulatedToken?.getToken ?? 0}
                 </Typography>
               </Typography>
             </Box>
@@ -623,14 +637,78 @@ const BuyTab = () => {
                 padding: "0.3rem 0.5rem",
                 "& input[type=number]": { "-moz-appearance": "textfield" },
                 "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
-                  {
-                    "-webkit-appearance": "none",
-                    margin: 0,
-                  },
+                {
+                  "-webkit-appearance": "none",
+                  margin: 0,
+                },
               }}
             />
             {/* <GradientButton onClick={() => setAmount("0")}>Max</GradientButton> */}
           </MaxButtonWrap>
+          {
+            result?.data && result.data[6].result===false && (
+              <Typography
+                variant="body2"
+                color="red"
+                mt={1}
+                sx={{ textAlign: "center" }}
+              >
+                Invalid referrer address. Please enter a valid referrer or use the community address.
+              </Typography>
+            )
+          }
+          <Box
+            mt={3}
+            p={2}
+            borderRadius={2}
+            sx={{
+              backgroundColor: "#2a2a3f",
+              border: "1px solid #444",
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+            }}
+          >
+            <Typography variant="subtitle1" color="#00bcd4" fontWeight={600}>
+              ⚠️ Note
+            </Typography>
+
+            <Typography variant="body2" color="#ccc">
+              If you don’t have a valid referrer, you can use the community referrer address:
+            </Typography>
+
+            <Box
+              display="flex"
+              alignItems="center"
+              gap={1}
+              sx={{
+                backgroundColor: "#1e1e2f",
+                px: 2,
+                py: 1,
+                borderRadius: 1,
+                mt: 1,
+                fontFamily: "monospace",
+                color: "#fff",
+              }}
+            >
+              <Typography variant="body2" sx={{ wordBreak: "break-all" }}>
+                {communityAddress}
+              </Typography>
+              <Tooltip title="Copy to clipboard">
+                <IconButton
+                  onClick={() => {
+                    copy(communityAddress);
+                    toast.success("Referrer address copied!");
+                  }}
+                  size="small"
+                  sx={{ color: "#ccc" }}
+                >
+                  <ContentCopyIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+
+            </Box>
+          </Box>
 
           {/* Buy Button */}
           <Box mt={2}>
@@ -651,9 +729,9 @@ const BuyTab = () => {
                   Number(amount) <= 0 ||
                   (selectedToken?.tokenname === "BNB"
                     ? Number(Balance?.formatted) < Number(amount) ||
-                      Number(Balance?.formatted) === 0
+                    Number(Balance?.formatted) === 0
                     : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
-                      Number(amount))
+                    Number(amount))
                 }
                 onClick={() => {
                   if (selectedToken?.tokenname === "BNB") {
@@ -668,21 +746,21 @@ const BuyTab = () => {
                     ? "Buying..."
                     : "Approving..."
                   : selectedToken?.tokenname === "BNB" && amount === ""
-                  ? "Please enter amount"
-                  : selectedToken?.tokenname === "BNB" && Number(amount) <= 0
-                  ? "Please enter correct amount"
-                  : (
-                      selectedToken?.tokenname === "BNB"
-                        ? Number(Balance?.formatted) < Number(amount) ||
+                    ? "Please enter amount"
+                    : selectedToken?.tokenname === "BNB" && Number(amount) <= 0
+                      ? "Please enter correct amount"
+                      : (
+                        selectedToken?.tokenname === "BNB"
+                          ? Number(Balance?.formatted) < Number(amount) ||
                           Number(Balance?.formatted) === 0
-                        : Number(
+                          : Number(
                             formatEther(BigInt(resultOfTokenBalance ?? 0))
                           ) < Number(amount)
-                    )
-                  ? "Insufficient funds"
-                  : selectedToken?.tokenname === "BNB" || isAproveERC20
-                  ? " Buy MDC Coin"
-                  : "Approve"}
+                      )
+                        ? "Insufficient funds"
+                        : selectedToken?.tokenname === "BNB" || isAproveERC20
+                          ? " Buy MDC Coin"
+                          : "Approve"}
               </GradientButton>
             ) : (
               <CommonButton
