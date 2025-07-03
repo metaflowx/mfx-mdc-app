@@ -108,6 +108,18 @@ const { data: blockNumber } = useBlockNumber({ watch: true });
         toast.success("Address copied to clipboard!");
       };
 
+  const apr = (tierId: number) => {
+     if (tierId === 0) {
+      return "10";
+    }
+    if (tierId === 1) {
+      return "15%";
+    }
+    if (tierId === 2) {
+      return "20%";
+    }
+  }
+
   return (
     <Box sx={{ p: {xs:1, sm:4}, color: "white" }}>
       <Box sx={{ mb: 3,mt:2 }} className="displayCenter">
@@ -138,6 +150,10 @@ const { data: blockNumber } = useBlockNumber({ watch: true });
                 <TableCell>Staked Amount</TableCell>
                 <TableCell style={{whiteSpace:"pre"}} >
                 Tier
+                  
+                </TableCell>
+                <TableCell style={{whiteSpace:"pre"}} >
+                APR
                   
                 </TableCell>
                 <TableCell style={{whiteSpace:"pre"}}>
@@ -238,9 +254,12 @@ const { data: blockNumber } = useBlockNumber({ watch: true });
                     <TableCell className="text-white">
                       {Number(item?.tierId) + 1}
                     </TableCell>
+                    <TableCell className="text-white">
+                      {apr?.(Number(item?.tierId??0)) }%
+                    </TableCell>
                     <DailyReward index={index} address={address as Address} />
                     <TableCell className="text-white whitespace-pre">
-                      {parseFloat(formatEther(item?.claimedRewards)).toFixed(2)} MDC
+                      {parseFloat(formatEther(item?.claimedRewards)).toFixed(4)} MDC
                     </TableCell>
                     <TableCell className="text-white whitespace-pre">
                       {moment(startdate).format("lll")}
@@ -389,7 +408,7 @@ const DailyReward = ({
   return (
     <TableCell className="text-white whitespace-pre">
       {dailyReward?.data
-        ? parseFloat(formatEther(dailyReward?.data)).toFixed(2)
+        ? parseFloat(formatEther(dailyReward?.data)).toFixed(4)
         : "0.00"}{" "}
       MDC
     </TableCell>

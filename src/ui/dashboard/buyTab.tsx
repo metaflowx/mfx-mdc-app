@@ -422,6 +422,7 @@ const BuyTab = () => {
       </Box>
     );
   };
+  
 
   return (
     <StyledBox>
@@ -619,7 +620,8 @@ const BuyTab = () => {
               </Typography>
             </Box>
           </Box>
-
+          { result?.data?.[5]?.result === zeroAddress && (
+            <>
           <MaxButtonWrap>
             <InputBase
               disabled={isPending}
@@ -709,6 +711,9 @@ const BuyTab = () => {
 
             </Box>
           </Box>
+           </>
+          )
+          }
 
           {/* Buy Button */}
           <Box mt={2}>

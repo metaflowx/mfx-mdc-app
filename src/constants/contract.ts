@@ -8,7 +8,7 @@ export const ICOContractAddress = "0xB01caBB79b45Fd9e1e2c1180B4a3f39e65f2549F"
 export const ReferralContractAddress = "0x7C6972D3B517827148422B3b4892CF5d7DcB29B9";
 export const VCContractAddress = "0xAFb5De95758bD9d818c52cd037d8a856aFBEE914"
 export const USDTAddress = "0x55d398326f99059fF775485246999027B3197955"
-export const StakeContractAddress = "0x8cA4475caDE2d6676730171Cc6D74a0b6325CD63";
+export const StakeContractAddress = "0x6265eba0ba375ebfFC687ba1610bC2150821626c";
 
 
 export const contractConfig = {

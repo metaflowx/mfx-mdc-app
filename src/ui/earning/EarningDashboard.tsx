@@ -50,12 +50,12 @@ export default function EarningDashboard() {
     args: [address as Address],
     chainId: Number(chainId) ?? 56,
   });
-  const getUserRoi = useReadContract({
-    ...stakeConfig,
-    functionName: "getROIPercent",
-    args: [address as Address],
-    chainId: Number(chainId) ?? 56,
-  });
+  // const getUserRoi = useReadContract({
+  //   ...stakeConfig,
+  //   functionName: "getROIPercentByLevel",
+  //   args: [address as Address,BigInt(getUserLevel.data?.toString() ?? "0")],
+  //   chainId: Number(chainId) ?? 56,
+  // });
   const royalityIncom = useReadContract({
     ...stakeConfig,
     functionName: "calculateTeamBusiness",
@@ -95,15 +95,15 @@ export default function EarningDashboard() {
   );
 
   const BoxList = [
-    {
-      id: 1,
-      title: "Wallet Balance",
-      data: `${convertToAbbreviated(
-        Number(formatEther(BigInt(resultOfTokenBalance ?? 0)))
-      )} MDC`,
-      valueInUsd: `$${convertToAbbreviated(Number(aizuUSDTAmount))}`,
-      isButton: "",
-    },
+    // {
+    //   id: 1,
+    //   title: "Wallet Balance",
+    //   data: `${convertToAbbreviated(
+    //     Number(formatEther(BigInt(resultOfTokenBalance ?? 0)))
+    //   )} MDC`,
+    //   valueInUsd: `$${convertToAbbreviated(Number(aizuUSDTAmount))}`,
+    //   isButton: "",
+    // },
     {
       id: 2,
       title: "Your Stake",
@@ -124,33 +124,39 @@ export default function EarningDashboard() {
         yourReward?.data === 0
           ? "None"
           : yourReward?.data === 1
-          ? "Iphone"
+          ? "AndroidPhone"
           : yourReward?.data === 2
           ? "M1Book"
           : yourReward?.data === 3
           ? "Trip 3N/4D"
           : yourReward?.data === 4
           ? "Bike"
-          : "Thar",
+          : yourReward?.data === 5
+          ? "Baleno"
+          : yourReward?.data === 6
+          ? "TharRoxx"
+          : yourReward?.data === 7
+          ? "Defender"
+          : "None",
       valueInUsd: "",
       isButton: "",
     },
     {
       id: 4,
       title: "Your Level",
-      data: `Level ${getUserLevel?.data}`,
+      data: `${getUserLevel?.data ?Number(getUserLevel?.data): "0"}`,
       valueInUsd: "",
       isButton: "",
     },
-    {
-      id: 5,
-      title: "APR %",
-      data: `${
-        getUserRoi?.data ? parseFloat(getUserRoi?.data.toString()) / 100 : "0"
-      }%`,
-      valueInUsd: "",
-      isButton: "",
-    },
+    // {
+    //   id: 5,
+    //   title: "APR %",
+    //   data: `${
+    //     getUserRoi?.data ? parseFloat(getUserRoi?.data.toString()) / 100 : "0"
+    //   }%`,
+    //   valueInUsd: "",
+    //   isButton: "",
+    // },
     {
       id: 6,
       title: "Your Royality Income",
@@ -165,7 +171,7 @@ export default function EarningDashboard() {
       id: 8,
       title: "Your Team Business",
       data: royalityIncom?.data
-        ? `$${formatEther(BigInt(royalityIncom?.data[0]))}`
+        ? `$${parseFloat(formatEther(BigInt(royalityIncom?.data[0]))).toFixed(2)}`
         : "N/A",
       valueInUsd: "",
       isButton: "",
@@ -173,7 +179,7 @@ export default function EarningDashboard() {
     {
       id: 9,
       title: "Your Team Reward",
-      data: teamReward?.data ? `${parseFloat(formatEther(BigInt(teamReward?.data))).toFixed(5)} MDC` : "0 MDC",
+      data: teamReward?.data ? `${parseFloat(formatEther(BigInt(teamReward?.data))).toFixed(5)} MDC` : "0.00000 MDC",
       valueInUsd: "",
       isButton: "",
     },
@@ -181,8 +187,8 @@ export default function EarningDashboard() {
       id: 10,
       title: "Claim Team Reward",
       data: teamClaimed?.data
-        ? `$${formatEther(BigInt(teamClaimed?.data?.[0]))}`
-        : "",
+        ? `${parseFloat(formatEther(BigInt(teamClaimed?.data?.[0]))).toFixed(5)} MDC`
+        : "0.00 MDC",
       valueInUsd: `Claimed : ${
         teamClaimed?.data && teamClaimed?.data?.[1] > 0
           ? moment(lastClaimedTeam).format("lll")

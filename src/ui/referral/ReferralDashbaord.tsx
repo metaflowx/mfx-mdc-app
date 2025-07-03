@@ -83,7 +83,7 @@ export default function ReferralDashbaord() {
         {
           title: "YOUR REFERRALS CLAIMED",
           value: `${
-            result?.data?.[1]?.result ? Number(result?.data[0]?.result?.[1]) : 0
+            result?.data?.[0]?.result ? Number(formatEther(BigInt(result?.data[0]?.result?.[1]))).toFixed(2) : 0
           } MDC`,
           logo: "/referral/2.png",
         },

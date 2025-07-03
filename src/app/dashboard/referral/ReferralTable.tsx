@@ -32,7 +32,7 @@ export default function ReferralTable() {
   const { chainId } = useAppKitNetwork();
   const { address } = useAccount();
 
-  const getUserLevel = useReadContract({
+  const getUserActiveLevel = useReadContract({
     ...stakeConfig,
     functionName: "getLevel",
     args: [address as Address],
@@ -65,7 +65,7 @@ export default function ReferralTable() {
           {activeTab === "direct" && (
             <div className="relative flex items-center gap-10">
               <span className="text-white text-sm sm:text-base font-medium">
-                Your Current level: {getUserLevel?.data?.toString() ?? "-"}
+                Your Current Active level: {getUserActiveLevel?.data?.toString() ?? "-"}
               </span>
               <div className="relative">
                 <select
@@ -88,7 +88,7 @@ export default function ReferralTable() {
         </Box>
 
         {activeTab === "direct" ? (
-          <DirectReferralTable selectedLevel={selectedLevel} />
+          <DirectReferralTable selectedLevel={selectedLevel} userActiveLevel={Number(getUserActiveLevel?.data?.toString())}  />
         ) : (
           <UplineReferralTable />
         )}
@@ -97,7 +97,7 @@ export default function ReferralTable() {
   );
 }
 
-const DirectReferralTable = ({ selectedLevel }: { selectedLevel: number }) => {
+const DirectReferralTable = ({ selectedLevel,userActiveLevel }: { selectedLevel: number,userActiveLevel:number }) => {
   const { address } = useAccount();
   const { chainId } = useAppKitNetwork();
 
@@ -133,7 +133,11 @@ const DirectReferralTable = ({ selectedLevel }: { selectedLevel: number }) => {
               <TableCell>S.NO</TableCell>
               <TableCell>Address</TableCell>
               <TableCell>Staking Amount</TableCell>
-              <TableCell>Bonus</TableCell>
+              {
+                selectedLevel == 1 &&
+                <TableCell>Direct Bonus</TableCell>
+              }
+              <TableCell>Team APR</TableCell>
               <TableCell>Team Rewards</TableCell>
             </TableRow>
           </TableHead>
@@ -156,6 +160,8 @@ const DirectReferralTable = ({ selectedLevel }: { selectedLevel: number }) => {
                   item={item}
                   address={address as Address}
                   chainId={Number(chainId)}
+                  userActiveLevel={userActiveLevel}
+                  selectedLevel={selectedLevel}
                 />
               ))
             ) : (
@@ -237,11 +243,16 @@ const TableBodyData = ({
   item,
   address,
   chainId,
+  userActiveLevel,
+  selectedLevel
+
 }: {
   index: number;
   item: any;
   address: Address;
   chainId: number;
+  userActiveLevel: number;
+  selectedLevel: number;
 }) => {
   const stakeDetail = useReadContract({
     ...stakeConfig,
@@ -252,8 +263,8 @@ const TableBodyData = ({
 
   const getUserRoi = useReadContract({
     ...stakeConfig,
-    functionName: "getROIPercent",
-    args: [address],
+    functionName: "getROIPercentByLevel",
+    args: [address,BigInt(index+1)],
     chainId,
   });
 
@@ -265,10 +276,10 @@ const TableBodyData = ({
   const reward =
     stakeDetail?.data && getUserRoi?.data
       ? (
-          (Number(formatEther(stakeDetail.data.amount)) *
+          ((Number(formatEther(stakeDetail.data.amount)) * (0.1)) *
             Number(getUserRoi.data.toString())) /
           1e4
-        ).toFixed(4)
+        ).toFixed(2)
       : "0";
 
   return (
@@ -287,8 +298,14 @@ const TableBodyData = ({
           ? `${formatEther(stakeDetail.data.amount)} MDC`
           : "0 MDC"}
       </TableCell>
-      <TableCell className="text-white">5%</TableCell>
-      <TableCell className="text-white">{reward} MDC</TableCell>
+      {
+        selectedLevel===1 &&
+        <TableCell className="text-white">5%</TableCell>
+        }
+      <TableCell className="text-white">{
+      userActiveLevel<selectedLevel?`Kindly, Activate Level ${selectedLevel} `:`${(Number(getUserRoi?.data?.toString())/100)}%`
+      }</TableCell>
+      <TableCell className="text-white">≈{userActiveLevel<selectedLevel?"0":reward} MDC</TableCell>
     </TableRow>
   );
 };
