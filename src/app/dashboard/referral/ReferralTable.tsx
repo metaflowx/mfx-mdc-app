@@ -276,7 +276,7 @@ const TableBodyData = ({
   const reward =
     stakeDetail?.data && getUserRoi?.data
       ? (
-          ((Number(formatEther(stakeDetail.data.amount)) * (0.1)) *
+          ((Number(formatEther(stakeDetail.data.volume)) * (0.1)) *
             Number(getUserRoi.data.toString())) /
           1e4
         ).toFixed(2)
@@ -295,7 +295,7 @@ const TableBodyData = ({
       </TableCell>
       <TableCell className="text-white">
         {stakeDetail?.data
-          ? `${formatEther(stakeDetail.data.amount)} MDC`
+          ? `${formatEther(stakeDetail.data.volume)} MDC`
           : "0 MDC"}
       </TableCell>
       {
