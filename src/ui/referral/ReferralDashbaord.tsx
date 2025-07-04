@@ -220,11 +220,12 @@ const TableBodyData = ({
   address: Address | undefined;
   chainId: number;
 }) => {
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
     const [isClaimChecking, setIsClaimChecking] = useState<Record<string,boolean>>({
       royalty: false,
       team: false,
-      referra: false,
+      referral: false,
     });
   const { data: getReferralRewardsResult } = useReadContracts({
     contracts: [

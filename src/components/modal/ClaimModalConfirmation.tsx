@@ -33,6 +33,7 @@ const ClaimModalConfirmation: React.FC<CurrencySelectDialogProps> = ({
   isClaimChecking,
   level,
 }) => {
+  
   const {
     writeContractAsync: writeContractAsyncClaim,
     isPending: isPendingClaim,
