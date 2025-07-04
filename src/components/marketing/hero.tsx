@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 import "aos/dist/aos.css";
 import Link from "next/link";
+import { convertToAbbreviated } from "@/utils";
 export default function Hero() {
   const { open, close } = useAppKit();
   const router = useRouter();
@@ -188,8 +189,8 @@ export default function Hero() {
             >
               <h2>
                 {" "}
-                ${Number(calciulatedToken?.totalSale) || 0} / ${" "}
-                {calciulatedToken?.totalTokenSupplyUSD || 0}
+                ${convertToAbbreviated(Number(calciulatedToken?.totalSale)) || 0} / ${""}
+                {convertToAbbreviated(calciulatedToken?.totalTokenSupplyUSD as number) || 0}
               </h2>
               <h2>Contribution Receive</h2>
             </div>

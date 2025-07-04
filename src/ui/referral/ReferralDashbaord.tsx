@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import CommonButton from "@/components/ui/CommonButton";
 import { StyledTableContainer } from "@/components/ui/StyledTableContainer";
 import { contractConfig } from "@/constants/contract";
+import { convertToAbbreviated } from "@/utils";
 import {
   Box,
   Button,
@@ -69,7 +70,7 @@ export default function ReferralDashbaord() {
           title: "YOUR REFERRAL EARNINGS",
           value: `${
             result?.data?.[0]?.result
-              ? Number(formatEther(BigInt(result?.data[0]?.result?.[0]))).toFixed(2)
+              ? convertToAbbreviated(Number(formatEther(BigInt(result?.data[0]?.result?.[0]))))
               : 0
           } MDC`,
           logo: "/referral/2.png",
@@ -83,7 +84,7 @@ export default function ReferralDashbaord() {
         {
           title: "YOUR REFERRALS CLAIMED",
           value: `${
-            result?.data?.[0]?.result ? Number(formatEther(BigInt(result?.data[0]?.result?.[1]))).toFixed(2) : 0
+            result?.data?.[0]?.result ? convertToAbbreviated(Number(formatEther(BigInt(result?.data[0]?.result?.[1])))) : 0
           } MDC`,
           logo: "/referral/2.png",
         },
@@ -244,13 +245,13 @@ const TableBodyData = ({
       <TableCell sx={{ color: "white" }}>{index}</TableCell>
       <TableCell sx={{ color: "white" }}>
         {getReferralRewardsResult?.[0]?.result
-          ? Number(formatEther(BigInt(getReferralRewardsResult?.[0].result?.amount))).toFixed(2)
+          ? convertToAbbreviated(Number(formatEther(BigInt(getReferralRewardsResult?.[0].result?.amount))))
           : 0}{" "}
         MDC
       </TableCell>
       <TableCell sx={{ color: "white" }}>
         {getReferralRewardsResult?.[0]?.result
-          ? Number(formatEther(BigInt(getReferralRewardsResult?.[0].result?.claimed))).toFixed(2)
+          ? convertToAbbreviated(Number(formatEther(BigInt(getReferralRewardsResult?.[0].result?.claimed))))
           : 0}{" "}
         MDC
       </TableCell>

@@ -19,7 +19,7 @@ import { useAppKitNetwork } from "@reown/appkit/react";
 import { useAccount, useReadContract } from "wagmi";
 import { Address, formatEther, zeroAddress } from "viem";
 import { toast } from "react-toastify";
-import { sortAddress } from "@/utils";
+import { convertToAbbreviated, sortAddress } from "@/utils";
 import { Copy } from "lucide-react";
 
 export default function ReferralTable() {
@@ -275,11 +275,11 @@ const TableBodyData = ({
 
   const reward =
     stakeDetail?.data && getUserRoi?.data
-      ? (
+      ? convertToAbbreviated(
           ((Number(formatEther(stakeDetail.data.volume)) * (0.1)) *
             Number(getUserRoi.data.toString())) /
           1e4
-        ).toFixed(2)
+        )
       : "0";
 
   return (
@@ -295,7 +295,7 @@ const TableBodyData = ({
       </TableCell>
       <TableCell className="text-white">
         {stakeDetail?.data
-          ? `${formatEther(stakeDetail.data.volume)} MDC`
+          ? `${convertToAbbreviated(formatEther(stakeDetail.data.volume))} MDC`
           : "0 MDC"}
       </TableCell>
       {

@@ -107,12 +107,12 @@ export default function EarningDashboard() {
     {
       id: 2,
       title: "Your Stake",
-      data: `${Number(
+      data: `${convertToAbbreviated(Number(
         Number(formatEther(BigInt(dailyReward?.data?.volume ?? 0)))
-      ).toFixed(2)} MDC`,
+      ))} MDC`,
       valueInUsd: `$${
         dailyReward?.data?.amount
-          ? Number(formatEther(dailyReward?.data?.amount)).toFixed(2)
+          ? convertToAbbreviated(Number(formatEther(dailyReward?.data?.amount)))
           : "0"
       } `,
       isButton: "",
@@ -161,7 +161,7 @@ export default function EarningDashboard() {
       id: 6,
       title: "Your Royality Income",
       data: royalityIncom?.data
-        ? `$${formatEther(BigInt(royalityIncom?.data[1]))}`
+        ? `$${convertToAbbreviated(formatEther(BigInt(royalityIncom?.data[1])))}`
         : "N/A",
       valueInUsd: "",
       isButton: "",
@@ -171,7 +171,7 @@ export default function EarningDashboard() {
       id: 8,
       title: "Your Team Business",
       data: royalityIncom?.data
-        ? `$${parseFloat(formatEther(BigInt(royalityIncom?.data[0]))).toFixed(2)}`
+        ? `$${convertToAbbreviated(parseFloat(formatEther(BigInt(royalityIncom?.data[0]))))}`
         : "N/A",
       valueInUsd: "",
       isButton: "",

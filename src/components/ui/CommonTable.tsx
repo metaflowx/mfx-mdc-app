@@ -28,7 +28,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import copy from "clipboard-copy";
 import { Address, formatEther } from "viem";
-import { sortAddress } from "@/utils";
+import { convertToAbbreviated, sortAddress } from "@/utils";
 import { Copy } from "lucide-react";
 import moment from "moment";
 import { extractDetailsFromError } from "@/utils/extractDetailsFromError";
@@ -249,7 +249,7 @@ const { data: blockNumber } = useBlockNumber({ watch: true });
                       </div>
                     </TableCell>
                     <TableCell className="text-white whitespace-pre">
-                      {Number(formatEther(item?.volume)).toFixed(2)} MDC
+                      {convertToAbbreviated(Number(formatEther(item?.volume)))} MDC
                     </TableCell>
                     <TableCell className="text-white">
                       {Number(item?.tierId) + 1}
