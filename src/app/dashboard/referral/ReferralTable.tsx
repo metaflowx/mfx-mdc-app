@@ -264,7 +264,7 @@ const TableBodyData = ({
   const getUserRoi = useReadContract({
     ...stakeConfig,
     functionName: "getROIPercentByLevel",
-    args: [address,BigInt(index+1)],
+    args: [address,BigInt(selectedLevel)],
     chainId,
   });
 
