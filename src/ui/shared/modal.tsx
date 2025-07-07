@@ -62,7 +62,7 @@ export default function Modal({url,url1}:{url:any,url1:any}) {
         }
     }, [open]);
 
-    const referLink = url
+    const referLink = url1
 
     return (
         <React.Fragment>

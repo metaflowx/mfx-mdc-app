@@ -77,7 +77,7 @@ const dailyReward = useReadContract({
     },
     {
       id: 2,
-      title: "Self Staking Income",
+      title: "Self Staking Amount",
       data: `${ Number(
                         Number(formatEther(BigInt(dailyReward?.data?.volume ?? 0))) 
                       ).toFixed(2)}`,

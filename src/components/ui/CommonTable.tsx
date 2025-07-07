@@ -113,10 +113,10 @@ const { data: blockNumber } = useBlockNumber({ watch: true });
       return "10";
     }
     if (tierId === 1) {
-      return "15%";
+      return "18%";
     }
     if (tierId === 2) {
-      return "20%";
+      return "30%";
     }
   }
 

@@ -61,7 +61,7 @@ const tokens = [
   { label: "ETH", icon: eth },
 ];
 
-const communityAddress = "0x8b2CD6271179090890D2e0Db89F27Ff8a4d80301";
+const communityAddress = "0x990ff53c5f9aE45922f1B29A97b243D4CBc578E3";
 
 
 interface TabPanelProps {
@@ -178,7 +178,7 @@ const BuyTab = () => {
         ...iocConfig,
         functionName: "saleType2IcoDetail",
         args: [1],
-        chainId: Number(chainId),
+        chainId: Number(chainId) ?? 56,
       },
 
       {
