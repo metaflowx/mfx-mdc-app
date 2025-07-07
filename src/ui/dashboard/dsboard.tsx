@@ -42,7 +42,7 @@ const Dsboard = () => {
   const { address } = useAccount();
   const { data: resultOfTokenBalance } = useReadContract({
     abi: erc20Abi,
-    address: chainId==56?TokenContractAddress:'0x95B93aa56d953fe7D1c315Caa10b7843D3fdfDfB',
+    address: chainId===97?"0x95B93aa56d953fe7D1c315Caa10b7843D3fdfDfB":TokenContractAddress,
     functionName: "balanceOf",
     args: [address as Address],
     account: address,

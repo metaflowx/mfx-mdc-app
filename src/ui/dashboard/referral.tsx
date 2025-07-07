@@ -77,8 +77,8 @@ const Referral = () => {
   return (
     <ReferralContainer>
       <InnerContainer>
-        {ReferralList.map((item) => (
-          <ReferralItem key={item.id}>
+        {ReferralList.map((item,index) => (
+          <ReferralItem key={index}>
             <Box sx={{ backgroundColor: "transparent", display: "grid" }}>
               <Image src={item.Img} alt={item.Name} width={50} height={50} />
             </Box>

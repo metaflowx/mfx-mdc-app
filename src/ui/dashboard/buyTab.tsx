@@ -61,7 +61,7 @@ const tokens = [
   { label: "ETH", icon: eth },
 ];
 
-const communityAddress = "0xc9A5652C634C846646f2dCdA99fE29d5DcA1b456";
+const communityAddress = "0x8b2CD6271179090890D2e0Db89F27Ff8a4d80301";
 
 
 interface TabPanelProps {
@@ -146,8 +146,6 @@ const BuyTab = () => {
     spenderAddress: ICOContractAddress,
     token: selectedToken.address,
   });
-
-  
   
 
   const result = useReadContracts({
@@ -197,7 +195,6 @@ const BuyTab = () => {
       },
     ],
   });
-  console.log("result", result?.data?.[6]?.result);
 
   useEffect(() => {
     if (resultOfCheckAllowance && address) {
@@ -290,6 +287,7 @@ const BuyTab = () => {
     query: {
       enabled: selectedToken.tokenname === "BNB" ? false : true,
     },
+    chainId: Number(chainId) ?? 56,
   });
 
   const totalTierLenth = useReadContract({
@@ -413,6 +411,7 @@ const BuyTab = () => {
     return (
       <Box
         role="tabpanel"
+        key={index}
         // hidden={value !== index}
         id={`tabpanel-${index}`}
         aria-labelledby={`tab-${index}`}
@@ -462,6 +461,7 @@ const BuyTab = () => {
               tokensList.data.length &&
               tokensList.data?.map((token: any, index: number) => (
                 <Grid2
+                  key={index}
                   onClick={() => setValue1(index)}
                   size={{ xs: 12, sm: 4 }}
                   sx={{

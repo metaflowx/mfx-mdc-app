@@ -142,9 +142,10 @@ export default function ReferralDashbaord() {
                 size={{ xs: 12, sm: 4, md: 4, lg: 4 }}
               >
                 <Card>
-                  {data.nestedData.map((item) => {
+                  {data.nestedData.map((item,index) => {
                     return (
                       <Box
+                      key={index}
                         sx={{
                           padding: "10px",
                           display: "flex",

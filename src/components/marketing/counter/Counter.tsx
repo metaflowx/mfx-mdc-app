@@ -34,29 +34,36 @@ export default function Counter({
   }, [targetTime]);
 
   return (
-    <div>
-      <p className="text-center text-white pb-3 font-[700] text-[16px] ">{label}</p>
-      <div className="  grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 w-full">
+    <div className="w-full px-4">
+      {label && (
+        <p className="text-center text-white pb-3 font-bold text-[16px]">
+          {label}
+        </p>
+      )}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 mb-8 w-full">
         {[
-          { value: timeLeft.days ||0, label: "DAYS" },
-          { value: timeLeft.minutes ||0, label: "HOUR" },
-          { value: timeLeft.minutes ||0, label: "MINUTES" },
-          { value: timeLeft.seconds ||0, label: "SECOND" },
-        ].map((time) => (
+          { value: timeLeft.days || 0, label: "DAYS" },
+          { value: timeLeft.hours || 0, label: "HOURS" },
+          { value: timeLeft.minutes || 0, label: "MINUTES" },
+          { value: timeLeft.seconds || 0, label: "SECONDS" },
+        ].map((time, index) => (
           <div
-            key={time.label} // Moved the key here
+            key={index}
             style={{
               background:
                 "linear-gradient(270deg, rgba(166, 166, 166, 0.7) 0%, rgba(166, 166, 166, 0) 50%, rgba(166, 166, 166, 0.7) 100%)",
               padding: "1px",
             }}
-            className="rounded-[8px]"
+            className="rounded-[8px] w-full"
           >
-            <div data-aos="fade-up" className="bg-[#1A1A1A] hover:bg-[#101012] px-6 py-3 rounded-[8px] text-center min-w-[100px]">
-              <h2 className="text-[30px] md:text-[60px] font-[700] text-white leading-normal">
+            <div
+              data-aos="fade-up"
+              className="bg-[#1A1A1A] hover:bg-[#101012] px-4 md:px-6 py-2 rounded-[8px] flex flex-col items-center text-center min-w-[80px] md:min-w-[100px] max-w-full overflow-hidden"
+            >
+              <h3 className="text-[30px] md:text-[60px] font-[600] text-white leading-none break-words">
                 {time.value}
-              </h2>
-              <div className="text-[16px] font-[400] text-white">
+              </h3>
+              <div className="text-[14px] md:text-[16px] font-[400] text-white">
                 {time.label}
               </div>
             </div>
