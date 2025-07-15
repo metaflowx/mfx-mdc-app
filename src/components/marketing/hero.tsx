@@ -189,7 +189,7 @@ export default function Hero() {
             >
               <h2>
                 {" "}
-                ${convertToAbbreviated(Number(calciulatedToken?.totalSale)+9000) || 0} / ${""}
+                ${convertToAbbreviated(Number(calciulatedToken?.totalSale)+10000) || 0} / ${""}
                 {convertToAbbreviated(calciulatedToken?.totalTokenSupplyUSD as number) || 0}
               </h2>
               <h2>Contribution Receive</h2>
