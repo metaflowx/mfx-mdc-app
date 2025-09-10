@@ -11,6 +11,7 @@ import PurchaseHistory from "./PurchaseHistory";
 import RefBottom from "../shared/refBottom";
 import Referral from "./referral";
 import BuyTab from "./buyTab";
+import MainTab from "./mainTab";
 
 const MainDiv = styled(Box)(({ theme }) => ({
   margin: "3rem 30px 20px 30px",
@@ -125,7 +126,7 @@ const dailyReward = useReadContract({
         <Box sx={{ marginTop: "1rem",marginBottom:"20px" }}>
           <Grid container spacing={2}>
             <Grid data-aos="fade-left" size={{ xs: 12, md: 8 }}>
-              <BuyTab />
+              <MainTab />
             </Grid>
             <Grid data-aos="fade-right" size={{ xs: 12, md: 4 }}>
               <Referral />

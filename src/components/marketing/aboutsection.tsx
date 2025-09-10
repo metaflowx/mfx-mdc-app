@@ -44,7 +44,7 @@ export default function AboutSection({ id }: { id: string }) {
                 width="w-full sm:w-[209px]"
               />
             </Link>
-            <Link href={"/WHITEPAPER.pdf"} target="_blank">
+            <Link href={"#"} target="_blank">
               <ButtonGradient
                 btnName="MDC Whitepaper"
                 width="w-full sm:w-[209px]  sm:mt-0 "

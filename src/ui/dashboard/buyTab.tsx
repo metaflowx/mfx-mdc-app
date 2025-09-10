@@ -146,7 +146,7 @@ const BuyTab = () => {
     spenderAddress: ICOContractAddress,
     token: selectedToken.address,
   });
-  
+
 
   const result = useReadContracts({
     contracts: [
@@ -190,7 +190,7 @@ const BuyTab = () => {
       {
         ...contractConfig,
         functionName: "isValidReferrer",
-        args: [address as Address,referrer as Address],
+        args: [address as Address, referrer as Address],
         chainId: Number(chainId) ?? 56,
       },
     ],
@@ -421,363 +421,365 @@ const BuyTab = () => {
       </Box>
     );
   };
-  
+
 
   return (
-    <StyledBox>
-      <InnerBox>
-        <Typography
-          variant="h4"
-          color="#fff"
-          fontWeight={700}
-          textAlign="center"
-          mt={2}
-        >
-          Buy MDC Coins
-        </Typography>
 
-        {/* Tab Panels */}
-        {tokens.map((token, index) => (
-          <CustomTabPanel key={index} value={value} index={index}>
-            <Box display="flex" justifyContent="center" gap="1rem" mt={2}>
-              <Typography>
-                1 MDC = $
-                {calciulatedToken?.tokenPriceData == 0
-                  ? 0.1
-                  : calciulatedToken?.tokenPriceData}
-              </Typography>
-            </Box>
-          </CustomTabPanel>
-        ))}
+    <Box>
 
-        <CoinSelector
-          selectedToken={selectedToken}
-          setSelectedToken={setSelectedToken}
-        />
 
-        <Box sx={{ width: "100%" }} mt={3}>
-          <Grid2 container spacing={2}>
-            {tokensList?.data &&
-              tokensList.data.length &&
-              tokensList.data?.map((token: any, index: number) => (
-                <Grid2
-                  key={index}
-                  onClick={() => setValue1(index)}
-                  size={{ xs: 12, sm: 4 }}
-                  sx={{
-                    border:
-                      value1 === index
-                        ? "1px solid #1AB3E5"
-                        : "1px solid #1D1D20",
-                    background: "#101012",
-                    borderRadius: "8px",
-                    textAlign: "center",
-                    cursor: "pointer",
-                    "&:hover": {
-                      background: value === index ? "#101012" : "#19191C",
-                    },
-                  }}
-                >
-                  <TabPanel key={index} value={value} index={index}>
-                    <Box
-                      sx={{
-                        background: "#000000",
-                        borderRadius: "6px",
-                        height: "40px",
-                      }}
-                      className="displayCenter"
-                    >
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          color: "#1AB3E5",
-                          fontWeight: 700,
-                          fontSize: "17px",
-                        }}
-                      >
-                        {`Package ${index === 0 ? "A" : index === 1 ? "B" : "C"
-                          }`}
-                      </Typography>
-                    </Box>
+      <Typography
+        variant="h4"
+        color="#fff"
+        fontWeight={700}
+        textAlign="center"
+        mt={2}
+      >
+        Buy MDC Coins
+      </Typography>
 
+      {/* Tab Panels */}
+      {tokens.map((token, index) => (
+        <CustomTabPanel key={index} value={value} index={index}>
+          <Box display="flex" justifyContent="center" gap="1rem" mt={2}>
+            <Typography>
+              1 MDC = $
+              {calciulatedToken?.tokenPriceData == 0
+                ? 0.1
+                : calciulatedToken?.tokenPriceData}
+            </Typography>
+          </Box>
+        </CustomTabPanel>
+      ))}
+
+      <CoinSelector
+        selectedToken={selectedToken}
+        setSelectedToken={setSelectedToken}
+      />
+
+      <Box sx={{ width: "100%" }} mt={3}>
+        <Grid2 container spacing={2}>
+          {tokensList?.data &&
+            tokensList.data.length &&
+            tokensList.data?.map((token: any, index: number) => (
+              <Grid2
+                key={index}
+                onClick={() => setValue1(index)}
+                size={{ xs: 12, sm: 4 }}
+                sx={{
+                  border:
+                    value1 === index
+                      ? "1px solid #1AB3E5"
+                      : "1px solid #1D1D20",
+                  background: "#101012",
+                  borderRadius: "8px",
+                  textAlign: "center",
+                  cursor: "pointer",
+                  "&:hover": {
+                    background: value === index ? "#101012" : "#19191C",
+                  },
+                }}
+              >
+                <TabPanel key={index} value={value} index={index}>
+                  <Box
+                    sx={{
+                      background: "#000000",
+                      borderRadius: "6px",
+                      height: "40px",
+                    }}
+                    className="displayCenter"
+                  >
                     <Typography
                       variant="h6"
                       sx={{
-                        color: "#fff",
+                        color: "#1AB3E5",
                         fontWeight: 700,
-                        fontSize: "16px",
-                        pt: 2,
+                        fontSize: "17px",
                       }}
                     >
-                      {/* {token.title} */}
-                      {`${Number(token.returnInPercent) / 1e2}% APR`}
+                      {`Package ${index === 0 ? "A" : index === 1 ? "B" : "C"
+                        }`}
                     </Typography>
-                    <Typography
-                      sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
-                      variant="body1"
-                    >
-                      {/* {token.des} */}
-                      Withdraw period monthly
-                    </Typography>
-                    <Typography
-                      sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
-                      variant="body1"
-                    >
-                      {`${Number(token.lockPeriod)} Months Lockup`}
-                    </Typography>
-                  </TabPanel>
-                </Grid2>
-              ))}
-          </Grid2>
-        </Box>
+                  </Box>
 
-        {/* Buy Input */}
-        <CustomTabPanel value={value} index={value}>
-          <MaxButtonWrap>
-            <InputBase
-              disabled={isPending}
-              onKeyDown={(e) => {
-                handleNegativeValue(e);
-              }}
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              fullWidth
-              placeholder="Enter Amount"
-              type="number"
-              sx={{
-                flex: 1,
-                color: "#fff",
-                padding: "0.3rem 0.5rem",
-                "& input[type=number]": { "-moz-appearance": "textfield" },
-                "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
-                {
-                  "-webkit-appearance": "none",
-                  margin: 0,
-                },
-              }}
-            />
-            {/* <GradientButton onClick={() => setAmount("0")}>Max</GradientButton> */}
-          </MaxButtonWrap>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "#fff",
+                      fontWeight: 700,
+                      fontSize: "16px",
+                      pt: 2,
+                    }}
+                  >
+                    {/* {token.title} */}
+                    {`${Number(token.returnInPercent) / 1e2}% APR`}
+                  </Typography>
+                  <Typography
+                    sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
+                    variant="body1"
+                  >
+                    {/* {token.des} */}
+                    Withdraw period monthly
+                  </Typography>
+                  <Typography
+                    sx={{ color: "#fff", fontWeight: 400, fontSize: "16px" }}
+                    variant="body1"
+                  >
+                    {`${Number(token.lockPeriod)} Months Lockup`}
+                  </Typography>
+                </TabPanel>
+              </Grid2>
+            ))}
+        </Grid2>
+      </Box>
 
-          {amount &&
-            (calculationresult?.data?.[0]?.result ||
-              calculationresult?.data?.[3]?.result) && (
-              <>
-                {calculationresult?.data?.[3]?.result?.isStable &&
-                  Number(amount) < Number(minBuy) && (
-                    <p className="pt-1" style={{ color: "red" }}>
-                      Min: ${minBuy}
-                    </p>
-                  )}
-
-                {
-                  <>
-                    {!calculationresult?.data?.[3]?.result?.isStable &&
-                      Number(
-                        formatEther(
-                          BigInt(calculationresult?.data[0]?.result ?? 0)
-                        )
-                      ) < Number(minBuy) && (
-                        <p className="pt-1" style={{ color: "red" }}>
-                          Min: ${minBuy}
-                        </p>
-                      )}
-                  </>
-                }
-              </>
-            )}
-
-          {/* Cost & Receive Details */}
-          <Box display="flex" justifyContent="center" gap="1.5rem" mt={3}>
-            <Box display="flex" alignItems="center" gap="10px">
-              <img
-                src={
-                  selectedToken?.tokenname === "BTCB"
-                    ? "/images/coin-icon/btcb.png"
-                    : selectedToken?.tokenname === "USDT"
-                      ? "/images/coin-icon/usdt.png"
-                      : `/images/coin-icon/${selectedToken?.address === zeroAddress
-                        ? "bnb"
-                        : selectedToken?.tokenname?.toLowerCase()
-                      }.svg`
-                }
-                className="w-[30px] h-[30px] rounded-full"
-              />
-              <Typography>
-                COST:{" "}
-                <Typography component="span" fontWeight={700}>
-                  {amount}
-                </Typography>
-              </Typography>
-            </Box>
-            <Box display="flex" alignItems="center" gap="10px">
-              <Image src={mdcicon} alt="MDC" width={30} height={30} />
-              <Typography>
-                Receive:{" "}
-                <Typography component="span" fontWeight={700}>
-                  {calciulatedToken?.getToken ?? 0}
-                </Typography>
-              </Typography>
-            </Box>
-          </Box>
-          { result?.data?.[5]?.result === zeroAddress && (
-            <>
-          <MaxButtonWrap>
-            <InputBase
-              disabled={isPending}
-              onKeyDown={(e) => {
-                handleNegativeValue(e);
-              }}
-              value={referrer}
-              onChange={(e) => setReferrer(e.target.value)}
-              fullWidth
-              placeholder="Enter Referrer Address"
-              type="text"
-              sx={{
-                flex: 1,
-                color: "#fff",
-                padding: "0.3rem 0.5rem",
-                "& input[type=number]": { "-moz-appearance": "textfield" },
-                "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
-                {
-                  "-webkit-appearance": "none",
-                  margin: 0,
-                },
-              }}
-            />
-            {/* <GradientButton onClick={() => setAmount("0")}>Max</GradientButton> */}
-          </MaxButtonWrap>
-          {
-            result?.data && result.data[6].result===false && (
-              <Typography
-                variant="body2"
-                color="red"
-                mt={1}
-                sx={{ textAlign: "center" }}
-              >
-                Invalid referrer address. Please enter a valid referrer or use the community address.
-              </Typography>
-            )
-          }
-          <Box
-            mt={3}
-            p={2}
-            borderRadius={2}
-            sx={{
-              backgroundColor: "#2a2a3f",
-              border: "1px solid #444",
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
+      {/* Buy Input */}
+      <CustomTabPanel value={value} index={value}>
+        <MaxButtonWrap>
+          <InputBase
+            disabled={isPending}
+            onKeyDown={(e) => {
+              handleNegativeValue(e);
             }}
-          >
-            <Typography variant="subtitle1" color="#00bcd4" fontWeight={600}>
-              ⚠️ Note
-            </Typography>
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            fullWidth
+            placeholder="Enter Amount"
+            type="number"
+            sx={{
+              flex: 1,
+              color: "#fff",
+              padding: "0.3rem 0.5rem",
+              "& input[type=number]": { "-moz-appearance": "textfield" },
+              "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
+              {
+                "-webkit-appearance": "none",
+                margin: 0,
+              },
+            }}
+          />
+          {/* <GradientButton onClick={() => setAmount("0")}>Max</GradientButton> */}
+        </MaxButtonWrap>
 
-            <Typography variant="body2" color="#ccc">
-              If you don’t have a valid referrer, you can use the community referrer address:
-            </Typography>
+        {amount &&
+          (calculationresult?.data?.[0]?.result ||
+            calculationresult?.data?.[3]?.result) && (
+            <>
+              {calculationresult?.data?.[3]?.result?.isStable &&
+                Number(amount) < Number(minBuy) && (
+                  <p className="pt-1" style={{ color: "red" }}>
+                    Min: ${minBuy}
+                  </p>
+                )}
 
-            <Box
-              display="flex"
-              alignItems="center"
-              gap={1}
-              sx={{
-                backgroundColor: "#1e1e2f",
-                px: 2,
-                py: 1,
-                borderRadius: 1,
-                mt: 1,
-                fontFamily: "monospace",
-                color: "#fff",
-              }}
-            >
-              <Typography variant="body2" sx={{ wordBreak: "break-all" }}>
-                {communityAddress}
-              </Typography>
-              <Tooltip title="Copy to clipboard">
-                <IconButton
-                  onClick={() => {
-                    copy(communityAddress);
-                    toast.success("Referrer address copied!");
-                  }}
-                  size="small"
-                  sx={{ color: "#ccc" }}
-                >
-                  <ContentCopyIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-
-            </Box>
-          </Box>
-           </>
-          )
-          }
-
-          {/* Buy Button */}
-          <Box mt={2}>
-            {address ? (
-              <GradientButton
-                fullWidth
-                disabled={
-                  (calculationresult?.data?.[3]?.result?.isStable &&
-                    Number(amount) < Number(minBuy)) ||
-                  (!calculationresult?.data?.[3]?.result?.isStable &&
+              {
+                <>
+                  {!calculationresult?.data?.[3]?.result?.isStable &&
                     Number(
                       formatEther(
-                        BigInt(calculationresult?.data?.[0]?.result ?? 0)
+                        BigInt(calculationresult?.data[0]?.result ?? 0)
                       )
-                    ) < Number(minBuy)) ||
-                  isPending ||
-                  amount === "" ||
-                  Number(amount) <= 0 ||
-                  (selectedToken?.tokenname === "BNB"
-                    ? Number(Balance?.formatted) < Number(amount) ||
-                    Number(Balance?.formatted) === 0
-                    : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
-                    Number(amount))
-                }
-                onClick={() => {
-                  if (selectedToken?.tokenname === "BNB") {
-                    handleBuy();
-                  } else {
-                    !isAproveERC20 ? approveToken() : handleBuy();
-                  }
+                    ) < Number(minBuy) && (
+                      <p className="pt-1" style={{ color: "red" }}>
+                        Min: ${minBuy}
+                      </p>
+                    )}
+                </>
+              }
+            </>
+          )}
+
+        {/* Cost & Receive Details */}
+        <Box display="flex" justifyContent="center" gap="1.5rem" mt={3}>
+          <Box display="flex" alignItems="center" gap="10px">
+            <img
+              src={
+                selectedToken?.tokenname === "BTCB"
+                  ? "/images/coin-icon/btcb.png"
+                  : selectedToken?.tokenname === "USDT"
+                    ? "/images/coin-icon/usdt.png"
+                    : `/images/coin-icon/${selectedToken?.address === zeroAddress
+                      ? "bnb"
+                      : selectedToken?.tokenname?.toLowerCase()
+                    }.svg`
+              }
+              className="w-[30px] h-[30px] rounded-full"
+            />
+            <Typography>
+              COST:{" "}
+              <Typography component="span" fontWeight={700}>
+                {amount}
+              </Typography>
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gap="10px">
+            <Image src={mdcicon} alt="MDC" width={30} height={30} />
+            <Typography>
+              Receive:{" "}
+              <Typography component="span" fontWeight={700}>
+                {calciulatedToken?.getToken ?? 0}
+              </Typography>
+            </Typography>
+          </Box>
+        </Box>
+        {result?.data?.[5]?.result === zeroAddress && (
+          <>
+            <MaxButtonWrap>
+              <InputBase
+                disabled={isPending}
+                onKeyDown={(e) => {
+                  handleNegativeValue(e);
+                }}
+                value={referrer}
+                onChange={(e) => setReferrer(e.target.value)}
+                fullWidth
+                placeholder="Enter Referrer Address"
+                type="text"
+                sx={{
+                  flex: 1,
+                  color: "#fff",
+                  padding: "0.3rem 0.5rem",
+                  "& input[type=number]": { "-moz-appearance": "textfield" },
+                  "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
+                  {
+                    "-webkit-appearance": "none",
+                    margin: 0,
+                  },
+                }}
+              />
+              {/* <GradientButton onClick={() => setAmount("0")}>Max</GradientButton> */}
+            </MaxButtonWrap>
+            {
+              result?.data && result.data[6].result === false && (
+                <Typography
+                  variant="body2"
+                  color="red"
+                  mt={1}
+                  sx={{ textAlign: "center" }}
+                >
+                  Invalid referrer address. Please enter a valid referrer or use the community address.
+                </Typography>
+              )
+            }
+            <Box
+              mt={3}
+              p={2}
+              borderRadius={2}
+              sx={{
+                backgroundColor: "#2a2a3f",
+                border: "1px solid #444",
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+              }}
+            >
+              <Typography variant="subtitle1" color="#00bcd4" fontWeight={600}>
+                ⚠️ Note
+              </Typography>
+
+              <Typography variant="body2" color="#ccc">
+                If you don’t have a valid referrer, you can use the community referrer address:
+              </Typography>
+
+              <Box
+                display="flex"
+                alignItems="center"
+                gap={1}
+                sx={{
+                  backgroundColor: "#1e1e2f",
+                  px: 2,
+                  py: 1,
+                  borderRadius: 1,
+                  mt: 1,
+                  fontFamily: "monospace",
+                  color: "#fff",
                 }}
               >
-                {isPending
-                  ? selectedToken?.tokenname === "BNB" || isAproveERC20
-                    ? "Buying..."
-                    : "Approving..."
-                  : selectedToken?.tokenname === "BNB" && amount === ""
-                    ? "Please enter amount"
-                    : selectedToken?.tokenname === "BNB" && Number(amount) <= 0
-                      ? "Please enter correct amount"
-                      : (
-                        selectedToken?.tokenname === "BNB"
-                          ? Number(Balance?.formatted) < Number(amount) ||
-                          Number(Balance?.formatted) === 0
-                          : Number(
-                            formatEther(BigInt(resultOfTokenBalance ?? 0))
-                          ) < Number(amount)
-                      )
-                        ? "Insufficient funds"
-                        : selectedToken?.tokenname === "BNB" || isAproveERC20
-                          ? " Buy MDC Coin"
-                          : "Approve"}
-              </GradientButton>
-            ) : (
-              <CommonButton
-                onClick={async () => open()}
-                title="Connect Wallet"
-                width="w-full"
-              />
-            )}
-          </Box>
-        </CustomTabPanel>
-      </InnerBox>
-    </StyledBox>
+                <Typography variant="body2" sx={{ wordBreak: "break-all" }}>
+                  {communityAddress}
+                </Typography>
+                <Tooltip title="Copy to clipboard">
+                  <IconButton
+                    onClick={() => {
+                      copy(communityAddress);
+                      toast.success("Referrer address copied!");
+                    }}
+                    size="small"
+                    sx={{ color: "#ccc" }}
+                  >
+                    <ContentCopyIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+
+              </Box>
+            </Box>
+          </>
+        )
+        }
+
+        {/* Buy Button */}
+        <Box mt={2}>
+          {address ? (
+            <GradientButton
+              fullWidth
+              disabled={
+                (calculationresult?.data?.[3]?.result?.isStable &&
+                  Number(amount) < Number(minBuy)) ||
+                (!calculationresult?.data?.[3]?.result?.isStable &&
+                  Number(
+                    formatEther(
+                      BigInt(calculationresult?.data?.[0]?.result ?? 0)
+                    )
+                  ) < Number(minBuy)) ||
+                isPending ||
+                amount === "" ||
+                Number(amount) <= 0 ||
+                (selectedToken?.tokenname === "BNB"
+                  ? Number(Balance?.formatted) < Number(amount) ||
+                  Number(Balance?.formatted) === 0
+                  : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) <
+                  Number(amount))
+              }
+              onClick={() => {
+                if (selectedToken?.tokenname === "BNB") {
+                  handleBuy();
+                } else {
+                  !isAproveERC20 ? approveToken() : handleBuy();
+                }
+              }}
+            >
+              {isPending
+                ? selectedToken?.tokenname === "BNB" || isAproveERC20
+                  ? "Buying..."
+                  : "Approving..."
+                : selectedToken?.tokenname === "BNB" && amount === ""
+                  ? "Please enter amount"
+                  : selectedToken?.tokenname === "BNB" && Number(amount) <= 0
+                    ? "Please enter correct amount"
+                    : (
+                      selectedToken?.tokenname === "BNB"
+                        ? Number(Balance?.formatted) < Number(amount) ||
+                        Number(Balance?.formatted) === 0
+                        : Number(
+                          formatEther(BigInt(resultOfTokenBalance ?? 0))
+                        ) < Number(amount)
+                    )
+                      ? "Insufficient funds"
+                      : selectedToken?.tokenname === "BNB" || isAproveERC20
+                        ? " Buy MDC Coin"
+                        : "Approve"}
+            </GradientButton>
+          ) : (
+            <CommonButton
+              onClick={async () => open()}
+              title="Connect Wallet"
+              width="w-full"
+            />
+          )}
+        </Box>
+      </CustomTabPanel>
+    </Box>
+
   );
 };
 

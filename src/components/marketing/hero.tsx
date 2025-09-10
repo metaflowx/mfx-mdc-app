@@ -297,7 +297,7 @@ export default function Hero() {
               />
             </Link>
             &nbsp;
-            <Link href={"/WHITEPAPER.pdf"} target="_blank">
+            <Link href={"#"} target="_blank">
               <ButtonGradient btnName="Read Whitepaper" width="w-[195px]" />
             </Link>
           </div>

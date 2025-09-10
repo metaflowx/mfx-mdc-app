@@ -1,3 +1,4 @@
+import ClaimButton from "@/components/modal/ClaimModalConfirmation";
 import ClaimModalConfirmation from "@/components/modal/ClaimModalConfirmation";
 import { Card } from "@/components/ui/card";
 import CommonButton from "@/components/ui/CommonButton";
@@ -262,7 +263,9 @@ const TableBodyData = ({
           : "-"}
       </TableCell>
       <TableCell sx={{ color: "white" }}>
-        <CommonButton 
+        <ClaimButton isClaimChecking={{ referral: true }} level={2}/>
+        
+        {/* <CommonButton 
              onClick={() => {
                   setIsClaimChecking(
                      {
@@ -275,10 +278,10 @@ const TableBodyData = ({
                 title="Claim"
                 width="w-[120px] sm:w-[150px]  "
                 height="h-[40px]"
-        />
+        /> */}
         
       </TableCell>
-        {isModalOpen && (
+        {/* {isModalOpen && (
         <ClaimModalConfirmation
           open={isModalOpen}
           onClose={() => {
@@ -287,7 +290,8 @@ const TableBodyData = ({
           isClaimChecking={isClaimChecking}
           level={index}
         />
-      )}
+      )} */}
+     
     </TableRow>
   );
 }

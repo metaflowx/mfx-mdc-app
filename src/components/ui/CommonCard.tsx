@@ -66,7 +66,7 @@ export default function CommonCard({ item }: { item?: any }) {
           </>
         )}
       </ListBox>
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <ClaimModalConfirmation
           open={isModalOpen}
           onClose={() => {
@@ -74,7 +74,7 @@ export default function CommonCard({ item }: { item?: any }) {
           }}
           isClaimChecking={isClaimChecking}
         />
-      )}
+      )} */}
     </>
   );
 }
