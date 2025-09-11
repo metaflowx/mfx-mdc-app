@@ -249,9 +249,9 @@ const Swap = () => {
             !amount || 
             parseFloat(amount) <= 0 ||
             isPending ||
-            calculateToken?.canUserSwap ||
-            !isAproveERC20 ||
-            !(Number(calculateToken?.minSwap)< Number(calculateToken?.getUsdtToken)) ||
+            !calculateToken?.canUserSwap ||
+            isAproveERC20 ||
+            !(Number(calculateToken?.minSwap)<= Number(calculateToken?.getUsdtToken)) ||
             Number(
               formatEther(BigInt(resultOfTokenBalance ?? 0))
             ) < Number(amount)
@@ -263,9 +263,9 @@ const Swap = () => {
               : "Approving..."
             : amount === ""
               ? "Please enter amount"
-              : !(Number(calculateToken?.minSwap)< Number(calculateToken?.getUsdtToken))
+              : !(Number(calculateToken?.minSwap)<= Number(calculateToken?.getUsdtToken))
                 ? `Min. Swap is $${calculateToken?.minSwap}`
-                : Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) < Number(amount)
+                : (Number(formatEther(BigInt(resultOfTokenBalance ?? 0))) < Number(amount))
                   ? "Insufficient funds"
                   : isAproveERC20
                     ? "Swap"
