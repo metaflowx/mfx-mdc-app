@@ -263,7 +263,7 @@ const TableBodyData = ({
           : "-"}
       </TableCell>
       <TableCell sx={{ color: "white" }}>
-        <ClaimButton isClaimChecking={{ referral: true }} level={2}/>
+        <ClaimButton isClaimChecking={{ referral: true }} level={index}/>
         
         {/* <CommonButton 
              onClick={() => {

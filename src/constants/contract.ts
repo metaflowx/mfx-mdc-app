@@ -1,6 +1,7 @@
 import { IcoABI } from "@/app/ABI/IcoABI";
 import { RefferABI } from "@/app/ABI/RewardToken";
 import { StakingABI } from "@/app/ABI/StakingABI";
+import { SwapAbi } from "@/app/ABI/swapAbi";
 import { TokenABI } from "@/app/ABI/TokenSupply";
 import { VCABI } from "@/app/ABI/VCABI";
 export const TokenContractAddress = "0xebfa9073A0fA6d440185352175ce1a625FbBf819";
@@ -9,6 +10,7 @@ export const ReferralContractAddress = "0xCf5EA7f8e98f92F411a944284804f2910aFbF6
 export const VCContractAddress = "0xAFb5De95758bD9d818c52cd037d8a856aFBEE914"
 export const USDTAddress = "0x55d398326f99059fF775485246999027B3197955"
 export const StakeContractAddress = "0x174253b156a51BedeFbc6D95aC061Ac3e9F7a48f";
+export const swapContractAddress = "0x80633e93aD4c8256D52482306959f58E99756CC4"
 
 
 export const contractConfig = {
@@ -36,5 +38,11 @@ export const vcConfig = {
 export const stakeConfig = {
   address: StakeContractAddress as `0x${string}`,
   abi: StakingABI,
+
+};
+
+export const swapConfig = {
+  address: swapContractAddress as `0x${string}`,
+  abi: SwapAbi,
 
 };

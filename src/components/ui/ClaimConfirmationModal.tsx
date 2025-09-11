@@ -51,7 +51,7 @@ const ClaimConfirmationModal: React.FC<CurrencySelectDialogProps> = ({ open, onC
         address: StakeContractAddress,
         abi: StakingABI,
         functionName: "claimReward",
-        args: [BigInt(indexData), selectedCurrency === "MDC" ? false : true],
+        args: [BigInt(indexData), false],
       });
 
       if (res) {
@@ -87,7 +87,7 @@ const ClaimConfirmationModal: React.FC<CurrencySelectDialogProps> = ({ open, onC
             disabled={isPendingClaim}
           >
             <MenuItem value="MDC">MDC</MenuItem>
-            <MenuItem value="USDT">USDT</MenuItem>
+            {/* <MenuItem value="USDT">USDT</MenuItem> */}
           </Select>
         </FormControl>
       </DialogContent>

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useWriteContract } from "wagmi";
 import ClaimModalConfirmation from "../modal/ClaimModalConfirmation";
 import CommonButton from "./CommonButton";
+import ClaimButton from "../modal/ClaimModalConfirmation";
 
 export default function CommonCard({ item }: { item?: any }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,7 +49,8 @@ export default function CommonCard({ item }: { item?: any }) {
         {item?.isButton !== ""  &&  (
           <>
             <Box sx={{ display: "flex", justifyContent: "center", mt: 1 }}>
-              <CommonButton
+              <ClaimButton isClaimChecking={{ [item.isButton]: true }}/>
+              {/* <CommonButton
                 onClick={() => {
                   setIsClaimChecking(
                     {
@@ -61,7 +63,7 @@ export default function CommonCard({ item }: { item?: any }) {
                 title="Claim"
                 width="w-[120px] sm:w-[150px]  "
                 height="h-[40px]"
-              />
+              /> */}
             </Box>
           </>
         )}

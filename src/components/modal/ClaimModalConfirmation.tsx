@@ -204,8 +204,6 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ isClaimChecking, level }) => 
     isSuccess,
   } = useWriteContract();
 
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("MDC"); // default MDC
-
   const handleClaim = async () => {
     try {
       let res;
@@ -214,19 +212,19 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ isClaimChecking, level }) => 
         res = await writeContractAsyncClaim({
           ...stakeConfig,
           functionName: "claimedRoyalityIncome",
-          args: [selectedCurrency !== "MDC"],
+          args: [false],
         });
       } else if (isClaimChecking.team) {
         res = await writeContractAsyncClaim({
           ...stakeConfig,
           functionName: "claimedTeamReward",
-          args: [selectedCurrency !== "MDC"],
+          args: [false],
         });
       } else if (isClaimChecking.referral) {
         res = await writeContractAsyncClaim({
           ...contractConfig,
           functionName: "claimReferralReward",
-          args: [selectedCurrency !== "MDC", BigInt(level ?? 1)],
+          args: [false, BigInt(level ?? 1)],
         });
       } else {
         toast.error("Invalid claim type.");
