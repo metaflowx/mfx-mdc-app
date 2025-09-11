@@ -250,7 +250,6 @@ const Swap = () => {
             parseFloat(amount) <= 0 ||
             isPending ||
             !calculateToken?.canUserSwap ||
-            isAproveERC20 ||
             !(Number(calculateToken?.minSwap)<= Number(calculateToken?.getUsdtToken)) ||
             Number(
               formatEther(BigInt(resultOfTokenBalance ?? 0))
